@@ -16,12 +16,13 @@
                     @endif
 
                     <h3><center>Menu de Proyectos:</center></h3>
-
+                    <br>
+                    <br>
                     @if (count($proyectos) > 0)
             <div class="panel panel-default">
                 
                 <div class="panel-heading">
-                        <h2>Proyectos Activos:</h2>
+                        <h2>Proyecto Seleccionado: "{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}}"</h2>
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped task-table">
@@ -42,9 +43,10 @@
 
                                     <!-- Task Delete Button -->
                                     <td>
-                                        <button type="submit" class="btn btn-primary" onclick="location.href='proyectos/{{ $emps->id }}'">
+                                        <button type="submit" class="btn btn-primary" onclick="location.href='proyectoG/{{ $emps->id }}/{{ $emps->nombre_proyecto }}'">
                                             <i class="fa fa-btn fa-pencil"></i>Seleccionar
                                         </button>
+
                                     </td>
                                 
                                 </tr>
@@ -56,6 +58,9 @@
             </div>
         </div>
     @endif
+
+
+        Mi Proyecto: {{Session::get('proyectoG', 'Seleccione Proyecto')}}
 
                 </div>
             </div>

@@ -211,6 +211,10 @@ Route::delete('/proyecto/{id}', 'ControladorModuloProyectos@EliminarProyecto');
 //------------------ Modificar Proyectos
 Route::put('/proyecto/{id}', 'ControladorModuloProyectos@ModificarProyecto');
 
+
+//------------------ Guardar Proyecto en Variable de Session
+Route::get('/proyectoG/{id}/{nombre_proyecto}', 'ControladorModuloProyectos@GuardarProyecto');
+
 /*************************************************************************************************/
 
 

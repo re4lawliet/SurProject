@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\proyecto;
+use Illuminate\Support\Facades\Session;
 
 class ControladorModuloProyectos extends Controller
 {
@@ -94,5 +95,15 @@ class ControladorModuloProyectos extends Controller
         $proyect->save();
         return redirect('/proyectos');
 
+    }
+
+    
+
+    public function GuardarProyecto($id, $nombre_proyecto){
+
+        Session::put('proyectoG', $id);
+        Session::put('proyectoGnombre', $nombre_proyecto);
+
+        return redirect('/homeAdmin');
     }
 }
