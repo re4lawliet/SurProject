@@ -2,6 +2,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS empresas;
 DROP TABLE IF EXISTS proveedores;
+DROP TABLE IF EXISTS proyectos;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -12,6 +13,19 @@ apellido VARCHAR(250) NULL,
 direccion VARCHAR(250) NUll,
 nit VARCHAR(250) NUll,
 telefono VARCHAR(250) NUll,
+created_at TIMESTAMP NULL,
+updated_at TIMESTAMP NULL
+);
+
+CREATE TABLE proveedores (
+id INT AUTO_INCREMENT PRIMARY KEY,
+nombre_proveedor VARCHAR(250) NULL,
+direccion_oficina VARCHAR(250) NULL,
+nit_proveedor VARCHAR(250) NUll,
+telefono_proveedor VARCHAR(250) NUll,
+correo_proveedor VARCHAR(250) NUll,
+nombre_banco VARCHAR(250) NUll,
+forma_pago VARCHAR(250) NUll,
 created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL
 );
@@ -34,18 +48,7 @@ created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL
 );
 
-CREATE TABLE proveedores (
-id INT AUTO_INCREMENT PRIMARY KEY,
-nombre_proveedor VARCHAR(250) NULL,
-direccion_oficina VARCHAR(250) NULL,
-nit_proveedor VARCHAR(250) NUll,
-telefono_proveedor VARCHAR(250) NUll,
-correo_proveedor VARCHAR(250) NUll,
-nombre_banco VARCHAR(250) NUll,
-forma_pago VARCHAR(250) NUll,
-created_at TIMESTAMP NULL,
-updated_at TIMESTAMP NULL
-);
+
 
 INSERT INTO `empresas` (`id`, `nombre_empresa`, `nit_empresa`, `direccion_empresa`, `telefono_oficina`, `telefono_empresa`, `correo_empresa`, `telefono_encargado`, `correo_encargado`, `nombre_encargado`, `puesto_encargado`, `created_at`, `updated_at`) VALUES
 (2, 'Distribuidora Alvarez Wong / Daw', NULL, NULL, 'Oficina (502) 2473-3652', NULL, 'daw@alvarezwong.com', 'Celular (502) 3077-2399', NULL, 'Ing. Gustavo Alvarez W.', 'Gerente Comercial', '2018-11-12 11:14:42', '2018-11-12 11:14:42'),
@@ -91,3 +94,15 @@ INSERT INTO `empresas` (`id`, `nombre_empresa`, `nit_empresa`, `direccion_empres
 (42, 'Sistemas tecnicos de Guatemala, S.A.', NULL, NULL, '2320 0300', '2320 0300', NULL, NULL, NULL, NULL, NULL, '2018-11-12 12:01:41', '2018-11-12 12:01:41'),
 (43, 'Bimagua s.a./ kalea', NULL, NULL, 'Tel:2367-0090/2490-0000', 'Tel:2367-0090/2490-0000', 'soportetotal@kalea.com.gt', NULL, NULL, NULL, NULL, '2018-11-12 12:02:09', '2018-11-12 12:02:09'),
 (44, 'Persiluz / Fabrica de percianas y complementos, S.A.', NULL, NULL, NULL, NULL, 'delvin.moran.persiluz@gmail.com', NULL, NULL, NULL, NULL, '2018-11-12 12:02:33', '2018-11-12 12:02:33');
+
+
+CREATE TABLE proyectos (
+id INT AUTO_INCREMENT PRIMARY KEY,
+nombre_proyecto VARCHAR(250) NULL,
+zona_proyecto VARCHAR(250) NUll,
+estado_proyecto VARCHAR(250) NULL,
+factura_a VARCHAR(250) NUll,
+factura_numero VARCHAR(250) NUll,
+created_at TIMESTAMP NULL,
+updated_at TIMESTAMP NULL
+);

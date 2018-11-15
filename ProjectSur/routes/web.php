@@ -196,23 +196,26 @@ Route::put('/empresa/{id}', 'ControladorModuloEmpresas@ModificarEmpresa');
 
 /************************************************************************************************* */
 
-//------------------ Mostrar Proveedores
-Route::get('/proveedores', 'ControladorModuloProveedores@mostrarProveedores');
+//------------------ Mostrar Proyectos
+Route::get('/proyectos', 'ControladorModuloProyectos@mostrarProyectos')->name('proyectos');
 
-//------------------ Mostrar Edicion Proveedores
-Route::get('/proveedores/{id}', 'ControladorModuloProveedores@mostrarProveedoresEditar');
+//------------------ Mostrar Edicion Proyectos
+Route::get('/proyectos/{id}', 'ControladorModuloProyectos@mostrarProyectosEditar');
 
-//------------------ Agregar Proveedores
-Route::post('/proveedor', 'ControladorModuloProveedores@AgregarProveedor');
+//------------------ Agregar Proyectos
+Route::post('/proyecto', 'ControladorModuloProyectos@AgregarProyecto');
 
-//------------------ Eliminar Proveedores
-Route::delete('/proveedor/{id}', 'ControladorModuloProveedores@EliminarProveedor');
+//------------------ Eliminar Proyectos
+Route::delete('/proyecto/{id}', 'ControladorModuloProyectos@EliminarProyecto');
 
-//------------------ Modificar Proveedores
-Route::put('/proveedor/{id}', 'ControladorModuloProveedores@ModificarProveedor');
-
+//------------------ Modificar Proyectos
+Route::put('/proyecto/{id}', 'ControladorModuloProyectos@ModificarProyecto');
 
 /*************************************************************************************************/
+
+
+
+
 
 //------------------ Loguin
 Auth::routes();
