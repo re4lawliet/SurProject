@@ -114,7 +114,7 @@
 
                 <div class="form-group">
                     
-                    <button type="submit" class="btn btn-default">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fa fa-plus"></i> Registrar Cliente  
                     </button>    
                     

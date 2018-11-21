@@ -129,7 +129,7 @@
                     {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nombre de Empresa']) }}
                 </div>
                 <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
                 </div>
                 {{ Form::close() }}
         

@@ -90,10 +90,10 @@
                 @endif
                 </div>
                 
-                <img src="/images/surindex.png">
+                <img src="images/surindex.png">
                 <div class="title m-b-md">
                     
-                    <img src="/images/logoindex.png">
+                    <img src="images/logoindex.png">
                     
                 </div>
 

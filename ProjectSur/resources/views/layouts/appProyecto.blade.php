@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SUR</title>
+    <title>Menu de Administrador SUR</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -15,7 +15,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="favicon.ico" />
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -26,6 +26,8 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="images/surlogo.png">
                     <img src="images/logologo.png">
+                    
+                    <!--<img src="{{Session::get('proyectoGlogo_proyecto', 'Seleccione Proyecto')}}">-->
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -34,21 +36,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+
+                        <li class="dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">
+                                Menu del Proyecto <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="" class="nav-link">Presupuesto</a></li>
+                                <li><a href="" class="nav-link">Orden de Compra</a></li>
+                                <li><a href="" class="nav-link">Solicitud de Materiales</a></li>
+                            </ul>
+                        </li>
+
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">HOME</a></li>
-                            @if(Auth::user()->rol =='admin')
-                            <li class="nav-item"><a href="{{ url('/homeAdmin') }}" class="nav-link">Menu de Administrador</a></li>
-                            @endif
-                            @if(Auth::user()->rol =='colaborador')
-                            <li class="nav-item"><a href="{{ url('/homeColaborador') }}" class="nav-link">Menu de Colaborador</a></li>
-                            @endif
-                            @if(Auth::user()->rol =='director')
-                            <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Menu de Director</a></li>
-                            @endif
-                            @if(Auth::user()->rol =='manager')
-                            <li class="nav-item"><a href="{{ url('/homeManager') }}" class="nav-link">Menu de Manager</a></li>
-                            @endif
+                            <li class="nav-item"><a href="/" class="nav-link">SALIR DE PROYECTO</a></li>
                         </ul>
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -66,7 +69,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->rol }}: {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
