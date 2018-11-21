@@ -60,7 +60,7 @@
     @endif
 
 
-        Mi Proyecto: {{Session::get('proyectoG', 'Seleccione Proyecto')}}
+        Mi Proyecto: {{Session::get('proyectoGestado_proyecto', 'Seleccione Proyecto')}}
 
                 </div>
             </div>

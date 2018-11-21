@@ -215,6 +215,8 @@ Route::put('/proyecto/{id}', 'ControladorModuloProyectos@ModificarProyecto');
 //------------------ Guardar Proyecto en Variable de Session
 Route::get('/proyectoG/{id}/{nombre_proyecto}', 'ControladorModuloProyectos@GuardarProyecto');
 
+//------------------ Home del Proyecto
+Route::get('/homeProyecto', 'ControladorModuloProyectos@HomeProyecto')->name('homeProyecto');
 /*************************************************************************************************/
 
 

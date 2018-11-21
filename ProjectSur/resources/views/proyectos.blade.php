@@ -40,6 +40,11 @@
                 <label for="zona_proyecto" class="control-label">Zona del Proyecto (numero)</label>
                 <input type="text" name="zona_proyecto" class="form-control">
             </div>
+
+            <div class="form-group">
+                <label for="logo_proyecto" class="control-label">Logo del Proyecto</label>
+                <input type="file" name="logo_proyecto" class="form-control">
+            </div>
             
             <div class="form-group row">
                 <label for="estado_proyecto" class="col-md-4 col-form-label text-md-right">{{ __('Estado del Proyecto') }}</label>
@@ -145,7 +150,7 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <form action="{{ url('proyecto') }}/{{ $emps->id }}" method="POST">
+                                        <form action="{{ url('proyecto') }}/{{ $emps->id }}" method="POST" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
     
