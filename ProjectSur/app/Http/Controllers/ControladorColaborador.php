@@ -2,7 +2,9 @@
 
 namespace SUR\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use SUR\proyecto;
 
 class ControladorColaborador extends Controller
 {
@@ -19,8 +21,14 @@ class ControladorColaborador extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function indexColaborador()
+    public function indexColaborador(Request $request)
     {
-        return view('homeColaborador');
+        $name = $request->get('name');
+        
+        $proyectos = proyecto::orderBy('id', 'DESC')
+        ->name($name)
+        ->paginate(10);
+        
+        return view('homeColaborador', compact('proyectos'));
     }
 }

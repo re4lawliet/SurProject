@@ -6,7 +6,7 @@ use \Illuminate\Contracts\Auth\Guard;
 use Closure;
 use Session;
 
-class Admin
+class Proyectos
 {
     protected $auth;
 
@@ -24,11 +24,16 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if($this->auth->user()->rol != 'admin'){
+        if($this->auth->user()->rol == 'admin'){
+            return $next($request);
+        }elseif ($this->auth->user()->rol == 'director'){
+            return $next($request);
+        }elseif ($this->auth->user()->rol == 'manager'){
+            return $next($request);
+        }else{
             Session::flash('message-error','Sin Privilegios');
             return redirect()->to('/');
         }
-        return $next($request);
         
     }
 }

@@ -18,6 +18,27 @@
                     <h3><center>Menu de Proyectos:</center></h3>
                     <br>
                     <br>
+                    <br><br><br> 
+
+<div class="container">
+
+        <div class="col-12"><h2>Buscar Proyecto
+            
+                {{ Form::open(['route' => 'homeAdmin', 'method' => 'GET', 'class' => 'navbar-form navbar-left']) }}
+                <div class="form-group">
+                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nombre de Proyecto']) }}
+                </div>
+                <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+                {{ Form::close() }}
+        
+        
+        
+        </h2></div>
+</div>
+
+<br>
                     @if (count($proyectos) > 0)
             <div class="panel panel-default">
                 

@@ -156,6 +156,8 @@ Route::get('/', function () {
         
 });
 
+
+
 /*********************************/
 /*    Forma de Controladores     */
 /*********************************/
@@ -217,6 +219,7 @@ Route::get('/proyectoG/{id}/{nombre_proyecto}', 'ControladorModuloProyectos@Guar
 
 //------------------ Home del Proyecto
 Route::get('/homeProyecto', 'ControladorModuloProyectos@HomeProyecto')->name('homeProyecto');
+
 /*************************************************************************************************/
 
 
@@ -231,3 +234,6 @@ Route::get('/homeAdmin', 'ControladorAdmin@indexAdmin')->name('homeAdmin');
 Route::get('/homeManager', 'ControladorManager@indexManager')->name('homeManager');
 Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDirector');
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
+
+//----------------- Registro Administrador
+Route::get('/register2', 'ControladorAdmin@register2')->name('register2');

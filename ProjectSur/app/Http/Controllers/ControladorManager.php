@@ -2,7 +2,9 @@
 
 namespace SUR\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use SUR\proyecto;
 
 class ControladorManager extends Controller
 {
@@ -18,8 +20,14 @@ class ControladorManager extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function indexManager()
+    public function indexManager(Request $request)
     {
-        return view('homeManager');
+        $name = $request->get('name');
+        
+        $proyectos = proyecto::orderBy('id', 'DESC')
+        ->name($name)
+        ->paginate(10);
+        
+        return view('homeManager', compact('proyectos'));
     }
 }

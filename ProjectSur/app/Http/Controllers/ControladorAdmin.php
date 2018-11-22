@@ -37,4 +37,10 @@ class ControladorAdmin extends Controller
         return view('homeAdmin', compact('proyectos'));
     }
 
+    public function register2(Request $request)
+    {
+        return view('auth.register2');
+    }
+    
+
 }

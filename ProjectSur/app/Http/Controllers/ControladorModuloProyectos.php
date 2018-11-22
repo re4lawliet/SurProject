@@ -12,7 +12,8 @@ class ControladorModuloProyectos extends Controller
     public function __construct(){
 
         $this->middleware('auth');
-        $this->middleware('admin');
+        //$this->middleware('admin', ['only' => ['mostrarProyectos','mostrarProyectosEditar', 'AgregarProyecto', 'EliminarProyecto','ModificarProyecto'] ]);
+        $this->middleware('proyecto', ['only' => ['mostrarProyectos','mostrarProyectosEditar', 'AgregarProyecto', 'EliminarProyecto','ModificarProyecto'] ]);        
 
     }
 
@@ -28,6 +29,7 @@ class ControladorModuloProyectos extends Controller
         
         
     }
+
 
     public function mostrarProyectosEditar($id){
 

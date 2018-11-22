@@ -2,7 +2,9 @@
 
 namespace SUR\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use SUR\proyecto;
 
 class ControladorDirector extends Controller
 {
@@ -18,8 +20,14 @@ class ControladorDirector extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function indexDirector()
+    public function indexDirector(Request $request)
     {
-        return view('homeDirector');
+        $name = $request->get('name');
+        
+        $proyectos = proyecto::orderBy('id', 'DESC')
+        ->name($name)
+        ->paginate(10);
+        
+        return view('homeDirector', compact('proyectos'));
     }
 }
