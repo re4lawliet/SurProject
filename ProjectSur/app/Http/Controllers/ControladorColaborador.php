@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\proyecto;
+use Illuminate\Support\Facades\Auth;
 
 class ControladorColaborador extends Controller
 {

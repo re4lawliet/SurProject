@@ -26,6 +26,8 @@ class Proyectos
     {
         if($this->auth->user()->rol == 'admin'){
             return $next($request);
+        }elseif ($this->auth->user()->rol == 'compras'){
+            return $next($request);
         }elseif ($this->auth->user()->rol == 'director'){
             return $next($request);
         }elseif ($this->auth->user()->rol == 'manager'){

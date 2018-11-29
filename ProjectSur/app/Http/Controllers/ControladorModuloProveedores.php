@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\proveedore;
+use Illuminate\Support\Facades\Auth;
 
 class ControladorModuloProveedores extends Controller
 {

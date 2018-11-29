@@ -4,15 +4,23 @@ namespace SUR\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
+use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 
-class ControladorManager extends Controller
+class ControladorCompras extends Controller
 {
+    //
+/**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('manager');
+        $this->middleware('compras');
     }
 
     /**
@@ -21,14 +29,16 @@ class ControladorManager extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function indexManager(Request $request)
+    public function indexCompras(Request $request)
     {
+
         $name = $request->get('name');
         
         $proyectos = proyecto::orderBy('id', 'DESC')
         ->name($name)
         ->paginate(10);
         
-        return view('homeManager', compact('proyectos'));
+        return view('homeCompras', compact('proyectos'));
     }
+
 }

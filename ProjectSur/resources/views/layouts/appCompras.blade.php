@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Menu de Administrador SUR</title>
+    <title>Manu de Compras SUR</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -26,8 +26,6 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="images/surlogo.png">
                     <img src="images/logologo.png">
-                    
-                    <!--<img src="{{Session::get('proyectoGlogo_proyecto', 'Seleccione Proyecto')}}">-->
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -36,22 +34,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item"><a href="#" class="nav-link">EnlaceCompras #1</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link">EnlaceCompras #2</a></li>
+                        </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
-                                Menu del Proyecto <b class="caret"></b>
+                                MenúCompras #2 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="" class="nav-link">Presupuesto</a></li>
-                                <li><a href="" class="nav-link">Orden de Compra</a></li>
-                                <li><a href="" class="nav-link">Solicitud de Materiales</a></li>
+                                <li><a href="#" class="nav-link">AcciónCompras #1</a></li>
+                                <li><a href="#" class="nav-link">Acción #2</a></li>
+                                <li><a href="#" class="nav-link">Acción #3</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
                         </li>
-
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">SALIR DE PROYECTO</a></li>
-                        </ul>
-                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -69,7 +67,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->rol }}: {{ Auth::user()->name }} <span class="caret"></span>
+                                    Compras: {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

@@ -11,10 +11,10 @@
 
     <!-- Formulario de Registro de Proyecto -->    
   
-    <div class="col-sm-offset-3 col-sm-6">
-        <div class="panel-title">
-                <h3><center>Registrar Proyecto:</center></h3>
-        </div>
+<div class="col-sm-offset-3 col-sm-6">
+    <div class="panel-title">
+            <h3><center>Registrar Proyecto:</center></h3>
+    </div>
     <div class="panel-body">
 
         @if ($errors->any())

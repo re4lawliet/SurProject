@@ -4,7 +4,10 @@ namespace SUR\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
+use SUR\solicitude;
+use Illuminate\Support\Facades\Auth;
 
 class ControladorAdmin extends Controller
 {
@@ -28,8 +31,12 @@ class ControladorAdmin extends Controller
 
     public function indexAdmin(Request $request)
     {
+
+        $solicitudes = solicitude::where('respondido_director','0')
+                                    ->count();
+        Session::put('countSolicitudes',$solicitudes);
+
         $name = $request->get('name');
-        
         $proyectos = proyecto::orderBy('id', 'DESC')
         ->name($name)
         ->paginate(10);

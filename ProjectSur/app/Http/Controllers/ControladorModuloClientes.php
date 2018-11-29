@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\cliente;
 use SUR\Client;
+use Illuminate\Support\Facades\Auth;
 
 class ControladorModuloClientes extends Controller
 {

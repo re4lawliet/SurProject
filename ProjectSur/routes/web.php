@@ -148,7 +148,10 @@ Route::get('/', function () {
             return view('welcomeManager');
         }elseif (Auth::user()->rol =='director'){
             return view('welcomeDirector');
+        }elseif (Auth::user()->rol =='compras'){
+            return view('welcomeCompras');
         }
+
     }else{
         return view('welcome');
     }
@@ -220,6 +223,22 @@ Route::get('/proyectoG/{id}/{nombre_proyecto}', 'ControladorModuloProyectos@Guar
 //------------------ Home del Proyecto
 Route::get('/homeProyecto', 'ControladorModuloProyectos@HomeProyecto')->name('homeProyecto');
 
+//------------------ Pedido del Proyecto
+Route::post('/solicitudes', 'ControladorPedidoProyecto@AgregarPedido');
+//------------------ redireccion LINK
+Route::get('/solicitud', 'ControladorPedidoProyecto@solicitud')->name('solicitud');
+
+//------------------redireccion LINK vista pedidos
+Route::get('/dirVistaPedidos', 'ControladorVistaPedidos@Vista')->name('dirVistaPedidos');
+
+//------------------mostrar solicitudes
+Route::get('/MostrarSolicitudes', 'ControladorVistaPedidos@mostrarSolicitudes')->name('MostrarSolicitudes');
+
+//------------------aceptar solicitud
+Route::get('/AceptarSolicitud/{id}', 'ControladorVistaPedidos@aceptarSolicitud');
+
+//------------------aceptar solicitud
+Route::get('/RechazarSolicitud/{id}', 'ControladorVistaPedidos@rechazarSolicitud');
 /*************************************************************************************************/
 
 
@@ -234,6 +253,7 @@ Route::get('/homeAdmin', 'ControladorAdmin@indexAdmin')->name('homeAdmin');
 Route::get('/homeManager', 'ControladorManager@indexManager')->name('homeManager');
 Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDirector');
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
+Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras');
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
