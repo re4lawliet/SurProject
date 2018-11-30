@@ -239,8 +239,27 @@ Route::get('/AceptarSolicitud/{id}', 'ControladorVistaPedidos@aceptarSolicitud')
 
 //------------------aceptar solicitud
 Route::get('/RechazarSolicitud/{id}', 'ControladorVistaPedidos@rechazarSolicitud');
+
+
+
 /*************************************************************************************************/
 
+
+//------------------ Mostrar Temporal_Productos
+Route::get('/temporal_productos', 'ControladorModuloProductos_Temporal@mostrarTemporal_Productos');
+
+//------------------ Mostrar Edicion Temporal_Productos
+Route::get('/temporal_productos/{id}', 'ControladorModuloProductos_Temporal@mostrarTemporal_ProductosEditar');
+
+//------------------ Agregar Temporal_Productos
+Route::post('/temporal_producto', 'ControladorModuloProductos_Temporal@AgregarTemporal_Producto');
+
+//------------------ Eliminar Temporal_Productos
+Route::delete('/temporal_producto/{id}', 'ControladorModuloProductos_Temporal@EliminarTemporal_Producto');
+
+//------------------ Modificar Temporal_Productos
+Route::put('/temporal_producto/{id}', 'ControladorModuloProductos_Temporal@ModificarTemporal_Producto');
+/*************************************************************************************************/
 
 
 

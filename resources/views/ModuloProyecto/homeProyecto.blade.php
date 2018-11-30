@@ -38,19 +38,19 @@
 
                 <br>
                 @if(Auth::user()->rol == 'colaborador')
-                    <button type="submit" class="btn btn-success" onclick="location.href='solicitud'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
 
                 @if(Auth::user()->rol == 'manager')
-                    <button type="submit" class="btn btn-success" onclick="location.href='solicitud'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
 
                 @if(Auth::user()->rol == 'director')
-                    <button type="submit" class="btn btn-success" onclick="location.href='solicitud'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
 
@@ -68,7 +68,7 @@
                         <i class="fa fa-btn fa-pencil"></i>Orden de Compra
                     </button>
                     
-                    <button type="submit" class="btn btn-success" onclick="location.href='solicitud'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
@@ -82,7 +82,7 @@
                         <i class="fa fa-btn fa-pencil"></i>Orden de Compra
                     </button>
                     
-                    <button type="submit" class="btn btn-success" onclick="location.href='solicitud'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
