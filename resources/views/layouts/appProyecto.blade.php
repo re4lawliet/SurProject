@@ -49,7 +49,7 @@
                         </li>
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">SALIR DE PROYECTO</a></li>
+                            <li class="nav-item"><a href="{{ url('/homes') }}" class="nav-link">SALIR DE PROYECTO</a></li>
                         </ul>
                         
                     </ul>
