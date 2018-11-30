@@ -159,6 +159,27 @@ Route::get('/', function () {
         
 });
 
+Route::get('/homes', function () {
+    if( Auth::user() ){//se valida si esta logueado
+        if( Auth::user()->rol =='admin' ){//se valida el tipo de usuario
+            return redirect('/homeAdmin');
+        }elseif (Auth::user()->rol =='colaborador'){
+            return redirect('/homeColabrador');
+        }elseif (Auth::user()->rol =='manager'){
+            return redirect('/homeManager');
+        }elseif (Auth::user()->rol =='director'){
+            return redirect('/homeDirector');
+        }elseif (Auth::user()->rol =='compras'){
+            return redirect('/homeCompras');
+        }
+
+    }else{
+        return view('welcome');
+    }
+        
+        
+});
+
 
 
 /*********************************/
