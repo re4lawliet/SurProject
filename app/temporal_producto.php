@@ -4,7 +4,7 @@ namespace SUR;
 
 use Illuminate\Database\Eloquent\Model;
 
-class cliente extends Model
+class temporal_producto extends Model
 {
     //
 }

@@ -122,6 +122,14 @@ id_proyecto INT NOT NULL,
 created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL
 );
-
-
 ALTER TABLE solicitudes ADD FOREIGN KEY(id_proyecto) REFERENCES proyectos(id);
+
+
+CREATE TABLE temporal_productos (
+id INT AUTO_INCREMENT PRIMARY KEY,
+descripcion VARCHAR(250) NULL,
+unidad VARCHAR(2000) NUll,
+cantidad INT NULL,
+created_at TIMESTAMP NULL,
+updated_at TIMESTAMP NULL
+);
