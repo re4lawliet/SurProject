@@ -297,3 +297,6 @@ Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
+
+
+//comentario alan
