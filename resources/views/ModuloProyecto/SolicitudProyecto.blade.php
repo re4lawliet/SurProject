@@ -35,13 +35,51 @@
             {{ csrf_field() }}
 
             <div class="form-group">
-                <label for="proveedor" class="control-label">Proveedor</label>
-                <input type="text" name="proveedor" class="form-control">
+                <label for="titulo_solicitud" class="control-label">Titulo de Solicitud</label>
+                <input type="text" name="titulo_solicitud" class="form-control">
             </div>  
 
             <div class="form-group">
+                <label for="proveedor" class="control-label">Proveedor</label>
+                <input type="text" name="proveedor" class="form-control">
+            </div>  
+            
+
+            <div class="form-group">
                 <label for="listado" class="control-label">Listado</label>
-                <input type="text" name="listado" class="form-control">
+            </div>
+
+
+            <div class="col-md-12">
+                @if (count($temporal_productos) > 0)
+                <div class="panel panel-default">
+                    
+                    <div class="panel-heading">
+                            Listado De Materiales Agregados
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped task-table">
+                            <thead>
+                                <th>Descripcion</th>
+                                <th>Unidad</th>
+                                <th>Cantidad</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($temporal_productos as $clis)
+                                    <tr>
+                                        <td class="table-text"><div>{{ $clis->descripcion }}</div></td>
+                                        <td class="table-text"><div>{{ $clis->unidad }}</div></td>
+                                        <td class="table-text"><div>{{ $clis->cantidad }}</div></td>
+        
+                                        <!-- Task Delete Button -->
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endif
             </div>
 
 

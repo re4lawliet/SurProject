@@ -129,7 +129,7 @@
 
     <br><br>
 
-    <button type="submit" class="btn btn btn-info" onclick="location.href='temporal_productos'">
+    <button type="submit" class="btn btn btn-info" onclick="location.href='solicitud'">
         <i class="fa fa-btn fa-pencil"></i>VALIDAR PEDIDO DE MATERIALES
     </button>
 

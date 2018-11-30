@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\solicitude;
+use SUR\temporal_producto;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +27,10 @@ class ControladorPedidoProyecto extends Controller{
         $oldMarker = $oldlat . ' ' . $oldlong;
 
         Session::put('rollogueado', $oldMarker);
+
+        $temporal_productos = temporal_producto::all();
         
-        return view('ModuloProyecto.SolicitudProyecto');
+        return view('ModuloProyecto.SolicitudProyecto', [ 'temporal_productos' => $temporal_productos ]);
     }
 
     public function AgregarPedido(Request $request){
