@@ -27,9 +27,14 @@
             @if(Session::has('message'))
                 <div class="alert alert-success">
                 <h7><B>{{Session::get('message')}}</B></h7>
+                <br>
+                <button type="submit" class="btn btn-success" onclick="location.href='homeProyecto'">
+                    <i class="fa fa-btn fa-pencil"></i>OK
+                </button>
                 </div>
             @endif
         </div>
+
         <form action="{{ url('solicitudes') }}" method="POST">
 
             {{ csrf_field() }}
@@ -40,66 +45,52 @@
             </div>  
 
             <div class="form-group">
-                <label for="proveedor" class="control-label">Proveedor</label>
+                <label for="proveedor" class="control-label">Proveedor (Sugerencia)</label>
                 <input type="text" name="proveedor" class="form-control">
             </div>  
             
 
-            <div class="form-group">
-                <label for="listado" class="control-label">Listado</label>
-            </div>
-
 
             <div class="col-md-12">
                 @if (count($temporal_productos) > 0)
-                <div class="panel panel-default">
-                    
-                    <div class="panel-heading">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
                             Listado De Materiales Agregados
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped task-table">
+                                <thead>
+                                    <th>Descripcion</th>
+                                    <th>Unidad</th>
+                                    <th>Cantidad</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($temporal_productos as $clis)
+                                        <tr>
+                                            <td class="table-text"><div>{{ $clis->descripcion }}</div></td>
+                                            <td class="table-text"><div>{{ $clis->unidad }}</div></td>
+                                            <td class="table-text"><div>{{ $clis->cantidad }}</div></td>
+            
+                                            <!-- Task Delete Button -->
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <table class="table table-striped task-table">
-                            <thead>
-                                <th>Descripcion</th>
-                                <th>Unidad</th>
-                                <th>Cantidad</th>
-                            </thead>
-                            <tbody>
-                                @foreach ($temporal_productos as $clis)
-                                    <tr>
-                                        <td class="table-text"><div>{{ $clis->descripcion }}</div></td>
-                                        <td class="table-text"><div>{{ $clis->unidad }}</div></td>
-                                        <td class="table-text"><div>{{ $clis->cantidad }}</div></td>
-        
-                                        <!-- Task Delete Button -->
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                @endif
+            </div>
+
+
+            <div class="form-group row">
+                <label for="Partida" class="col-md-4 col-form-label text-md-right">{{ __('Partida') }}</label>
+                    <div class="col-md-6">
+                        <select name="id_partida" id="id_partida"  class="form-control" >
+                            @foreach($partidas as $partida)
+                            <option value="{{ $partida['id'] }}" >{{ $partida['id'] }} {{ $partida['nombre'] }} </option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-            </div>
-        @endif
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="form-group">
-                <label for="partida" class="control-label">Partida</label>
-                <input type="text" name="partida" class="form-control">
             </div>
             
             <div class="form-group row">

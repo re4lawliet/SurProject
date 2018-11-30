@@ -111,18 +111,29 @@ updated_at TIMESTAMP NULL
 CREATE TABLE solicitudes (
 id INT AUTO_INCREMENT PRIMARY KEY,
 proveedor VARCHAR(250) NULL,
-listado VARCHAR(2000) NUll,
 partida VARCHAR(250) NULL,
 rol VARCHAR(250) NUll,
-respondido_director VARCHAR(250) NUll,
 respondido_manager VARCHAR(250) NUll,
-aprovado_director VARCHAR(250) NUll,
-aprovado_manager VARCHAR(250) NUll,
+aprobado_manager VARCHAR(250) NUll,
+respondido_director VARCHAR(250) NUll,
+aprobado_director VARCHAR(250) NUll,
 id_proyecto INT NOT NULL,
 created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL
 );
 ALTER TABLE solicitudes ADD FOREIGN KEY(id_proyecto) REFERENCES proyectos(id);
+
+
+CREATE TABLE listados (
+id INT AUTO_INCREMENT PRIMARY KEY,
+descripcion VARCHAR(250) NULL,
+unidad VARCHAR(2000) NUll,
+cantidad INT NULL,
+created_at TIMESTAMP NULL,
+updated_at TIMESTAMP NULL,
+id_solicitud INT NOT NUll
+);
+ALTER TABLE listados ADD FOREIGN KEY(id_solicitud) REFERENCES solicitudes(id);
 
 
 CREATE TABLE temporal_productos (

@@ -17,7 +17,6 @@
             </div>
         <br><br>
         <div class="panel-body">
-
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -27,6 +26,14 @@
                     </ul>
                 </div>
             @endif
+
+            <div class="card-body">
+                @if(Session::has('message2'))
+                    <div class="alert alert-success">
+                    <h7><B>{{Session::get('message2')}}</B></h7>
+                    </div>
+                @endif
+            </div>
 
             <button type="submit" class="btn btn-danger" onclick="location.href='limpiar_temporal'">
                 <i class="fa fa-btn fa-pencil"></i>Limpiar Productos
@@ -132,7 +139,6 @@
     <button type="submit" class="btn btn btn-info" onclick="location.href='solicitud'">
         <i class="fa fa-btn fa-pencil"></i>VALIDAR PEDIDO DE MATERIALES
     </button>
-
 
     
 

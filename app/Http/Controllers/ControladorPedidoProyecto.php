@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\solicitude;
 use SUR\temporal_producto;
+use SUR\partida;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ControladorPedidoProyecto extends Controller{
 
@@ -30,13 +32,15 @@ class ControladorPedidoProyecto extends Controller{
 
         $temporal_productos = temporal_producto::all();
         
-        return view('ModuloProyecto.SolicitudProyecto', [ 'temporal_productos' => $temporal_productos ]);
+        $partidas = partida::all();
+
+        return view('ModuloProyecto.SolicitudProyecto', [ 'temporal_productos' => $temporal_productos ],[ 'partidas' => $partidas ]);
     }
 
     public function AgregarPedido(Request $request){
         $validator = Validator::make($request->all(), [
-            'proveedor' => 'required|max:255',
-            'listado' => 'max:2000',
+            'titulo_solicitud' => 'required|max:255',
+            'proveedor' => 'max:255',
             'partida' => 'max:248',            
         ]);
 
@@ -48,17 +52,26 @@ class ControladorPedidoProyecto extends Controller{
         $logiado = Session::get('rollogueado');
         $idproyecto = Session::get('proyectoG');
         $solicitud = new Solicitude;
+        $solicitud->titulo_solicitud = $request->titulo_solicitud;
         $solicitud->proveedor = $request->proveedor;
-        $solicitud->listado = $request->listado;
-        $solicitud->partida = $request->partida;
+        $solicitud->id_partida = $request->id_partida;
         $solicitud->rol = $logiado;
-        $solicitud->respondido_director='0';
         $solicitud->respondido_manager='0';
-        $solicitud->aprobado_director ='0';
         $solicitud->aprobado_manager='0';
+        $solicitud->respondido_director='0';
+        $solicitud->aprobado_director ='0';
         $solicitud->id_proyecto=$idproyecto;
         $solicitud->save();
-        Session::flash('message','Agregado correctamente');
+
+        $id_solicitud = DB::select(DB::raw("SELECT MAX(id) FROM solicitudes"));
+
+        $cargaSolicitud = DB::select(DB::raw("INSERT INTO listados (descripcion,unidad,cantidad, id_solicitud)
+                                              (SELECT t.descripcion, t.unidad, t.cantidad, s.id 
+                                                FROM temporal_productos as t, solicitudes s
+                                                WHERE s.id=(SELECT max(id) FROM solicitudes))"));
+
+        $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
+        Session::flash('message','Solicitud Agregada correctamente');
         return redirect('solicitud');
     }
 
