@@ -1,25 +1,17 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 21-11-2018 a las 20:58:16
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.2.11
+-- Servidor: localhost:3306
+-- Tiempo de generación: 30-11-2018 a las 06:29:05
+-- Versión del servidor: 5.6.35
+-- Versión de PHP: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
--- Base de datos: `sur`
+-- Base de datos: `Sur`
 --
 
 -- --------------------------------------------------------
@@ -38,6 +30,14 @@ CREATE TABLE `clientes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nombre`, `apellido`, `direccion`, `nit`, `telefono`, `created_at`, `updated_at`) VALUES
+(1, '123', 'Monterroso', '12 Ave 27-66', '123', '54822108', '2018-11-30 04:55:02', '2018-11-30 04:55:02'),
+(2, '123', '123', '123', '123', '123', '2018-11-30 04:55:11', '2018-11-30 04:55:11');
 
 -- --------------------------------------------------------
 
@@ -188,10 +188,69 @@ CREATE TABLE `proyectos` (
 --
 
 INSERT INTO `proyectos` (`id`, `nombre_proyecto`, `zona_proyecto`, `logo_proyecto`, `estado_proyecto`, `factura_a`, `factura_numero`, `created_at`, `updated_at`) VALUES
-(6, 'Proyecto2', '3', NULL, 'Proyecto Terminado', 'mi', '1020', '2018-11-16 02:40:31', '2018-11-16 02:40:31'),
-(7, 'Proyecto3', '3', NULL, 'Proyecto en Construccion', 'mi', '1020', '2018-11-16 02:40:46', '2018-11-16 02:53:15'),
-(8, 'Proyecto4', '4', NULL, 'Oficina', 'mi', '1020', '2018-11-16 04:34:41', '2018-11-16 04:34:41'),
-(16, 'asd', 'asdf', 'images/17795946_1884805951739870_6867399022582021973_n.jpg', 'Proyecto Terminado', NULL, NULL, '2018-11-21 04:31:51', '2018-11-21 04:31:51');
+(20, 'RUE 3', '4', 'images/RUE 34Logo_Rue negro.png', 'Proyecto Terminado', 'HEROCHA, S.A.', '8378347-4', '2018-11-22 02:52:31', '2018-11-22 02:52:31'),
+(21, 'FABRA, Ciudad Vieja', '10', 'images/FABRA, Ciudad Vieja10Logo_Fabra negro.png', 'Proyecto Terminado', 'HEROCHA, S.A.', '8378347-4', '2018-11-22 02:53:06', '2018-11-22 02:53:06'),
+(22, 'GRANAT, Cantón Exposición', '4', 'images/GRANAT, Cantón Exposición4Logo_Granat negro.png', 'Proyecto en Construccion', 'RUTA 4, 6-32 ZONA 4, S.A.', '8838138-2', '2018-11-22 02:54:10', '2018-11-22 02:54:10'),
+(23, 'EL PRADO', '1', 'images/EL PRADO1Logo_El Prado negro.png', 'Proyecto en Construccion', 'SUR PROPERTIES, S.A.', '8083276-8', '2018-11-22 02:54:56', '2018-11-22 02:54:56'),
+(24, 'ROQUE, Ciudad Nueva', '2', 'images/ROQUE, Ciudad Nueva2Logo_Roque negro.png', 'Proyecto en Planificacion', '13 AVENIDA 11-55 ZONA 2, S.A.', '8968450-8', '2018-11-22 02:55:50', '2018-11-22 02:55:50'),
+(25, 'NARAMA', '13', 'images/NARAMA13Logo_Narama negro.png', 'Proyecto en Planificacion', 'LPBC, S.A.', '7518276-9', '2018-11-22 02:56:36', '2018-11-22 02:56:36'),
+(26, 'AIRALI', '10', 'images/AIRALI10Logo_Airali negro.png', 'Proyecto en Planificacion', 'AIRALI, S.A.', '9464776-3', '2018-11-22 02:57:23', '2018-11-22 02:57:23'),
+(27, 'BALDONE', '2', 'images/BALDONE2Logo_Baldone negro.png', 'Proyecto en Planificacion', 'BALDONE, S.A.', '9463597-8', '2018-11-22 02:57:57', '2018-11-22 02:57:57'),
+(28, 'BIROCHA', '18', 'images/BIROCHA18Logo_La Via 8 negro.png', 'Proyecto en Planificacion', 'BIROCHA, S.A.', '9444687-3', '2018-11-22 02:59:32', '2018-11-22 02:59:32'),
+(29, 'SUR DEVELOPMENTS, S.A.', NULL, 'images/SUR DEVELOPMENTS, S.A.SUR 01 negro.png', 'Oficina', 'SUR DEVELOPMENTS, S.A.', '9181686-6', '2018-11-22 03:00:25', '2018-11-22 03:00:25'),
+(30, 'SUR PROPERTIES, S.A.', NULL, 'images/SUR DEVELOPMENTS, S.A.SUR 01 negro.png', 'Oficina', 'SUR PROPERTIES, S.A.', '8083276-8', '2018-11-22 03:01:03', '2018-11-22 03:01:03');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitudes`
+--
+
+CREATE TABLE `solicitudes` (
+  `id` int(11) NOT NULL,
+  `proveedor` varchar(250) DEFAULT NULL,
+  `listado` varchar(2000) DEFAULT NULL,
+  `partida` varchar(250) DEFAULT NULL,
+  `rol` varchar(250) DEFAULT NULL,
+  `respondido_director` varchar(250) DEFAULT NULL,
+  `respondido_manager` varchar(250) DEFAULT NULL,
+  `aprobado_director` varchar(250) DEFAULT NULL,
+  `aprobado_manager` varchar(250) DEFAULT NULL,
+  `id_proyecto` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `solicitudes`
+--
+
+INSERT INTO `solicitudes` (`id`, `proveedor`, `listado`, `partida`, `rol`, `respondido_director`, `respondido_manager`, `aprobado_director`, `aprobado_manager`, `id_proyecto`, `created_at`, `updated_at`) VALUES
+(1, 'Ladrillera 1', '100 Ladrillos', '55432', 'admin', '0', '0', '0', '0', 28, '2018-11-23 04:56:51', '2018-11-23 11:36:59'),
+(2, 'a', 'a', '1', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:01', '2018-11-23 11:37:01'),
+(3, 'b', 'b', '2', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:10', '2018-11-23 11:37:05'),
+(4, 'c', 'c', '3', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:20', '2018-11-23 11:37:03'),
+(5, 'd', 'd', '4', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:24', '2018-11-23 11:37:06'),
+(6, 'e', 'e', '5', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:29', '2018-11-23 11:37:06'),
+(7, 'sugerido', '100 ladrillos', '66 obra gris', 'colaborador', '1', '0', '1', '0', 30, '2018-11-28 22:10:50', '2018-11-28 22:12:50'),
+(8, 'el q quiera', 'asdf', '1', 'Carlos', '0', '0', '0', '0', 30, '2018-11-30 04:24:29', '2018-11-30 04:24:29'),
+(9, 'el q quiera', 'asdf', '66 obra gris', 'Carlos', '0', '0', '0', '0', 30, '2018-11-30 04:25:33', '2018-11-30 04:25:33'),
+(10, 'hola', 'mundo', ':D', 'Carlos Monterroso', '0', '0', '0', '0', 30, '2018-11-30 04:28:12', '2018-11-30 04:28:12');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `temporal_productos`
+--
+
+CREATE TABLE `temporal_productos` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `unidad` varchar(2000) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -217,10 +276,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `rol`, `name`, `apellido`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Carlos', 'Monterroso', 're4lawliet@gmail.com', NULL, '$2y$10$idMqv8qV3SJH7Pwd1Xs9merrY9kCMgZh1MXrObeQSCRqJ1BLWu1hO', '3Jtsvz00CjH9aJaeB0MhtFLEu8VUjqkDxB8Kvzc4bZyI6ff2SwkEuw9WNIbE', '2018-11-09 03:12:16', '2018-11-09 03:12:16'),
-(2, 'colaborador', 'Carlos', 'Monterroso', 'correo@gmail.com', NULL, '$2y$10$vik9O.puA8WJvRJRLZjCU.W/A/1JMrE6ekKyP7P054KLulSBPyHLW', '0ltMuCANg6n1o2R6YpMF6mkVKInaBdSpBxRwJg2Z3yVz8Kw6Tpo8sjNlOC1F', '2018-11-09 03:26:30', '2018-11-09 03:26:30'),
+(1, 'admin', 'Carlos', 'Monterroso', 're4lawliet@gmail.com', NULL, '$2y$10$idMqv8qV3SJH7Pwd1Xs9merrY9kCMgZh1MXrObeQSCRqJ1BLWu1hO', '3ZYQTGkHtwq9N7W2lnBbPzOHYNhI3Sef972MThslcJcjFL5cGvlQuxsSPdgu', '2018-11-09 03:12:16', '2018-11-09 03:12:16'),
+(2, 'colaborador', 'Carlos', 'Monterroso', 'colaborador@gmail.com', NULL, '$2y$10$vik9O.puA8WJvRJRLZjCU.W/A/1JMrE6ekKyP7P054KLulSBPyHLW', '6NHIwABFCJwW7WluVZJDyX0j6L36D3dWRCc37pKkcPDzLhEPmNzwdX5ZclPD', '2018-11-09 03:26:30', '2018-11-09 03:26:30'),
 (3, 'director', 'omar', 'Argueta', 'omar@gmail.com', NULL, '$2y$10$Wb9YRNXv64BbAbgcH7cjoeXj3HCmFUeSHGNaC1EdkxQ453SLsffm6', 'H2Au5ZOO5RvNsGeiJ3F5lTAGGbnsA13SJgpXYW6ZeRMSC1JVs4SSpThqahGH', '2018-11-12 21:12:42', '2018-11-12 21:12:42'),
-(4, 'manager', 'Haldamir', 'Guzman', 'haldamir.95@gmail.com', NULL, '$2y$10$xYHnwC3A33B1DQFcfZp4qu10mOd8EGsiWGttcFTxjf9nc4LZ4O1oy', 'g8wIKH2x5wcOEY0HIPwCvNIUtRsXEERzhlqcO7r1inbi5oU5yx941LcoRcNR', '2018-11-21 02:41:22', '2018-11-21 02:41:22');
+(4, 'admin', 'Haldamir', 'Guzman', 'haldamir.95@gmail.com', NULL, '$2y$10$xYHnwC3A33B1DQFcfZp4qu10mOd8EGsiWGttcFTxjf9nc4LZ4O1oy', 'iNgp265FEIJE8OcEjGIPawYQgwbjtDF1aPA8OuQs0QaLqoFDfDtraYOxWMZX', '2018-11-21 02:41:22', '2018-11-21 02:41:22'),
+(5, 'manager', 'Carlos', 'Monterroso', 'manager@gmail.com', NULL, '$2y$10$RE8MZ198CHkdrPIqxU7OAeQo8rjmjXJHwHXGXo7baf8iVmRpOCt/C', 'Cuv9cLKfrePvjSQNrpY0KtEbb9XKwp1TCWl2P00xWjcMQNFCW1PYBxbMBkxl', '2018-11-22 05:37:28', '2018-11-22 05:37:28'),
+(6, 'director', 'Carlos', 'Monterroso', 'director@gmail.com', NULL, '$2y$10$QoncW1jpu4nr02sG8i9Fq.VJIyqnXHtm9CzYQ9NOGQGj/Ra0YMVfe', 'XyK1SubRZnPCUsV00roqxQWOjsGMKzfhEzebc6UyCcxXQppxolHCbVjYdPtu', '2018-11-22 05:38:57', '2018-11-22 05:38:57'),
+(7, 'admin', 'n', 'n', 'n@gmail.com', NULL, '$2y$10$vFJS1zr/Mh1MUA.glChvy.1isDz470Rs31j3nobi5ifUjyrky2kqm', '9d2T6jao4KrSBV2yJy3KhWJASn4jP7NTA1NqEZOo0nZWnl4DaUqf6swiuXSw', '2018-11-22 06:53:40', '2018-11-22 06:53:40'),
+(8, 'compras', 'Carlos', 'Monterroso', 'compras@gmail.com', NULL, '$2y$10$D7M5tHA5jCPoPUd2tgtSZuNnH683feIoNXkURvxbKs9TqfyDzSch6', 'Flr8cTSMmQBesR1o2L0nN7A613o6ZFLpPhEIvl4ZVvsCGACCatJfWkWiZl3e', '2018-11-30 00:39:26', '2018-11-30 00:39:26');
 
 --
 -- Índices para tablas volcadas
@@ -263,6 +326,19 @@ ALTER TABLE `proyectos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_proyecto` (`id_proyecto`);
+
+--
+-- Indices de la tabla `temporal_productos`
+--
+ALTER TABLE `temporal_productos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -277,39 +353,48 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `empresas`
 --
 ALTER TABLE `empresas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
-
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `proyectos`
 --
 ALTER TABLE `proyectos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+--
+-- AUTO_INCREMENT de la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `temporal_productos`
+--
+ALTER TABLE `temporal_productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-COMMIT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- Restricciones para tablas volcadas
+--
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Filtros para la tabla `solicitudes`
+--
+ALTER TABLE `solicitudes`
+  ADD CONSTRAINT `solicitudes_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`);

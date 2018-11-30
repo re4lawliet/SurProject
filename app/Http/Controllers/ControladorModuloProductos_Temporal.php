@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use SUR\temporal_producto;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class ControladorModuloProductos_Temporal extends Controller
@@ -77,7 +78,7 @@ class ControladorModuloProductos_Temporal extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-    
+        
         $temporal_product = temporal_producto::findOrFail($id);
         $temporal_product->descripcion = $request->descripcion;
         $temporal_product->unidad = $request->unidad;
@@ -85,5 +86,13 @@ class ControladorModuloProductos_Temporal extends Controller
         $temporal_product->save();
         return redirect('/temporal_productos');
 
+    }
+
+
+    public function LimpiarTemporal_Producto(){
+
+        $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
+        
+        return redirect('/temporal_productos');
     }
 }

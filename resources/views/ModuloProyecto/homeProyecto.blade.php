@@ -82,7 +82,7 @@
                         <i class="fa fa-btn fa-pencil"></i>Orden de Compra
                     </button>
                     
-                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif

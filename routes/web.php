@@ -280,6 +280,9 @@ Route::delete('/temporal_producto/{id}', 'ControladorModuloProductos_Temporal@El
 
 //------------------ Modificar Temporal_Productos
 Route::put('/temporal_producto/{id}', 'ControladorModuloProductos_Temporal@ModificarTemporal_Producto');
+
+Route::get('/limpiar_temporal', 'ControladorModuloProductos_Temporal@LimpiarTemporal_Producto');
+
 /*************************************************************************************************/
 
 

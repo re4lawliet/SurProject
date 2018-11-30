@@ -28,6 +28,10 @@
                 </div>
             @endif
 
+            <button type="submit" class="btn btn-danger" onclick="location.href='limpiar_temporal'">
+                <i class="fa fa-btn fa-pencil"></i>Limpiar Productos
+            </button>
+
             <form action="{{ url('temporal_producto') }}" method="POST">
 
                 {{ csrf_field() }}
