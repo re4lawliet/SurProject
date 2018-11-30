@@ -279,3 +279,4 @@ Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
 
 
 //comentario alan
+//otro comentario
