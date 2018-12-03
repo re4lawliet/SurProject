@@ -29,9 +29,6 @@
                             <th>Proyecto</th>
                             <th>Proveedor sugerido</th>
                             <th>Ver Solicitud</th>
-                            <th>Aceptar</th>
-                            <th>Rechazar</th>
-                            <th>&nbsp;</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
@@ -47,18 +44,6 @@
                                 <td>
                                     <button type="submit" class="btn btn-primary" onclick="location.href='Solicitud/{{ $solicitud->id }}/{{ $solicitud->nombre }}/{{ $solicitud->nombre_proyecto }}'">
                                         <i class="fa fa-btn fa-pencil"></i>Seleccionar
-                                    </button>
-                                </td>
-                                <!-- Boton Aceptar -->
-                                <td>
-                                    <button type="submit" class="btn btn-success" onclick="location.href='AceptarSolicitud/{{ $solicitud->id }}'">
-                                        <i class="fa fa-btn fa-pencil"></i>Aceptar Solicitud
-                                    </button>
-                                </td>
-                                <!-- Boton Rechazar -->
-                                <td>
-                                    <button type="submit" class="btn btn-danger" onclick="location.href='RechazarSolicitud/{{ $solicitud->id }}'">
-                                        <i class="fa fa-btn fa-pencil"></i>Rechazar Solicitud
                                     </button>
                                 </td>
                             </tr>

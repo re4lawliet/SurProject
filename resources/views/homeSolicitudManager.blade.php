@@ -1,3 +1,4 @@
+<!-- ENCABEZADO -->
 @extends('layouts.appManager')
 
 @section('content')
