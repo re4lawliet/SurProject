@@ -18,54 +18,61 @@ class ControladorVistaPedidos extends Controller{
         //$this->middleware('colaborador');
     }
 
-    public function Vista()
-    {
-        Session::put('rollogueado', Auth::user()->rol);
-        return view('VistaPedidosAdmin');
+    public function mostrarSolicitudesManager(){
+        $nsolicitudes = solicitude::where('respondido_manager','0')
+                                    ->count();
+        Session::put('countSolicitudesManager',$nsolicitudes);
+
+        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                            WHERE s.respondido_manager = '0' AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+    
+        return view('VistaPedidosManager', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+    public function aceptarSolicitudManager($id){
+        $solicitudes = solicitude::where('respondido_manager','0')
+                                    ->count();
+        Session::put('countSolicitudesManager',$solicitudes);
+
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_manager='1';
+        $solicitud->aprobado_manager='1';
+        $solicitud->save();
+        return redirect('MostrarSolicitudesManager');
+    }
+
+    public function rechazarSolicitudManager($id){
+        $solicitudes = solicitude::where('respondido_manager','0')
+                                    ->count();
+        Session::put('countSolicitudesManager',$solicitudes);
+
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_manager='1';
+        $solicitud->aprobado_manager='0';
+        $solicitud->save();
+        return redirect('MostrarSolicitudesManager');
     }
 
 
-    public function mostrarSolicitudes(){
+
+
+
+    /*public function mostrarSolicitudes(){
         $solicitudes = solicitude::where('respondido_director','0')
                                     ->count();
         Session::put('countSolicitudes',$solicitudes);
-
         $solicitudes = DB::select(DB::raw("SELECT s.id, s.proveedor,s.listado, s.partida, s.rol, p.nombre_proyecto 
                                             FROM solicitudes AS s, proyectos AS p 
                                             WHERE s.respondido_director = '0' AND s.id_proyecto = p.id;"));
-        
-        
-        //$solicitudes = solicitude::all();
-        /*$solicitudes = solicitude::where('respondido_director','0')
+        $solicitudes = solicitude::all();
+        $solicitudes = solicitude::where('respondido_director','0')
                                     //->orderBy('name','desc')
                                     //->take(10) //obtener solo 10 registros
-                                    ->get();*/
+                                    ->get();
         return view('VistaPedidosAdmin', [ 'querySolicitudes' => $solicitudes ]);
-    }
+    }*/
 
-    public function aceptarSolicitud($id){
-        $solicitudes = solicitude::where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudes',$solicitudes);
-
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='1';
-        $solicitud->save();
-        return redirect('/MostrarSolicitudes');
-    }
-
-    public function rechazarSolicitud($id){
-        $solicitudes = solicitude::where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudes',$solicitudes);
-
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='0';
-        $solicitud->save();
-        return redirect('/MostrarSolicitudes');
-    }
 
     
 

@@ -244,6 +244,17 @@ Route::get('/proyectoG/{id}/{nombre_proyecto}', 'ControladorModuloProyectos@Guar
 //------------------ Home del Proyecto
 Route::get('/homeProyecto', 'ControladorModuloProyectos@HomeProyecto')->name('homeProyecto');
 
+
+/*******************************************SOLICITUDES********************************************* */
+//------------------Mostrar solicitudes a Manager
+Route::get('/MostrarSolicitudesManager','ControladorVistaPedidos@mostrarSolicitudesManager')->name('MostrarSolicitudesManager');
+//------------------Mostrar solicitud especifica a Manager
+Route::get('/Solicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitud');
+//------------------Aceptar solicitud por Manager
+Route::get('/AceptarSolicitudManager/{id}', 'ControladorVistaPedidos@aceptarSolicitudManager');
+//------------------Rechazar solicitud por Manager
+Route::get('/RechazarSolicitudManager/{id}', 'ControladorVistaPedidos@rechazarSolicitudManager');
+
 //------------------ Pedido del Proyecto
 Route::post('/solicitudes', 'ControladorPedidoProyecto@AgregarPedido');
 //------------------ redireccion LINK
