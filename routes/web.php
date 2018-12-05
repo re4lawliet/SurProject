@@ -265,6 +265,11 @@ Route::get('/AceptarSolicitudDirector/{id}', 'ControladorVistaPedidos@aceptarSol
 Route::get('/RechazarSolicitudDirector/{id}', 'ControladorVistaPedidos@rechazarSolicitudDirector');
 
 
+//------------------Mostrar solicitudes a Colaborador
+Route::get('/MostrarSolicitudesColaborador','ControladorVistaPedidos@mostrarSolicitudesColaborador')->name('MostrarSolicitudesColaborador');
+//------------------Eliminar solicitud por Colaborador
+Route::get('/DejarSolicitud/{id}', 'ControladorVistaPedidos@dejarSolicitud');
+
 
 
 

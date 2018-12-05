@@ -1,17 +1,25 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 30-11-2018 a las 06:29:05
--- Versión del servidor: 5.6.35
--- Versión de PHP: 7.1.8
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 05-12-2018 a las 05:35:44
+-- Versión del servidor: 10.1.36-MariaDB
+-- Versión de PHP: 7.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Base de datos: `Sur`
+-- Base de datos: `sur`
 --
 
 -- --------------------------------------------------------
@@ -115,6 +123,40 @@ INSERT INTO `empresas` (`id`, `nombre_empresa`, `nit_empresa`, `direccion_empres
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `listados`
+--
+
+CREATE TABLE `listados` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `unidad` varchar(2000) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `id_solicitud` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `listados`
+--
+
+INSERT INTO `listados` (`id`, `descripcion`, `unidad`, `cantidad`, `created_at`, `updated_at`, `id_solicitud`) VALUES
+(9, 'ladrillos', 'kilo', 15, NULL, NULL, 7),
+(10, 'hierro', 'vara', 100, NULL, NULL, 7),
+(12, 'hierro', 'kilo', 15, NULL, NULL, 8),
+(13, 'hierro', 'kilo', 100, NULL, NULL, 9),
+(14, 'ladrillos', 'kilo', 15, NULL, NULL, 10),
+(15, 'hierro', 'vara', 100, NULL, NULL, 11),
+(16, 'ladrillos', 'vara', 15, NULL, NULL, 12),
+(17, 'ladrillos', 'vara', 100, NULL, NULL, 13),
+(18, 'ladrillos', 'vara', 100, NULL, NULL, 14),
+(19, 'hierro', 'kilo', 15, NULL, NULL, 15),
+(20, 'hierro', 'vara', 100, NULL, NULL, 16),
+(21, 'ladrillos', 'kilo', 100, NULL, NULL, 18);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `migrations`
 --
 
@@ -133,6 +175,29 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2018_11_08_074029_create_cliente_table', 1),
 (4, '2018_11_10_070208_create_empresa_table', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `partidas`
+--
+
+CREATE TABLE `partidas` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `partidas`
+--
+
+INSERT INTO `partidas` (`id`, `nombre`) VALUES
+(15010, 'SEGURIDAD INDUSTRIAL'),
+(15020, 'INDIRECTOS DE OBRA'),
+(15030, 'OBRAS PRELIMINARES'),
+(15040, 'MOVIMIENTO DE TIERRAS'),
+(15050, 'GEOTECNIA'),
+(15060, 'OBRA GRIS');
 
 -- --------------------------------------------------------
 
@@ -208,34 +273,43 @@ INSERT INTO `proyectos` (`id`, `nombre_proyecto`, `zona_proyecto`, `logo_proyect
 
 CREATE TABLE `solicitudes` (
   `id` int(11) NOT NULL,
+  `titulo_solicitud` varchar(250) DEFAULT NULL,
   `proveedor` varchar(250) DEFAULT NULL,
-  `listado` varchar(2000) DEFAULT NULL,
-  `partida` varchar(250) DEFAULT NULL,
+  `id_partida` int(11) DEFAULT NULL,
+  `email` varchar(120) DEFAULT NULL,
   `rol` varchar(250) DEFAULT NULL,
-  `respondido_director` varchar(250) DEFAULT NULL,
   `respondido_manager` varchar(250) DEFAULT NULL,
-  `aprobado_director` varchar(250) DEFAULT NULL,
   `aprobado_manager` varchar(250) DEFAULT NULL,
+  `respondido_director` varchar(250) DEFAULT NULL,
+  `aprobado_director` varchar(250) DEFAULT NULL,
   `id_proyecto` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `solicitudes`
 --
 
-INSERT INTO `solicitudes` (`id`, `proveedor`, `listado`, `partida`, `rol`, `respondido_director`, `respondido_manager`, `aprobado_director`, `aprobado_manager`, `id_proyecto`, `created_at`, `updated_at`) VALUES
-(1, 'Ladrillera 1', '100 Ladrillos', '55432', 'admin', '0', '0', '0', '0', 28, '2018-11-23 04:56:51', '2018-11-23 11:36:59'),
-(2, 'a', 'a', '1', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:01', '2018-11-23 11:37:01'),
-(3, 'b', 'b', '2', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:10', '2018-11-23 11:37:05'),
-(4, 'c', 'c', '3', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:20', '2018-11-23 11:37:03'),
-(5, 'd', 'd', '4', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:24', '2018-11-23 11:37:06'),
-(6, 'e', 'e', '5', 'admin', '1', '0', '1', '0', 28, '2018-11-23 11:04:29', '2018-11-23 11:37:06'),
-(7, 'sugerido', '100 ladrillos', '66 obra gris', 'colaborador', '1', '0', '1', '0', 30, '2018-11-28 22:10:50', '2018-11-28 22:12:50'),
-(8, 'el q quiera', 'asdf', '1', 'Carlos', '0', '0', '0', '0', 30, '2018-11-30 04:24:29', '2018-11-30 04:24:29'),
-(9, 'el q quiera', 'asdf', '66 obra gris', 'Carlos', '0', '0', '0', '0', 30, '2018-11-30 04:25:33', '2018-11-30 04:25:33'),
-(10, 'hola', 'mundo', ':D', 'Carlos Monterroso', '0', '0', '0', '0', 30, '2018-11-30 04:28:12', '2018-11-30 04:28:12');
+INSERT INTO `solicitudes` (`id`, `titulo_solicitud`, `proveedor`, `id_partida`, `email`, `rol`, `respondido_manager`, `aprobado_manager`, `respondido_director`, `aprobado_director`, `id_proyecto`, `created_at`, `updated_at`) VALUES
+(1, 'asdf', 'asdf', 15050, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 28, '2018-11-30 13:01:30', '2018-11-30 13:01:30'),
+(2, 'asdf', 'asdf', 15050, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 28, '2018-11-30 13:01:49', '2018-11-30 13:01:49'),
+(3, 'asdf', 'Ladrillera 1', 15040, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 28, '2018-11-30 13:02:45', '2018-11-30 13:02:45'),
+(4, 'asdf', 'Ladrillera 1', 15060, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:33:26', '2018-11-30 13:33:26'),
+(5, 'asdf', 'asdf', 15060, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:34:22', '2018-11-30 13:34:22'),
+(6, 'asdf', 'asdf', 15060, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:36:17', '2018-11-30 13:36:17'),
+(7, 'esta', 'Ladrillera 1', 15060, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:39:16', '2018-11-30 13:39:16'),
+(8, 'asdf', 'Ladrillera 1', 15010, NULL, 'Haldamir Guzman', '1', '1', '1', '1', 27, '2018-11-30 13:43:07', '2018-12-05 04:19:51'),
+(9, 'asdf', 'Ladrillera 1', 15050, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 27, '2018-11-30 13:44:52', '2018-11-30 13:44:52'),
+(10, 'asdf', 'Ladrillera 1', 15040, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 26, '2018-11-30 13:46:53', '2018-11-30 13:46:53'),
+(11, 'asdf', 'Ladrillera 1', 15010, NULL, 'Haldamir Guzman', '1', '1', '1', '0', 26, '2018-11-30 13:49:40', '2018-12-05 04:20:08'),
+(12, 'asdf', 'Ladrillera 1', 15010, NULL, 'Haldamir Guzman', '1', '0', '0', '0', 26, '2018-11-30 13:51:59', '2018-12-03 07:29:51'),
+(13, 'asdf', 'qwer', 15010, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 26, '2018-11-30 13:53:43', '2018-11-30 13:53:43'),
+(14, 'asdf', 'Ladrillera 1', 15040, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 26, '2018-11-30 13:56:37', '2018-11-30 13:56:37'),
+(15, 'asdf', 'Ladrillera 1', 15010, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:57:42', '2018-11-30 13:57:42'),
+(16, 'asdf', 'qwer', 15010, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:58:23', '2018-11-30 13:58:23'),
+(17, 'asdf', 'qwer', 15010, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 24, '2018-11-30 13:58:30', '2018-11-30 13:58:30'),
+(18, 'asdf', 'Ladrillera 1', 15010, NULL, 'Haldamir Guzman', '0', '0', '0', '0', 21, '2018-11-30 13:59:55', '2018-11-30 13:59:55');
 
 -- --------------------------------------------------------
 
@@ -250,7 +324,7 @@ CREATE TABLE `temporal_productos` (
   `cantidad` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -279,11 +353,13 @@ INSERT INTO `users` (`id`, `rol`, `name`, `apellido`, `email`, `email_verified_a
 (1, 'admin', 'Carlos', 'Monterroso', 're4lawliet@gmail.com', NULL, '$2y$10$idMqv8qV3SJH7Pwd1Xs9merrY9kCMgZh1MXrObeQSCRqJ1BLWu1hO', '3ZYQTGkHtwq9N7W2lnBbPzOHYNhI3Sef972MThslcJcjFL5cGvlQuxsSPdgu', '2018-11-09 03:12:16', '2018-11-09 03:12:16'),
 (2, 'colaborador', 'Carlos', 'Monterroso', 'colaborador@gmail.com', NULL, '$2y$10$vik9O.puA8WJvRJRLZjCU.W/A/1JMrE6ekKyP7P054KLulSBPyHLW', '6NHIwABFCJwW7WluVZJDyX0j6L36D3dWRCc37pKkcPDzLhEPmNzwdX5ZclPD', '2018-11-09 03:26:30', '2018-11-09 03:26:30'),
 (3, 'director', 'omar', 'Argueta', 'omar@gmail.com', NULL, '$2y$10$Wb9YRNXv64BbAbgcH7cjoeXj3HCmFUeSHGNaC1EdkxQ453SLsffm6', 'H2Au5ZOO5RvNsGeiJ3F5lTAGGbnsA13SJgpXYW6ZeRMSC1JVs4SSpThqahGH', '2018-11-12 21:12:42', '2018-11-12 21:12:42'),
-(4, 'admin', 'Haldamir', 'Guzman', 'haldamir.95@gmail.com', NULL, '$2y$10$xYHnwC3A33B1DQFcfZp4qu10mOd8EGsiWGttcFTxjf9nc4LZ4O1oy', 'iNgp265FEIJE8OcEjGIPawYQgwbjtDF1aPA8OuQs0QaLqoFDfDtraYOxWMZX', '2018-11-21 02:41:22', '2018-11-21 02:41:22'),
+(4, 'admin', 'Haldamir', 'Guzman', 'haldamir.95@gmail.com', NULL, '$2y$10$xYHnwC3A33B1DQFcfZp4qu10mOd8EGsiWGttcFTxjf9nc4LZ4O1oy', 'ArQ9r3lg4OmtcMyYSTh68X6fYojzD6Z6MyepKkyiTqNYuvth8YyOdk18ztWb', '2018-11-21 02:41:22', '2018-11-21 02:41:22'),
 (5, 'manager', 'Carlos', 'Monterroso', 'manager@gmail.com', NULL, '$2y$10$RE8MZ198CHkdrPIqxU7OAeQo8rjmjXJHwHXGXo7baf8iVmRpOCt/C', 'Cuv9cLKfrePvjSQNrpY0KtEbb9XKwp1TCWl2P00xWjcMQNFCW1PYBxbMBkxl', '2018-11-22 05:37:28', '2018-11-22 05:37:28'),
 (6, 'director', 'Carlos', 'Monterroso', 'director@gmail.com', NULL, '$2y$10$QoncW1jpu4nr02sG8i9Fq.VJIyqnXHtm9CzYQ9NOGQGj/Ra0YMVfe', 'XyK1SubRZnPCUsV00roqxQWOjsGMKzfhEzebc6UyCcxXQppxolHCbVjYdPtu', '2018-11-22 05:38:57', '2018-11-22 05:38:57'),
 (7, 'admin', 'n', 'n', 'n@gmail.com', NULL, '$2y$10$vFJS1zr/Mh1MUA.glChvy.1isDz470Rs31j3nobi5ifUjyrky2kqm', '9d2T6jao4KrSBV2yJy3KhWJASn4jP7NTA1NqEZOo0nZWnl4DaUqf6swiuXSw', '2018-11-22 06:53:40', '2018-11-22 06:53:40'),
-(8, 'compras', 'Carlos', 'Monterroso', 'compras@gmail.com', NULL, '$2y$10$D7M5tHA5jCPoPUd2tgtSZuNnH683feIoNXkURvxbKs9TqfyDzSch6', 'Flr8cTSMmQBesR1o2L0nN7A613o6ZFLpPhEIvl4ZVvsCGACCatJfWkWiZl3e', '2018-11-30 00:39:26', '2018-11-30 00:39:26');
+(8, 'compras', 'Carlos', 'Monterroso', 'compras@gmail.com', NULL, '$2y$10$D7M5tHA5jCPoPUd2tgtSZuNnH683feIoNXkURvxbKs9TqfyDzSch6', 'Flr8cTSMmQBesR1o2L0nN7A613o6ZFLpPhEIvl4ZVvsCGACCatJfWkWiZl3e', '2018-11-30 00:39:26', '2018-11-30 00:39:26'),
+(9, 'manager', 'Alan', 'Guzman', 'alanmanager@gmail.com', NULL, '$2y$10$Z1Vrw97G3sFtrBjzADqwYOnQMoFtN3Dw1FIqoNXEDEKnGvmRLaVLe', 'sC5UsrnKAU9POszHEIwDZxBx19wFhnsWpEKvRhnFS0bbKLmXq13Gw5aRLBqU', '2018-12-03 04:15:49', '2018-12-03 04:15:49'),
+(10, 'director', 'Haldamir', 'Guzman', 'alandirector@gmail.com', NULL, '$2y$10$UnYRrP7GaHvhCBsATRvl.uHY6Lx55kUkFTWKa3Mx4Qu6K4hO3VKSG', '4FbZD5bwYxLxl6WMZFsbD3UKebF1dNVL6abwR4FSHEykTMBSuaej6krWNvTx', '2018-12-05 03:37:37', '2018-12-05 03:37:37');
 
 --
 -- Índices para tablas volcadas
@@ -302,9 +378,22 @@ ALTER TABLE `empresas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `listados`
+--
+ALTER TABLE `listados`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_solicitud` (`id_solicitud`);
+
+--
 -- Indices de la tabla `migrations`
 --
 ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `partidas`
+--
+ALTER TABLE `partidas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -330,7 +419,8 @@ ALTER TABLE `proyectos`
 --
 ALTER TABLE `solicitudes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_proyecto` (`id_proyecto`);
+  ADD KEY `id_proyecto` (`id_proyecto`),
+  ADD KEY `id_partida` (`id_partida`);
 
 --
 -- Indices de la tabla `temporal_productos`
@@ -354,47 +444,73 @@ ALTER TABLE `users`
 --
 ALTER TABLE `clientes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT de la tabla `empresas`
 --
 ALTER TABLE `empresas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT de la tabla `listados`
+--
+ALTER TABLE `listados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT de la tabla `proyectos`
 --
 ALTER TABLE `proyectos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
 --
 -- AUTO_INCREMENT de la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
 --
 -- AUTO_INCREMENT de la tabla `temporal_productos`
 --
 ALTER TABLE `temporal_productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- Restricciones para tablas volcadas
 --
 
 --
+-- Filtros para la tabla `listados`
+--
+ALTER TABLE `listados`
+  ADD CONSTRAINT `listados_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitudes` (`id`);
+
+--
 -- Filtros para la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
-  ADD CONSTRAINT `solicitudes_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`);
+  ADD CONSTRAINT `solicitudes_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyectos` (`id`),
+  ADD CONSTRAINT `solicitudes_ibfk_2` FOREIGN KEY (`id_partida`) REFERENCES `partidas` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -55,7 +55,9 @@ class ControladorPedidoProyecto extends Controller{
         $solicitud->titulo_solicitud = $request->titulo_solicitud;
         $solicitud->proveedor = $request->proveedor;
         $solicitud->id_partida = $request->id_partida;
+        $solicitud->email = Auth::user()->email;
         $solicitud->rol = $logiado;
+        $solicitud->mostrar = '1';
         $solicitud->respondido_manager='0';
         $solicitud->aprobado_manager='0';
         $solicitud->respondido_director='0';

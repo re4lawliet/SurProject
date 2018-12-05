@@ -104,6 +104,56 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
+
+
+
+    public function mostrarSolicitudesColaborador(){
+        $solicitudes = solicitude::where('mostrar','1')
+                                    ->where('email',Auth::user()->email)
+                                    ->count();
+        Session::put('countSolicitudesColaborador',$solicitudes);
+
+        $email = Auth::user()->email;
+
+        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                            WHERE s.mostrar = '1' 
+                                            AND s.email = '$email'
+                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+    
+        return view('VistaPedidosColaborador', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+    public function dejarSolicitud($id){
+        $solicitudes = solicitude::where('mostrar','1')
+                                    ->where('email',Auth::user()->email)
+                                    ->count();
+        Session::put('countSolicitudesColaborador',$solicitudes);
+
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->mostrar='0';
+        $solicitud->save();
+        return redirect('MostrarSolicitudesColaborador');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*public function mostrarSolicitudes(){
         $solicitudes = solicitude::where('respondido_director','0')
                                     ->count();

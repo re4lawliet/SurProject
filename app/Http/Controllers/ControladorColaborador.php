@@ -5,7 +5,9 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\proyecto;
+use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ControladorColaborador extends Controller
 {
@@ -24,6 +26,11 @@ class ControladorColaborador extends Controller
 
     public function indexColaborador(Request $request)
     {
+        $solicitudes = solicitude::where('mostrar','1')
+                                    ->where('email',Auth::user()->email)
+                                    ->count();
+        Session::put('countSolicitudesColaborador',$solicitudes);
+
         $name = $request->get('name');
         
         $proyectos = proyecto::orderBy('id', 'DESC')
