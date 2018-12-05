@@ -255,6 +255,21 @@ Route::get('/AceptarSolicitudManager/{id}', 'ControladorVistaPedidos@aceptarSoli
 //------------------Rechazar solicitud por Manager
 Route::get('/RechazarSolicitudManager/{id}', 'ControladorVistaPedidos@rechazarSolicitudManager');
 
+//------------------Mostrar solicitudes a Director
+Route::get('/MostrarSolicitudesDirector','ControladorVistaPedidos@mostrarSolicitudesDirector')->name('MostrarSolicitudesDirector');
+//------------------Mostrar solicitud especifica a Director
+Route::get('/SolicitudDirector/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudDirector');
+//------------------Aceptar solicitud por Director
+Route::get('/AceptarSolicitudDirector/{id}', 'ControladorVistaPedidos@aceptarSolicitudDirector');
+//------------------Rechazar solicitud por Director
+Route::get('/RechazarSolicitudDirector/{id}', 'ControladorVistaPedidos@rechazarSolicitudDirector');
+
+
+
+
+
+
+
 //------------------ Pedido del Proyecto
 Route::post('/solicitudes', 'ControladorPedidoProyecto@AgregarPedido');
 //------------------ redireccion LINK

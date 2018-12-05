@@ -58,6 +58,52 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+    public function mostrarSolicitudesDirector(){
+        $nsolicitudes = solicitude::where('respondido_manager','1')
+                                    ->where('aprobado_manager','1')
+                                    ->where('respondido_director','0')
+                                    ->count();
+        Session::put('countSolicitudesDirector',$nsolicitudes);
+
+        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                            WHERE s.respondido_manager = '1' 
+                                            AND s.aprobado_manager = '1'
+                                            AND s.respondido_director = '0'
+                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+    
+        return view('VistaPedidosDirector', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+    public function aceptarSolicitudDirector($id){
+        $nsolicitudes = solicitude::where('respondido_manager','1')
+                                    ->where('aprobado_manager','1')
+                                    ->where('respondido_director','0')
+                                    ->count();
+        Session::put('countSolicitudesDirector',$nsolicitudes);
+
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_director='1';
+        $solicitud->aprobado_director='1';
+        $solicitud->save();
+        return redirect('MostrarSolicitudesDirector');
+    }
+
+    public function rechazarSolicitudDirector($id){
+        $nsolicitudes = solicitude::where('respondido_manager','1')
+                                    ->where('aprobado_manager','1')
+                                    ->where('respondido_director','0')
+                                    ->count();
+        Session::put('countSolicitudesDirector',$nsolicitudes);
+
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_director='1';
+        $solicitud->aprobado_director='0';
+        $solicitud->save();
+        return redirect('MostrarSolicitudesDirector');
+    }
+
+
     /*public function mostrarSolicitudes(){
         $solicitudes = solicitude::where('respondido_director','0')
                                     ->count();
