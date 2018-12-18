@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Manu de Compras SUR</title>
+    <title>Menu de Compras SUR</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,14 +18,28 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- PRUEBAS AUTOCOMPLETE 
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>  
+    -->
+    <link rel="stylesheet" href="{{asset('bower_components/EasyAutocomplete/dist/easy-autocomplete.min.css')}}">
+    <script src="{{asset('bower_components/EasyAutocomplete//dist/jquery.easy-autocomplete.min.js')}}"></script>
+    
+    
+    
+    
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/surlogo.png">
-                    <img src="images/logologo.png">
+                    <img src="/images/surlogo.png">
+                    <img src="/images/logologo.png">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -35,7 +49,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceCompras #1</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
                             <li class="nav-item"><a href="#" class="nav-link">EnlaceCompras #2</a></li>
                         </ul>
                         <li class="dropdown">
@@ -43,7 +57,7 @@
                                 MenúCompras #2 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" class="nav-link">AcciónCompras #1</a></li>
+                            <li><a href="#" class="nav-link">Acción #1</a></li>
                                 <li><a href="#" class="nav-link">Acción #2</a></li>
                                 <li><a href="#" class="nav-link">Acción #3</a></li>
                                 <li class="divider"></li>

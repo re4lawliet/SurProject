@@ -142,6 +142,26 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+    public function mostrarSolicitudesCompras(){
+        $solicitudes = solicitude::where('aprobado_manager','1')
+                                    ->where('aprobado_director','1')
+                                    ->count();
+        Session::put('countSolicitudesCompras',$solicitudes);
+
+        $email = Auth::user()->email;
+
+        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                            WHERE aprobado_manager = '1' 
+                                            AND aprobado_director = '1'
+                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+    
+        return view('VistaPedidosCompras', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+
+
+
 
 
 

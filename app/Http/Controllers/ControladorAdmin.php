@@ -32,10 +32,6 @@ class ControladorAdmin extends Controller
     public function indexAdmin(Request $request)
     {
 
-        $solicitudes = solicitude::where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudes',$solicitudes);
-
         $name = $request->get('name');
         $proyectos = proyecto::orderBy('id', 'DESC')
         ->name($name)

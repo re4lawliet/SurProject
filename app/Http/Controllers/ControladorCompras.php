@@ -31,6 +31,10 @@ class ControladorCompras extends Controller
 
     public function indexCompras(Request $request)
     {
+        $solicitudes = solicitude::where('aprobado_manager','1')
+                                    ->where('aprobado_director','1')
+                                    ->count();
+        Session::put('countSolicitudesCompras',$solicitudes);
 
         $name = $request->get('name');
         

@@ -35,7 +35,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="{{ url('/MostrarSolicitudes') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudes')}}</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link">EnlaceAdmin #1</a></li>
                             <li class="nav-item"><a href="#" class="nav-link">EnlaceAdmin #2</a></li>
                         </ul>
                         <li class="dropdown">

@@ -272,25 +272,10 @@ Route::get('/DejarSolicitud/{id}', 'ControladorVistaPedidos@dejarSolicitud');
 
 
 
-
-
-
-//------------------ Pedido del Proyecto
-Route::post('/solicitudes', 'ControladorPedidoProyecto@AgregarPedido');
-//------------------ redireccion LINK
-Route::get('/solicitud', 'ControladorPedidoProyecto@solicitud')->name('solicitud');
-
-//------------------redireccion LINK vista pedidos
-Route::get('/dirVistaPedidos', 'ControladorVistaPedidos@Vista')->name('dirVistaPedidos');
-
-//------------------mostrar solicitudes
-Route::get('/MostrarSolicitudes', 'ControladorVistaPedidos@mostrarSolicitudes')->name('MostrarSolicitudes');
-
-//------------------aceptar solicitud
-Route::get('/AceptarSolicitud/{id}', 'ControladorVistaPedidos@aceptarSolicitud');
-
-//------------------aceptar solicitud
-Route::get('/RechazarSolicitud/{id}', 'ControladorVistaPedidos@rechazarSolicitud');
+//------------------Mostrar solicitudes a Compras
+Route::get('/MostrarSolicitudesCompras','ControladorVistaPedidos@mostrarSolicitudesCompras')->name('MostrarSolicitudesCompras');
+//------------------Mostrar solicitud especifica a Director
+Route::get('/OrdenSolicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudCompras');
 
 
 

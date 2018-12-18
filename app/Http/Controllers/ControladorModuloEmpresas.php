@@ -59,7 +59,8 @@ class ControladorModuloEmpresas extends Controller
         }
     
         $empres= new empresa;
-        $empres->nombre_empresa = $request->nombre_empresa;
+        $nombreconc = $request->nombre_empresa . " - " . $request->divisa_empresa;
+        $empres->nombre_empresa = $nombreconc;
         $empres->nit_empresa = $request->nit_empresa;
         $empres->direccion_empresa = $request->direccion_empresa;
         $empres->telefono_oficina = $request->telefono_oficina;
@@ -70,7 +71,10 @@ class ControladorModuloEmpresas extends Controller
         $empres->nombre_encargado = $request->nombre_encargado;
         $empres->puesto_encargado = $request->puesto_encargado;
         $empres->nombre_banco = $request->nombre_banco;
-        $empres->forma_pago = $request->forma_pago;
+        $empres->no_cuenta = $request->no_cuenta;
+        $empres->tipo_cuenta = $request->tipo_cuenta;
+        $empres->correlativo = '1000';
+        //$empres->forma_pago = $request->forma_pago;
         $empres->save();
     
         return redirect('/empresas');

@@ -1,0 +1,20 @@
+{
+  "name": "SurProject",
+  "description": "Proyecto sur",
+  "main": "index.php",
+  "authors": [
+    "Alan Guzman Carlos Monterroso"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Sur"
+  ],
+  "homepage": "https://github.com/re4lawliet/SurProject",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
