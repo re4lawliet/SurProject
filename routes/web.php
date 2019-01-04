@@ -277,6 +277,8 @@ Route::get('/MostrarSolicitudesCompras','ControladorVistaPedidos@mostrarSolicitu
 //------------------Mostrar solicitud especifica a Director
 Route::get('/OrdenSolicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudCompras');
 
+Route::get('/OrdenSolicitud/{id}/{npa}/{npr}/{prov}', 'ControladorModuloSolicitudes@verSolicitudComprasProv');
+
 
 
 /*************************************************************************************************/
