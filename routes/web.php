@@ -275,11 +275,13 @@ Route::get('/DejarSolicitud/{id}', 'ControladorVistaPedidos@dejarSolicitud');
 //------------------Mostrar solicitudes a Compras
 Route::get('/MostrarSolicitudesCompras','ControladorVistaPedidos@mostrarSolicitudesCompras')->name('MostrarSolicitudesCompras');
 //------------------Mostrar solicitud especifica a Director
-Route::get('/OrdenSolicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudCompras');
+Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}', 'ControladorModuloSolicitudes@verSolicitudCompras');
 
-Route::get('/OrdenSolicitud/{id}/{npa}/{npr}/{prov}', 'ControladorModuloSolicitudes@verSolicitudComprasProv');
+Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}', 'ControladorModuloSolicitudes@verSolicitudComprasProv');
 
+Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}/{tabla}', 'ControladorModuloSolicitudes@crearOrden');
 
+Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
 /*************************************************************************************************/
 

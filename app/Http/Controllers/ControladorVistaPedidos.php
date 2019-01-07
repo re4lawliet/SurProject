@@ -150,7 +150,7 @@ class ControladorVistaPedidos extends Controller{
 
         $email = Auth::user()->email;
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor
+        $solicitudes = DB::select(DB::raw("SELECT s.id as id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor, p.id as id_proyecto, pa.id as id_partida
                                             FROM solicitudes AS s, proyectos AS p, partidas AS pa
                                             WHERE aprobado_manager = '1' 
                                             AND aprobado_director = '1'
