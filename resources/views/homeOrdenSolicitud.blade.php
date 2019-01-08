@@ -129,6 +129,7 @@
                                     <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
                                         <thead>
+                                            <th style='display:none' class="table-text">id</td>
                                             <th style='text-align:center' width="10%">Cantidad</th>
                                             <th style='text-align:center' width="10%">Unidad</th>
                                             <th style='text-align:center' width="50%">Descripcion</th>
@@ -138,7 +139,9 @@
                                         <!-- Cuerpo de Tabla -->
                                         <tbody>
                                             @foreach ($queryListado as $material)
+                                                <input name="txt_id_solicitud" type="hidden" value="{{ $material->id_solicitud }}">
                                                 <tr>
+                                                    <td style='display:none' class="table-text">{{ $material->id }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $material->cantidad }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $material->unidad }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $material->descripcion }}</td>
@@ -148,6 +151,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <input id ="id_txt_ids" name="txt_ids" type="hidden" value="">
                                     <input id ="id_txt_precios_unitarios" name="txt_precios_unitarios" type="hidden" value="">
                                     <input id="id_txt_subtotales" name="txt_subtotales" type="hidden" value="">
                                 </div>
@@ -179,6 +183,10 @@
                     <div class="card-body">
                         <!-- Inicio Contenido -->
                         <div class="col-sm-7">
+                        <div class="form-group">
+                            <label for="enviara" class="control-label">Enviar a:</label><br>
+                            <input  type="text" name="txt_enviara" class="form-control">
+                        </div>
                         <div class="form-group">
                             <label for="total" class="control-label">Factura a:</label><br>
                             @if(count($queryProyecto)>0)
@@ -259,11 +267,17 @@
         var table = document.getElementById("tabla_de_detalle");
         var str_precios_unitarios="";
         var str_subtotales="";
+        var str_ids="";
         for( var i = 1; i < table.rows.length; i++){
-            table.rows[i].cells[4].innerHTML = parseFloat(table.rows[i].cells[0].innerHTML) * parseFloat(table.rows[i].cells[3].innerHTML);
-            str_precios_unitarios = str_precios_unitarios + table.rows[i].cells[3].innerHTML + ',';
-            str_subtotales = str_subtotales + table.rows[i].cells[4].innerHTML + ',';
+            table.rows[i].cells[5].innerHTML = parseFloat(table.rows[i].cells[1].innerHTML) * parseFloat(table.rows[i].cells[4].innerHTML);
+            str_ids = str_ids + table.rows[i].cells[0].innerHTML + ',';
+            str_precios_unitarios = str_precios_unitarios + table.rows[i].cells[4].innerHTML + ',';
+            str_subtotales = str_subtotales + table.rows[i].cells[5].innerHTML + ',';
         }
+        str_ids = str_ids.slice(0,-1);
+        str_precios_unitarios = str_precios_unitarios.slice(0,-1);
+        str_subtotales = str_subtotales.slice(0,-1);
+        document.getElementById("id_txt_ids").value = str_ids;
         document.getElementById("id_txt_precios_unitarios").value = str_precios_unitarios;
         document.getElementById("id_txt_subtotales").value = str_subtotales;
     }
@@ -272,7 +286,7 @@
         var table = document.getElementById("tabla_de_detalle");
         var total =0;
         for( var i = 1; i < table.rows.length; i++){
-          total = total + parseFloat(table.rows[i].cells[4].innerHTML);
+          total = total + parseFloat(table.rows[i].cells[5].innerHTML);
         }
         document.getElementById("txtTotal").value = total;
     }

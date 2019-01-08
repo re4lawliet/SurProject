@@ -33,6 +33,7 @@ class ControladorCompras extends Controller
     {
         $solicitudes = solicitude::where('aprobado_manager','1')
                                     ->where('aprobado_director','1')
+                                    ->where('orden_creada','0')
                                     ->count();
         Session::put('countSolicitudesCompras',$solicitudes);
 
