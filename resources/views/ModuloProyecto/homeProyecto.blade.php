@@ -1,12 +1,19 @@
-@extends('layouts.appProyecto')
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layout.appCompras' : 'layout.appAdmin')))
+    )
+
 
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}}</div>
+                <div class="card-header">{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}} {{ Auth::user()->rol }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -38,19 +45,19 @@
 
                 <br>
                 @if(Auth::user()->rol == 'colaborador')
-                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
 
                 @if(Auth::user()->rol == 'manager')
-                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
 
                 @if(Auth::user()->rol == 'director')
-                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
 
@@ -68,7 +75,7 @@
                         <i class="fa fa-btn fa-pencil"></i>Orden de Compra
                     </button>
                     
-                    <button type="submit" class="btn btn-success" onclick="location.href='temporal_productos'">
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
                 @endif
@@ -95,7 +102,7 @@
         
 
 
-        Mi Proyecto: {{Session::get('proyectoG', 'Seleccione Proyecto')}}
+        
 
                 </div>
             </div>

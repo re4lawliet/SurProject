@@ -30,29 +30,39 @@ class ControladorVistaPedidos extends Controller{
         return view('VistaPedidosManager', [ 'querySolicitudes' => $solicitudes ]);
     }
 
-    public function aceptarSolicitudManager($id){
+    public function responderSolicitudManager(){
+        $id = Session::get('s_id');
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        //----PDF
+        $nombrep = 'pres'.$id;
+        $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+        $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+        $ruta="PDF/".$nombrep.$nombreimg;
+        if(strpos($ruta, '.pdf')){
+            move_uploaded_file($archivo,$ruta);
+        }else{
+            $ruta="";
+        }
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_manager='1';
+        if(isset($_POST['aceptar'])){
+            $solicitud->aprobado_manager='1';
+        }else if(isset($_POST['rechazar'])){
+            $solicitud->aprobado_manager='0';
+        }
+        if ($_FILES['presupuesto']['name'] != null) {
+            $solicitud->presupuesto=$ruta;
+        }
+        $solicitud->fecha_manager = $fecha;
+        $solicitud->save();
         $solicitudes = solicitude::where('respondido_manager','0')
                                     ->count();
         Session::put('countSolicitudesManager',$solicitudes);
-
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_manager='1';
-        $solicitud->aprobado_manager='1';
-        $solicitud->save();
         return redirect('MostrarSolicitudesManager');
     }
 
-    public function rechazarSolicitudManager($id){
-        $solicitudes = solicitude::where('respondido_manager','0')
-                                    ->count();
-        Session::put('countSolicitudesManager',$solicitudes);
-
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_manager='1';
-        $solicitud->aprobado_manager='0';
-        $solicitud->save();
-        return redirect('MostrarSolicitudesManager');
-    }
+    
 
 
 
@@ -76,30 +86,39 @@ class ControladorVistaPedidos extends Controller{
     }
 
     public function aceptarSolicitudDirector($id){
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_director='1';
+        $solicitud->aprobado_director='1';
+        $solicitud->fecha_director = $fecha;
+        $solicitud->save();
+
         $nsolicitudes = solicitude::where('respondido_manager','1')
                                     ->where('aprobado_manager','1')
                                     ->where('respondido_director','0')
                                     ->count();
         Session::put('countSolicitudesDirector',$nsolicitudes);
-
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='1';
-        $solicitud->save();
         return redirect('MostrarSolicitudesDirector');
     }
 
     public function rechazarSolicitudDirector($id){
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        $solicitud = solicitude::findOrFail($id);
+        $solicitud->respondido_director='1';
+        $solicitud->aprobado_director='0';
+        $solicitud->fecha_director = $fecha;
+        $solicitud->save();
+
         $nsolicitudes = solicitude::where('respondido_manager','1')
                                     ->where('aprobado_manager','1')
                                     ->where('respondido_director','0')
                                     ->count();
         Session::put('countSolicitudesDirector',$nsolicitudes);
 
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='0';
-        $solicitud->save();
         return redirect('MostrarSolicitudesDirector');
     }
 

@@ -82,7 +82,7 @@
     @endif
 
 
-        Mi Proyecto: {{Session::get('proyectoGestado_proyecto', 'Seleccione Proyecto')}}
+        
 
 
                 </div>

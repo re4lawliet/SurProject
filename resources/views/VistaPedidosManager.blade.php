@@ -45,6 +45,7 @@
                                     <button type="submit" class="btn btn-primary" onclick="location.href='Solicitud/{{ $solicitud->id }}/{{ $solicitud->nombre }}/{{ $solicitud->nombre_proyecto }}'">
                                         <i class="fa fa-btn fa-pencil"></i>Seleccionar
                                     </button>
+                                    
                                 </td>
                             </tr>
                         @endforeach
@@ -62,3 +63,5 @@
     </center>
 
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

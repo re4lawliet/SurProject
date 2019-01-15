@@ -199,11 +199,11 @@
         <div>{{ $proyecto->nombre_proyecto }}</div>
         <div>{{ $proyecto->factura_a }}</div>
       </div>
-      <div id="project">
+      <div id="project"><!-- IZQUIERDO -->
         <div><span style="text-align: left;">DATOS DE FACTURACION</span> </div>
         <div><span style="text-align: left;">{{ $proyecto->factura_a }}</span> </div>
         <div><span style="text-align: left;">{{ $proyecto->factura_numero }}</span> </div>
-
+        <div><span style="text-align: left;">Diagonal 6 19-30 Zona 10</span> </div>
       </div>
     </header>
 

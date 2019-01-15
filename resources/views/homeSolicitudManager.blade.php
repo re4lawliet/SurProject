@@ -17,43 +17,51 @@
             <h5>Proveedor sugerido: "{{Session::get('s_proveedor', 'Seleccione Solicitud')}}"</h5>
         </div>
         <br><br>
-        <div>
-            <h4>Materiales Solicitados</h4>
-            @if(count($queryListado)>0)
-                <div class="panel-body">
-                    <table class="table table-striped task-table">
-                        <!-- Encabezado de Tabla -->
-                        <thead>
-                            <th>Cantidad</th>
-                            <th>Unidad</th>
-                            <th>Descripcion</th>
-                        </thead>
-                        <!-- Cuerpo de Tabla -->
-                        <tbody>
-                            @foreach ($queryListado as $material)
-                                <tr>
-                                    <td class="table-text"><div>{{ $material->cantidad }}</div></td>
-                                    <td class="table-text"><div>{{ $material->unidad }}</div></td>
-                                    <td class="table-text"><div>{{ $material->descripcion }}</div></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <form action="{{ url('/ResponderSolicitudManager') }}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <div>
+                <h4>Materiales Solicitados</h4>
+                @if(count($queryListado)>0)
+                    <div class="col-sm-7">
+                        <table class="table table-striped task-table">
+                            <!-- Encabezado de Tabla -->
+                            <thead>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Descripcion</th>
+                            </thead>
+                            <!-- Cuerpo de Tabla -->
+                            <tbody>
+                                @foreach ($queryListado as $material)
+                                    <tr>
+                                        <td class="table-text"><div>{{ $material->cantidad }}</div></td>
+                                        <td class="table-text"><div>{{ $material->unidad }}</div></td>
+                                        <td class="table-text"><div>{{ $material->descripcion }}</div></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+            <br><br>
+
+        
+            <div class="col-sm-7">
+                <div class="form-group">
+                    <label class="control-label">Agregar Presupuesto</label>
+                    <input type="file" name="presupuesto" class="form-control" accept=".pdf">
                 </div>
-            @endif
-        </div>
-        <br><br>
-
-
-        <div>
-            <button type="submit" class="btn btn-success" onclick="location.href='/AceptarSolicitudManager/{{Session::get('s_id')}}'">
-                <i class="fa fa-btn fa-pencil"></i>Aceptar Solicitud
-            </button>
-            <!-- Boton Rechazar -->
-            <button type="submit" class="btn btn-danger" onclick="location.href='/RechazarSolicitudManager/{{Session::get('s_id')}}'">
-                <i class="fa fa-btn fa-pencil"></i>Rechazar Solicitud
-            </button>
-        </div>
+            </div>
+            
+            <div>
+                <!-- Boton Aceptar -->
+                <button name="aceptar" type="submit" class="btn btn-success" >Aceptar Solicitud</button>
+                <!-- Boton Rechazar -->
+                <button name="rechazar" type="submit" class="btn btn-danger" >Rechazar Solicitud</button>
+            </div>
+        </form>
+        
         
     </center>
 

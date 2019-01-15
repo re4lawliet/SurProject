@@ -1,4 +1,9 @@
-@extends('layouts.appProyecto')
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layout.appCompras' : 'layout.appAdmin')))
+    )
 
 
 @section('content')
@@ -34,10 +39,12 @@
                     </div>
                 @endif
             </div>
-
-            <button type="submit" class="btn btn-danger" onclick="location.href='limpiar_temporal'">
-                <i class="fa fa-btn fa-pencil"></i>Limpiar Productos
-            </button>
+            <div>
+                <button type="submit" class="btn btn-danger" onclick="location.href='limpiar_temporal'">
+                    <i class="fa fa-btn fa-pencil"></i>Limpiar Productos
+                </button>
+            </div>
+            <br>
 
             <form action="{{ url('temporal_producto') }}" method="POST">
 

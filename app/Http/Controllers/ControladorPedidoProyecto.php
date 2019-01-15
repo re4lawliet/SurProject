@@ -38,6 +38,8 @@ class ControladorPedidoProyecto extends Controller{
     }
 
     public function AgregarPedido(Request $request){
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
         $validator = Validator::make($request->all(), [
             'titulo_solicitud' => 'required|max:255',
             'proveedor' => 'max:255',
@@ -58,11 +60,29 @@ class ControladorPedidoProyecto extends Controller{
         $solicitud->email = Auth::user()->email;
         $solicitud->rol = $logiado;
         $solicitud->mostrar = '1';
-        $solicitud->respondido_manager='0';
-        $solicitud->aprobado_manager='0';
-        $solicitud->respondido_director='0';
-        $solicitud->aprobado_director ='0';
+        if(Auth::user()->rol == 'colaborador'){
+            $solicitud->respondido_manager='0';
+            $solicitud->aprobado_manager='0';
+            $solicitud->respondido_director='0';
+            $solicitud->aprobado_director ='0';
+        }else if(Auth::user()->rol == 'manager'){
+            $solicitud->respondido_manager='1';
+            $solicitud->aprobado_manager='1';
+            $solicitud->fecha_manager = $fecha;
+            $solicitud->respondido_director='0';
+            $solicitud->aprobado_director ='0';
+        }else if(Auth::user()->rol == 'director'){
+            $solicitud->respondido_manager='1';
+            $solicitud->aprobado_manager='1';
+            $solicitud->fecha_manager = $fecha;
+            $solicitud->respondido_director='1';
+            $solicitud->aprobado_director ='1';
+            $solicitud->fecha_director = $fecha;
+        }
+        
+        $solicitud->orden_creada = '0';
         $solicitud->id_proyecto=$idproyecto;
+        $solicitud->fecha_solicitud = $fecha;
         $solicitud->save();
 
         $id_solicitud = DB::select(DB::raw("SELECT MAX(id) FROM solicitudes"));
@@ -74,6 +94,10 @@ class ControladorPedidoProyecto extends Controller{
 
         $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
         Session::flash('message','Solicitud Agregada correctamente');
+        $solicitudes = solicitude::where('mostrar','1')
+                                    ->where('email',Auth::user()->email)
+                                    ->count();
+        Session::put('countSolicitudesColaborador',$solicitudes);
         return redirect('solicitud');
     }
 

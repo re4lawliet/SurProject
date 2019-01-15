@@ -31,7 +31,7 @@
     el.appendChild(mainInput);
     el.appendChild(hiddenInput);
 
-    //addTag('hello!');
+    addTag('info@sur.gt');
 
     function addTag (text) {
         let tag = {

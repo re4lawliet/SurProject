@@ -1,7 +1,7 @@
 <?php
 
 namespace SUR\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\Http\Controllers\Controller;
 use SUR\solicitude;
@@ -24,12 +24,14 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('s_npartida', $npa);
         //proyecto
         Session::put('s_nproyecto', $npr);
-        $list = listado::where('id_solicitud',$id)->get();
+
         $solicitudes = DB::select(DB::raw("SELECT *
                                             FROM listados
                                             WHERE id_solicitud = $id;"));
         return view('homeSolicitudManager', ['queryListado' => $solicitudes]);
     }
+
+    
 
     public function verSolicitudDirector($id, $npa, $npr){
         $sol = solicitude::findOrFail($id);
@@ -42,11 +44,26 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('s_npartida', $npa);
         //proyecto
         Session::put('s_nproyecto', $npr);
-        $list = listado::where('id_solicitud',$id)->get();
-        $solicitudes = DB::select(DB::raw("SELECT *
+
+        $listad = DB::select(DB::raw("SELECT *
                                             FROM listados
                                             WHERE id_solicitud = $id;"));
-        return view('homeSolicitudDirector', ['queryListado' => $solicitudes]);
+
+        $solicitud = DB::select(DB::raw("SELECT *
+                                            FROM solicitudes
+                                            WHERE id = $id;"));
+        return view('homeSolicitudDirector')
+                                            ->with('queryListado', $listad)
+                                            ->with('querySolicitud',$solicitud);
+    }
+
+    public function verPresupuesto(Request $request){
+        $pdf = $request->txt_pdf;
+        return view('/presupuestoDirector')->with('pdf',$pdf);
+    }
+
+    public function verPresupuesto2($pdf){
+        return view('/presupuestoDirector')->with('pdf',$pdf);
     }
 
 
@@ -122,6 +139,25 @@ class ControladorModuloSolicitudes extends Controller
 
 
     public function crearOrden(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_emp' => 'required',
+            'tipo_pago' => 'required',
+            'txt_id_solicitud' => 'required',
+            'txt_precios_unitarios' => 'required',
+            'txt_subtotales' => 'required',
+            'txt_subtotales' => 'required',
+            'txt_total' => 'required',
+            'txt_enviara' => 'required',
+            'id_proyecto' => 'required',
+            
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect('/MostrarSolicitudesCompras')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
         $val_id_proveedor = $request->id_emp;
         $val_tipo_pago = $request->tipo_pago;
         $str_tipo_pago="NaN";

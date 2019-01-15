@@ -246,19 +246,28 @@ Route::get('/homeProyecto', 'ControladorModuloProyectos@HomeProyecto')->name('ho
 
 
 /*******************************************SOLICITUDES********************************************* */
+//------------------ Pedido del Proyecto
+Route::post('/solicitudes', 'ControladorPedidoProyecto@AgregarPedido');
+//------------------ redireccion LINK
+Route::get('/solicitud', 'ControladorPedidoProyecto@solicitud')->name('solicitud');
+
+//------------------redireccion LINK vista pedidos
+Route::get('/dirVistaPedidos', 'ControladorVistaPedidos@Vista')->name('dirVistaPedidos');
+
 //------------------Mostrar solicitudes a Manager
 Route::get('/MostrarSolicitudesManager','ControladorVistaPedidos@mostrarSolicitudesManager')->name('MostrarSolicitudesManager');
 //------------------Mostrar solicitud especifica a Manager
 Route::get('/Solicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitud');
-//------------------Aceptar solicitud por Manager
-Route::get('/AceptarSolicitudManager/{id}', 'ControladorVistaPedidos@aceptarSolicitudManager');
-//------------------Rechazar solicitud por Manager
-Route::get('/RechazarSolicitudManager/{id}', 'ControladorVistaPedidos@rechazarSolicitudManager');
+//------------------Responder solicitud por Manager
+Route::post('/ResponderSolicitudManager', 'ControladorVistaPedidos@responderSolicitudManager');
+
 
 //------------------Mostrar solicitudes a Director
 Route::get('/MostrarSolicitudesDirector','ControladorVistaPedidos@mostrarSolicitudesDirector')->name('MostrarSolicitudesDirector');
 //------------------Mostrar solicitud especifica a Director
 Route::get('/SolicitudDirector/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudDirector');
+
+Route::post('/presFile', 'ControladorModuloSolicitudes@verPresupuesto');
 //------------------Aceptar solicitud por Director
 Route::get('/AceptarSolicitudDirector/{id}', 'ControladorVistaPedidos@aceptarSolicitudDirector');
 //------------------Rechazar solicitud por Director
