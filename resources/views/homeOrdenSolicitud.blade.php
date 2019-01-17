@@ -33,9 +33,9 @@
         </div>
         <br><br>
         <!-- enctype de este tipo para enviar datos del formulario que despues seran variables -->
-        <form id="crear_orden_frm" action="{{ url('OrdenCreada') }}" method="POST" >
+        <form id="crear_orden_frm" action="{{ url('OrdenCreada') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                
+            
             <!-- Datos de Proveedor -->
             <div class="container">
                 <div class="card">
@@ -165,7 +165,7 @@
 
                             <div class="form-group">
                                 <label for="total" class="control-label">Total</label><br>
-                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularTotal()">Calcular Total</button>
+                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularTotal()">Calcular Total</button><br><br>
                                 <input id="txtTotal" type="text" name="txt_total" class="form-control" readonly="readonly">
                             </div>
                         </div>
@@ -217,6 +217,38 @@
                     </div> 
                 </div>
             </div>
+            <!-- Datos de Cotizacion -->
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        Propuesta de Cotizacion
+                    </div>
+                    <div class="card-body">
+                        <!-- Inicio Contenido -->
+                        @foreach ($querySolicitud as $sol)
+                            @if($sol->presupuesto!=NULL)
+                                <div class="col-sm-7">
+                                    <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Propuesta de Presupuesto</button>
+                                </div>
+                                <br>
+                                <div class="col-sm-7" id="divPresupuesto" style="display:none">
+                                    <embed src="/{{ $sol->presupuesto }}" type="application/pdf" width="100%" height="600px">
+                                    <br><br>
+                                    <label class="control-label">Cambiar Cotizacion</label>
+                                    <input type="file" name="presupuesto" class="form-control" accept=".pdf">
+                                </div>
+                            @else
+                                <label style="background: #ddd;"> No hay Propuesta de Cotizacion</label>
+                                <label class="control-label">Agregar Presupuesto</label>
+                                <input type="file" name="presupuesto" class="form-control" accept=".pdf">
+                            @endif
+                        @endforeach
+                        
+                        <!-- Fin del Contenido -->
+                    </div>
+                </div>
+            </div>
+            <br>
 
             <div class="form-group">
                 <button name="btn_Orden" id="btn_Orden" form="crear_orden_frm" type="submit" class="btn btn-primary">Crear Orden</button> 
@@ -229,18 +261,21 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#btn_Orden').click(function(){
-            var value = $('#selected').val();
-            var val_id_proveedor = $('#browsers [value="' + value + '"]').data('value');
-            var val_id_proyecto = $('#id_proyecto').val();
-            var val_id_partida = $('#id_partida').val();
-            var val_table = document.getElementById("tabla_de_detalle");
-
-            location.href='/OrdenSolicitud/{{Session::get('s_id')}}/'+val_id_partida+'/'+val_id_proyecto+'/'+val_id_proveedor+'/'+val_table;
-        });
-    });
+    function mostrarPresupuesto() {
+        var y = document.getElementById("btn_pr");
+        var x = document.getElementById("divPresupuesto");
+        if (x.style.display === "none") {
+            y.className = "btn btn-danger";
+            y.innerHTML = "Esconder Propuesta de Presupuesto";
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+            y.className = "btn btn-info"
+            y.innerHTML = "Ver Propuesta de Presupuesto";
+        }
+    }
 </script>
+
 <script>
     $(document).ready(function() {
         var data = {}; 

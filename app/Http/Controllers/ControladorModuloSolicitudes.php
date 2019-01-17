@@ -83,10 +83,15 @@ class ControladorModuloSolicitudes extends Controller
                                         FROM proyectos
                                         WHERE id = $id_proyecto;"));
         
-        //solicitudes
-        $solicitudes = DB::select(DB::raw("SELECT *
+        //lista de productos solicitados
+        $lista_Solicitud = DB::select(DB::raw("SELECT *
                                             FROM listados
                                             WHERE id_solicitud = $id_solicitud;"));
+
+        //solicitud
+        $solicitud = DB::select(DB::raw("SELECT *
+                                            FROM solicitudes
+                                            WHERE id = $id_solicitud;"));
         
         $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
 
@@ -95,11 +100,12 @@ class ControladorModuloSolicitudes extends Controller
                                         WHERE id = 'inexistente';"));
 
         return view('homeOrdenSolicitud')
-                                            ->with('queryListado',$solicitudes)
+                                            ->with('queryListado',$lista_Solicitud)
                                             ->with('partidas',$partida)
                                             ->with('queryEmpresas' , $emp)
                                             ->with('queryProveedores',$prove)
-                                            ->with('queryProyecto',$proyecto);
+                                            ->with('queryProyecto',$proyecto)
+                                            ->with('querySolicitud',$solicitud);
     }
 
     
@@ -118,10 +124,15 @@ class ControladorModuloSolicitudes extends Controller
         $proyecto = DB::select(DB::raw("SELECT *
                                         FROM proyectos
                                         WHERE id = $id_proyecto;"));
-        //solicitudes
-        $solicitudes = DB::select(DB::raw("SELECT *
+        //lista de productos solicitados
+        $lista_Solicitud = DB::select(DB::raw("SELECT *
                                             FROM listados
                                             WHERE id_solicitud = $id_solicitud;"));
+
+        //solicitud
+        $solicitud = DB::select(DB::raw("SELECT *
+                                            FROM solicitudes
+                                            WHERE id = $id_solicitud;"));
         
         $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
 
@@ -130,11 +141,12 @@ class ControladorModuloSolicitudes extends Controller
                                         WHERE id = $id_proveedor;"));
 
         return view('homeOrdenSolicitud')
-                                        ->with('queryListado',$solicitudes)
+                                        ->with('queryListado',$lista_Solicitud)
                                         ->with('partidas',$partida)
                                         ->with('queryEmpresas' , $emp)
                                         ->with('queryProveedores',$prove)
-                                        ->with('queryProyecto',$proyecto);
+                                        ->with('queryProyecto',$proyecto)
+                                        ->with('querySolicitud',$solicitud);
     }
 
 
@@ -178,6 +190,9 @@ class ControladorModuloSolicitudes extends Controller
         $val_enviar_a = $request->txt_enviara;
         $val_id_proyecto = $request->id_proyecto;
         $val_correos = $request->correos;
+        
+
+
         //Insertar en Orden
         $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos)
                                     VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos');"));
@@ -195,6 +210,20 @@ class ControladorModuloSolicitudes extends Controller
         $insertarSolicitud = DB::select(DB::raw("UPDATE solicitudes
                                                     SET orden_creada = '1'
                                                     WHERE id = $val_id_solicitud;"));
+        if ($_FILES['presupuesto']['name'] != null) {
+            $nombrep = 'pres'.$val_id_solicitud;
+            $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+            $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+            $ruta="PDF/".$nombrep.$nombreimg;
+            if(strpos($ruta, '.pdf')){
+                move_uploaded_file($archivo,$ruta);
+            }else{
+                $ruta="";
+            }
+            $insertarSolicitud2 = DB::select(DB::raw("UPDATE solicitudes
+                                                    SET presupuesto = '$ruta'
+                                                    WHERE id = $val_id_solicitud;"));
+        }
 
         //Datos proveedor
         $data_proveedor = DB::table('empresas')->where('id', $val_id_proveedor)->first();

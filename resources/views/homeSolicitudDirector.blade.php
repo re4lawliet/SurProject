@@ -43,18 +43,26 @@
             @endif
         </div>
         <br><br>
-        <div  class="col-sm-7">
-            <button id="btn_pr" type="submit" class="btn btn-info" onclick="myFunction()">
-            Ver Propuesta de Presupuesto</button>
-        </div>
+
+        @foreach ($querySolicitud as $sol)
+            @if($sol->presupuesto!=NULL)
+                <div  class="col-sm-7">
+                    <button id="btn_pr" type="submit" class="btn btn-info" onclick="myFunction()">
+                    Ver Propuesta de Presupuesto</button>
+                </div>
+                <br>
+                <div class="col-sm-7" id="myDIV" style="display:none">
+                    <div class="container">
+                        
+                            <embed src="/{{ $sol->presupuesto }}" type="application/pdf" width="100%" height="600px">
+                        
+                    </div>
+                </div>
+            @else
+               <label style="background: #ddd;"> No hay Propuesta de Presupuesto</label>
+            @endif
+        @endforeach
         <br>
-        <div class="col-sm-7" id="myDIV" style="display:none">
-            <div class="container">
-                @foreach ($querySolicitud as $sol)
-                    <embed src="/{{ $sol->presupuesto }}" type="application/pdf" width="100%" height="600px">
-                @endforeach
-            </div>
-        </div>
         <br>
         <div>
             <button type="submit" class="btn btn-success" onclick="location.href='/AceptarSolicitudDirector/{{Session::get('s_id')}}'">
