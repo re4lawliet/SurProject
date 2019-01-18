@@ -34,10 +34,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <ul class="nav navbar-nav navbar-right">
+                        <!-- <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesContabilidad') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesContabilidad')}}</a></li>
                             <li class="nav-item"><a href="#" class="nav-link">EnlaceContabilidad #2</a></li>
-                        </ul>
+                        </ul>-->
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúContabilidad #2 <b class="caret"></b>

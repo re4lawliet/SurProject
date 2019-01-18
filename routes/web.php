@@ -150,6 +150,8 @@ Route::get('/', function () {
             return view('welcomeDirector');
         }elseif (Auth::user()->rol =='compras'){
             return view('welcomeCompras');
+        }elseif (Auth::user()->rol =='contbilidad'){
+            return view('welcomeContabilidad');
         }
 
     }else{
@@ -171,6 +173,8 @@ Route::get('/homes', function () {
             return redirect('/homeDirector');
         }elseif (Auth::user()->rol =='compras'){
             return redirect('/homeCompras');
+        }elseif (Auth::user()->rol =='contabilidad'){
+            return redirect('/homeContabilidad');
         }
 
     }else{
@@ -326,6 +330,7 @@ Route::get('/homeManager', 'ControladorManager@indexManager')->name('homeManager
 Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDirector');
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
 Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras');
+Route::get('/homeContabilidad', 'ControladorCompras@indexCompras')->name('homeContabilidad');
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');

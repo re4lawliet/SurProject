@@ -9,8 +9,9 @@ use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 
-class ControladorCompras extends Controller
+class ControladorContabilidad extends Controller
 {
+    //
     //
     /**
      * Create a new controller instance.
@@ -20,16 +21,15 @@ class ControladorCompras extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('compras');
+        $this->middleware('contabilidad');
     }
-
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
      */
 
-    public function indexCompras(Request $request)
+    public function indexContabilidad(Request $request)
     {
         $solicitudes = solicitude::where('aprobado_manager','1')
                                     ->where('aprobado_director','1')
@@ -43,7 +43,6 @@ class ControladorCompras extends Controller
         ->name($name)
         ->paginate(10);
         
-        return view('homeCompras', compact('proyectos'));
+        return view('homeContabilidad', compact('proyectos'));
     }
-
 }

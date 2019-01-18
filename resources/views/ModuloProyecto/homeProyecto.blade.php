@@ -2,7 +2,7 @@
     Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
         ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
             (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
-                (Auth::user()->rol == 'compras' ? 'layout.appCompras' : 'layout.appAdmin')))
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
     )
 
 
