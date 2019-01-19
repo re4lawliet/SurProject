@@ -36,7 +36,7 @@
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesDirector')}}</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceDirector #2</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes: {{Session::get('countOrdenesAprobadas')}}</a></li>
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">

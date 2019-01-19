@@ -344,6 +344,12 @@ Route::get('/limpiar_temporal', 'ControladorModuloProductos_Temporal@LimpiarTemp
 
 
 
+
+//------------------Mostrar Ordenes a Director
+Route::get('/MostrarOrdenesDirector','ControladorVistaPedidos@mostrarOrdenesDirector');
+//------------------Mostrar PDF a Director
+Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDirector');
+
 //------------------ Loguin
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

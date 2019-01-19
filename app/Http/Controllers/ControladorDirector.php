@@ -8,6 +8,7 @@ use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class ControladorDirector extends Controller
 {
@@ -30,6 +31,9 @@ class ControladorDirector extends Controller
                                     ->where('respondido_director','0')
                                     ->count();
         Session::put('countSolicitudesDirector',$nsolicitudes);
+
+        $orden = DB::table('orden')->where('respuesta_conta', '1')->count();
+        Session::put('countOrdenesAprobadas',$orden); 
 
         $name = $request->get('name');
         
