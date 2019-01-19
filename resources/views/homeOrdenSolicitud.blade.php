@@ -214,6 +214,7 @@
                     </div> 
                 </div>
             </div>
+            <br>
             <!-- Datos de Cotizacion -->
             <div class="container">
                 <div class="card">
@@ -331,6 +332,12 @@
             table.rows[i].cells[5].innerHTML = divisa + table.rows[i].cells[5].innerHTML;  
             table.rows[i].cells[4].innerHTML = divisa + table.rows[i].cells[4].innerHTML;         
         }
+        str_ids = str_ids.slice(0,-1);
+        str_precios_unitarios = str_precios_unitarios.slice(0,-1);
+        str_subtotales = str_subtotales.slice(0,-1);
+        document.getElementById("id_txt_ids").value = str_ids;
+        document.getElementById("id_txt_precios_unitarios").value = str_precios_unitarios;
+        document.getElementById("id_txt_subtotales").value = str_subtotales;
         document.getElementById("txtTotal").value = total;
         document.getElementById("txtTotal_show").value = divisa + total;
     }

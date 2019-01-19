@@ -251,6 +251,7 @@ class ControladorModuloSolicitudes extends Controller
         $maxid = DB::table('orden')->find(DB::table('orden')->max('id'));
         $name = 'orderfile'.$maxid->id.'.pdf';
         $path = 'PDF/orderfile'.$maxid->id.'.pdf';
+        
         //update ORDEN
         $insertarPDF = DB::select(DB::raw("UPDATE orden
                                                     SET pdf ='$path'
@@ -264,10 +265,16 @@ class ControladorModuloSolicitudes extends Controller
         //                     ->with('proyecto',$data_proyecto)
         //                     ->with('enviar_a',$val_enviar_a)
         //                     ->with('total',$val_total);
-
-        
         $pdf = PDF::loadView('myPDF', $data);
         file_put_contents($path, $pdf->output()); 
+
+        //incrementar correlativo de empresa
+        $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        $corr = $provv->correlativo + 1;
+        $updateProveedor = DB::select(DB::raw("UPDATE empresas
+                                                    SET correlativo ='$corr'
+                                                    WHERE id = $val_id_proveedor;"));
+
         return view('guardarPDF')->with('path',$path);
         //return $pdf->stream($name);
         
