@@ -245,17 +245,6 @@ class ControladorVistaPedidos extends Controller{
         return redirect('MostrarSolicitudesContador');
     }
 
-    
-
-
-
-
-
-    public function mostrarOrdenesDirector(){
-        $countorden = DB::table('orden')->where('respuesta_conta', '1')->count();
-        Session::put('countOrdenesAprobadas',$countorden); 
-
-<<<<<<< HEAD
     public function mostrarSolicitudesRechazadas(){
         $solicitudes2 = DB::table('orden')
                             ->where('respuesta_conta','2')
@@ -291,7 +280,7 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
-    /*public function mostrarSolicitudes(){
+    public function mostrarSolicitudes(){
         $solicitudes = solicitude::where('respondido_director','0')
                                     ->count();
         Session::put('countSolicitudes',$solicitudes);
@@ -304,8 +293,12 @@ class ControladorVistaPedidos extends Controller{
                                     //->take(10) //obtener solo 10 registros
                                     ->get();
         return view('VistaPedidosAdmin', [ 'querySolicitudes' => $solicitudes ]);
-    }*/
-=======
+    }
+
+
+    public function mostrarOrdenesDirector(){
+    $countorden = DB::table('orden')->where('respuesta_conta', '1')->count();
+    Session::put('countOrdenesAprobadas',$countorden); 
         $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                                         WHERE respuesta_conta = '1'
@@ -323,7 +316,7 @@ class ControladorVistaPedidos extends Controller{
 
         return view('verPDFDirector')->with('orden',$orden);
     }
->>>>>>> aea9638d9cac8cee3140c4eb9205c59e67b2d37c
+
 
 
     
