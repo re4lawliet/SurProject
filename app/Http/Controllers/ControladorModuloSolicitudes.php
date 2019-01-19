@@ -194,8 +194,8 @@ class ControladorModuloSolicitudes extends Controller
 
 
         //Insertar en Orden
-        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos)
-                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos');"));
+        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta)
+                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos','0','0','');"));
         
         //Insertar precios
         $arr_ids=explode(",",$val_ids);

@@ -150,7 +150,7 @@ Route::get('/', function () {
             return view('welcomeDirector');
         }elseif (Auth::user()->rol =='compras'){
             return view('welcomeCompras');
-        }elseif (Auth::user()->rol =='contbilidad'){
+        }elseif (Auth::user()->rol =='contabilidad'){
             return view('welcomeContabilidad');
         }
 
@@ -292,8 +292,6 @@ Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}', 'Control
 
 Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}', 'ControladorModuloSolicitudes@verSolicitudComprasProv');
 
-Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}/{tabla}', 'ControladorModuloSolicitudes@crearOrden');
-
 Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
 /*************************************************************************************************/
@@ -330,7 +328,7 @@ Route::get('/homeManager', 'ControladorManager@indexManager')->name('homeManager
 Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDirector');
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
 Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras');
-Route::get('/homeContabilidad', 'ControladorCompras@indexCompras')->name('homeContabilidad');
+Route::get('/homeContabilidad', 'ControladorContabilidad@indexContabilidad')->name('homeContabilidad');
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');

@@ -53,6 +53,7 @@
                                         @foreach($queryProveedores as $prov)
                                         <input type="text" class="form-control" id="selected" list="browsers" name="browser" value="{{ $prov->nombre_empresa }}">
                                         <input  name="id_emp" type="hidden" value="{{ $prov->id }}">
+                                        <input type="hidden" id="txt_divisa" value="{{ $prov->divisa }}">
                                         @endforeach
                                     @else
                                         <input type="text" class="form-control" id="selected" list="browsers" name="browser" >
@@ -159,14 +160,10 @@
 
 
                             <div class="form-group">
-                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularSubtotal()">Calcular Subtotales</button> 
-                            </div>
-                            
-
-                            <div class="form-group">
+                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularTotales()">Calcular Totales</button><br><br>
                                 <label for="total" class="control-label">Total</label><br>
-                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularTotal()">Calcular Total</button><br><br>
-                                <input id="txtTotal" type="text" name="txt_total" class="form-control" readonly="readonly">
+                                <input id="txtTotal" type="hidden" name="txt_total" class="form-control" readonly="readonly">
+                                <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly">
                             </div>
                         </div>
                         <!-- Fin del Contenido -->
@@ -298,31 +295,44 @@
     });
 </script>
 <script>
-    function calcularSubtotal() {
+    function calcularTotales(){
+        var textdiv = document.getElementById("txt_divisa");
         var table = document.getElementById("tabla_de_detalle");
         var str_precios_unitarios="";
         var str_subtotales="";
         var str_ids="";
+        var divisa="";
+        var total =0;
+        if(textdiv!==null){
+            if(textdiv.value=="USD"){
+                divisa="$ ";
+            }else if(textdiv.value=="QGT"){
+                divisa="Q ";
+            }
+        }else{
+            alert('No ha seleccionado ningun proveedor y no existe divisa.');
+        }
+        //limpiando divisas
+        for( var i = 1; i < table.rows.length; i++){
+            if(table.rows[i].cells[5].innerHTML.indexOf(divisa)!== -1){
+                table.rows[i].cells[5].innerHTML = table.rows[i].cells[5].innerHTML.replace(divisa,'');
+            }
+            if(table.rows[i].cells[4].innerHTML.indexOf(divisa)!== -1){
+                table.rows[i].cells[4].innerHTML = table.rows[i].cells[4].innerHTML.replace(divisa,'');
+            }
+        }
+        //calculando subtotales
         for( var i = 1; i < table.rows.length; i++){
             table.rows[i].cells[5].innerHTML = parseFloat(table.rows[i].cells[1].innerHTML) * parseFloat(table.rows[i].cells[4].innerHTML);
             str_ids = str_ids + table.rows[i].cells[0].innerHTML + ',';
             str_precios_unitarios = str_precios_unitarios + table.rows[i].cells[4].innerHTML + ',';
             str_subtotales = str_subtotales + table.rows[i].cells[5].innerHTML + ',';
-        }
-        str_ids = str_ids.slice(0,-1);
-        str_precios_unitarios = str_precios_unitarios.slice(0,-1);
-        str_subtotales = str_subtotales.slice(0,-1);
-        document.getElementById("id_txt_ids").value = str_ids;
-        document.getElementById("id_txt_precios_unitarios").value = str_precios_unitarios;
-        document.getElementById("id_txt_subtotales").value = str_subtotales;
-    }
-
-    function calcularTotal(){
-        var table = document.getElementById("tabla_de_detalle");
-        var total =0;
-        for( var i = 1; i < table.rows.length; i++){
-          total = total + parseFloat(table.rows[i].cells[5].innerHTML);
+            total = total + parseFloat(table.rows[i].cells[5].innerHTML);
+            table.rows[i].cells[5].innerHTML = divisa + table.rows[i].cells[5].innerHTML;  
+            table.rows[i].cells[4].innerHTML = divisa + table.rows[i].cells[4].innerHTML;         
         }
         document.getElementById("txtTotal").value = total;
+        document.getElementById("txtTotal_show").value = divisa + total;
     }
+
 </script>

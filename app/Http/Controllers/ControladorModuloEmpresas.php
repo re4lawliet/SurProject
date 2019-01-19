@@ -73,6 +73,7 @@ class ControladorModuloEmpresas extends Controller
         $empres->nombre_banco = $request->nombre_banco;
         $empres->no_cuenta = $request->no_cuenta;
         $empres->tipo_cuenta = $request->tipo_cuenta;
+        $empres->divisa = $request->divisa_empresa;
         $empres->correlativo = '1000';
         //$empres->forma_pago = $request->forma_pago;
         $empres->save();
