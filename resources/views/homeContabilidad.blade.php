@@ -15,12 +15,18 @@
                         </div>
                     @endif
 
-                    <h3><center>Menu de Proyectos:</center></h3>
+                    <h3><center>Ordenes Pendientes: {{Session::get('countSolicitudesConta')}}</center></h3>
                     <br>
                     <br>
+                    <center>
+                    <button type="submit" class="btn btn-primary" onclick="location.href='/MostrarSolicitudesContador'">
+                        <i class="fa fa-btn fa-pencil"></i>Ir a Revision de Ordenes de Compra
+                    </button>
+                    </center>
+                        
 
-                    <br><br><br> 
-
+                    <br><br><br>
+                    
                 </div>
             </div>
         </div>

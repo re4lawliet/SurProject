@@ -7,6 +7,8 @@ use SUR\Http\Controllers\Controller;
 use SUR\solicitude;
 use SUR\listado;
 use SUR\proyecto;
+use SUR\empresa;
+use SUR\orden;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use PDF;
@@ -276,7 +278,30 @@ class ControladorModuloSolicitudes extends Controller
 
 
 
+    public function verSolicitudContador($id){
 
+        $sol = orden::findOrFail($id);
+
+        Session::put('c_id', $id);
+        Session::put('c_idpro', $sol->id_proveedor);
+        Session::put('c_idsol', $sol->id_solicitud);
+        Session::put('c_idproy', $sol->id_proyecto);
+
+        $solicitud = solicitude::findOrFail($sol->id_solicitud);
+        $prove = empresa::findOrFail($sol->id_proveedor);
+        $proyecto = proyecto::findOrFail($sol->id_proyecto);
+
+        //nombre provedor
+        Session::put('c_nproveedor', $prove->nombre_empresa);
+        //solicitud
+        Session::put('c_nsolicitud', $solicitud->titulo_solicitud);
+        //proyecto
+        Session::put('c_nproyecto', $proyecto->nombre_proyecto);
+        //pdf
+        Session::put('c_npdf', $sol->pdf);
+
+        return view('/homeSolicitudContador');
+    }
 
 
 

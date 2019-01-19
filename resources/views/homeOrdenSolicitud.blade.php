@@ -217,8 +217,10 @@
                     </div> 
                 </div>
             </div>
+            <br>
             <!-- Datos de Cotizacion -->
             <div class="container">
+
                 <div class="card">
                     <div class="card-header">
                         Propuesta de Cotizacion
@@ -249,6 +251,8 @@
                 </div>
             </div>
             <br>
+
+            
 
             <div class="form-group">
                 <button name="btn_Orden" id="btn_Orden" form="crear_orden_frm" type="submit" class="btn btn-primary">Crear Orden</button> 

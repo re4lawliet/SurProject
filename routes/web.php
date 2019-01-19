@@ -150,7 +150,7 @@ Route::get('/', function () {
             return view('welcomeDirector');
         }elseif (Auth::user()->rol =='compras'){
             return view('welcomeCompras');
-        }elseif (Auth::user()->rol =='contbilidad'){
+        }elseif (Auth::user()->rol =='contabilidad'){
             return view('welcomeContabilidad');
         }
 
@@ -296,6 +296,20 @@ Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_provee
 
 Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
+
+
+
+
+//------------------Mostrar solicitudes a Contador
+Route::get('/MostrarSolicitudesContador','ControladorVistaPedidos@mostrarSolicitudesContador')->name('MostrarSolicitudesContador');
+//------------------Mostrar solicitud especifica a Contador
+Route::get('/SolicitudContador/{id}', 'ControladorModuloSolicitudes@verSolicitudContador');
+//------------------Aceptar solicitud por Director
+Route::get('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
+//------------------Rechazar solicitud por Director
+Route::put('/RechazarSolicitudContador/{id}', 'ControladorVistaPedidos@rechazarSolicitudContador');
+
+
 /*************************************************************************************************/
 
 
@@ -330,7 +344,7 @@ Route::get('/homeManager', 'ControladorManager@indexManager')->name('homeManager
 Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDirector');
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
 Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras');
-Route::get('/homeContabilidad', 'ControladorCompras@indexCompras')->name('homeContabilidad');
+Route::get('/homeContabilidad', 'ControladorContabilidad@indexContabilidad')->name('homeContabilidad');
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');

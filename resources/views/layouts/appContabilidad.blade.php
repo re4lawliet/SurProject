@@ -34,21 +34,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <!-- <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesContabilidad') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesContabilidad')}}</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceContabilidad #2</a></li>
-                        </ul>-->
+                        <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a  class="nav-link">Ordenes Pendientes: {{Session::get('countSolicitudesConta')}}</a></li>
+                            <li class="nav-item"><a href="/homeContabilidad" class="nav-link">Home Contabilidad</a></li>
+                        </ul>
                         <li class="dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">
-                                MenúContabilidad #2 <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="nav-link">AcciónContabilidad #1</a></li>
-                                <li><a href="#" class="nav-link">Acción #2</a></li>
-                                <li><a href="#" class="nav-link">Acción #3</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acción #4</a></li>
-                            </ul>
+                            
                         </li>
                     </ul>
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ControladorContabilidad extends Controller
 {
@@ -31,11 +32,10 @@ class ControladorContabilidad extends Controller
 
     public function indexContabilidad(Request $request)
     {
-        $solicitudes = solicitude::where('aprobado_manager','1')
-                                    ->where('aprobado_director','1')
-                                    ->where('orden_creada','0')
-                                    ->count();
-        Session::put('countSolicitudesCompras',$solicitudes);
+        $solicitudes = DB::table('orden')
+                            ->where('respuesta_conta','0')
+                            ->count();
+        Session::put('countSolicitudesConta',$solicitudes);
 
         $name = $request->get('name');
         
