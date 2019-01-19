@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use SUR\solicitude;
 use SUR\proyecto;
+use SUR\orden;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -185,6 +186,72 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+
+
+
+
+
+    public function mostrarSolicitudesContador(){
+        $solicitudes2 = DB::table('orden')
+                            ->where('respuesta_conta','0')
+                            ->count();
+        Session::put('countSolicitudesConta',$solicitudes2);
+
+        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
+                                            WHERE ord.id_solicitud = s.id 
+                                            AND ord.id_proveedor = pro.id 
+                                            AND ord.id_proyecto = p.id 
+                                            AND ord.respuesta_conta = '0';
+                                            "));                             
+    
+        return view('VistaPedidosContador', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+    
+    public function aceptarSolicitudContador($id){
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        $solicitud = orden::findOrFail($id);
+        $solicitud->respuesta_conta='1';
+        $solicitud->comentario_conta='aceptada';
+        $solicitud->save();
+
+        $solicitudes2 = DB::table('orden')
+                            ->where('respuesta_conta','0')
+                            ->count();
+        Session::put('countSolicitudesConta',$solicitudes2);
+
+        return redirect('MostrarSolicitudesContador');
+    }
+
+    public function rechazarSolicitudContador(Request $request,$id){
+
+        $validator = Validator::make($request->all(), [
+            'comentario' => 'required|max:2000',   
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect('MostrarSolicitudesContador')
+                ->withInput()
+                ->withErrors($validator);
+        }
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        $solicitud = orden::findOrFail($id);
+        $solicitud->respuesta_conta='2';
+        $solicitud->comentario_conta=$request->nombre;
+        $solicitud->save();
+
+        $solicitudes2 = DB::table('orden')
+                            ->where('respuesta_conta','0')
+                            ->count();
+        Session::put('countSolicitudesConta',$solicitudes2);
+
+        return redirect('MostrarSolicitudesContador');
+    }
 
 
 

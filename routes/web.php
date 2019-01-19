@@ -294,6 +294,20 @@ Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_provee
 
 Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
+
+
+
+
+//------------------Mostrar solicitudes a Contador
+Route::get('/MostrarSolicitudesContador','ControladorVistaPedidos@mostrarSolicitudesContador')->name('MostrarSolicitudesContador');
+//------------------Mostrar solicitud especifica a Contador
+Route::get('/SolicitudContador/{id}', 'ControladorModuloSolicitudes@verSolicitudContador');
+//------------------Aceptar solicitud por Director
+Route::get('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
+//------------------Rechazar solicitud por Director
+Route::put('/RechazarSolicitudContador/{id}', 'ControladorVistaPedidos@rechazarSolicitudContador');
+
+
 /*************************************************************************************************/
 
 
