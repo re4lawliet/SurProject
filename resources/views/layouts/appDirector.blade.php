@@ -35,6 +35,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesDirector')}}</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes: {{Session::get('countOrdenesAprobadas')}}</a></li>
                         </ul>
