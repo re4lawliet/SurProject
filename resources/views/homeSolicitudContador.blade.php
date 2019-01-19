@@ -35,10 +35,11 @@
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
 
-                <div class="form-group">
+                <div class="col-sm-7">
                 <label for="comentario" class="control-label">Agregue Comentario si Rechaza la Solicitud</label>
                 <input type="text" name="comentario" class="form-control" value="">
                 </div>  
+                <br>
                 <!-- Boton Rechazar -->
                 <button type="submit" class="btn btn-danger">
                     <i class="fa fa-btn fa-pencil"></i> Rechazar Orden de Compra

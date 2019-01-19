@@ -42,7 +42,7 @@
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceCompras #2</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link"> Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a></li>
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">

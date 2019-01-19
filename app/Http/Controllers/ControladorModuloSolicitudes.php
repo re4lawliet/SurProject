@@ -193,11 +193,13 @@ class ControladorModuloSolicitudes extends Controller
         $val_id_proyecto = $request->id_proyecto;
         $val_correos = $request->correos;
         
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
 
 
         //Insertar en Orden
-        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta)
-                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos','0','0','');"));
+        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
+                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
         
         //Insertar precios
         $arr_ids=explode(",",$val_ids);
@@ -237,8 +239,7 @@ class ControladorModuloSolicitudes extends Controller
         $data_proyecto = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
        
 
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
+        
 
         $data = ['proveedor' => $data_proveedor,
                 'tipo_pago' => $str_tipo_pago,

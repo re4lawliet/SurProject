@@ -31,7 +31,7 @@
                     <table class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>ID Orden</th>
+                            <th>Fecha de Creacion</th>
                             <th>Titulo Solicitud</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
@@ -41,7 +41,7 @@
                         <tbody>
                         @foreach ($querySolicitudes as $solicitud)
                             <tr>
-                                <td class="table-text"><div>{{ $solicitud->id }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->fecha_creacion }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre_empresa }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>

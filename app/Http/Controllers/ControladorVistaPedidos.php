@@ -197,7 +197,7 @@ class ControladorVistaPedidos extends Controller{
                             ->count();
         Session::put('countSolicitudesConta',$solicitudes2);
 
-        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
                                             FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
                                             WHERE ord.id_solicitud = s.id 
                                             AND ord.id_proveedor = pro.id 
@@ -216,6 +216,7 @@ class ControladorVistaPedidos extends Controller{
         $solicitud = orden::findOrFail($id);
         $solicitud->respuesta_conta='1';
         $solicitud->comentario_conta='aceptada';
+        $solicitud->fecha_contador = $fecha;
         $solicitud->save();
 
         $solicitudes2 = DB::table('orden')
@@ -242,7 +243,8 @@ class ControladorVistaPedidos extends Controller{
         $fecha = date('d/m/y');
         $solicitud = orden::findOrFail($id);
         $solicitud->respuesta_conta='2';
-        $solicitud->comentario_conta=$request->nombre;
+        $solicitud->comentario_conta=$request->comentario;
+        $solicitud->fecha_contador = $fecha;
         $solicitud->save();
 
         $solicitudes2 = DB::table('orden')
