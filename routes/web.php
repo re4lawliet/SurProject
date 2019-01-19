@@ -350,6 +350,12 @@ Route::get('/MostrarOrdenesDirector','ControladorVistaPedidos@mostrarOrdenesDire
 //------------------Mostrar PDF a Director
 Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDirector');
 
+
+
+
+Route::get('/crearPresupuesto/{idProyecto}','ControladorPresupuesto@mostrarPresupuesto');
+
+
 //------------------ Loguin
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
