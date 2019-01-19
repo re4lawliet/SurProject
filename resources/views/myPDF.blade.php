@@ -264,7 +264,7 @@
         <table >
             <thead>
             <tr>
-                <th class="service">Unidad</th>
+                <th class="service">UNIDAD</th>
                 <th class="desc">DESCRIPCION</th>
                 <th>PRECIO</th>
                 <th>CANTIDAD</th>
@@ -277,14 +277,27 @@
                 <tr>
                     <td class="service">{{ $prod->unidad }}</td>
                     <td class="desc">{{ $prod->descripcion }}</td>
-                    <td class="unit">{{ $prod->precio_unitario }}</td>
+                    @if($proveedor->divisa=='USD')
+                        <td class="unit">$ {{ $prod->precio_unitario }}</td>
+                    @else if($proveedor->divisa=='QGT')
+                        <td class="unit">Q {{ $prod->precio_unitario }}</td>
+                    @endif
                     <td class="qty">{{ $prod->cantidad }}</td>
-                    <td class="total">{{ $prod->subtotal }}</td>
+                    @if($proveedor->divisa=='USD')
+                        <td class="total">$ {{ $prod->subtotal }}</td>
+                    @else if($proveedor->divisa=='QGT')
+                        <td class="total">Q {{ $prod->subtotal }}</td>
+                    @endif
                 </tr>
             @endforeach
             <tr>
                 <td colspan="4" class="grand total">TOTAL</td>
-                <td class="grand total">{{ $total }}</td>
+                @if($proveedor->divisa=='USD')
+                    <td class="grand total">$ {{ $total }}</td>
+                @else if($proveedor->divisa=='QGT')
+                    <td class="grand total">Q {{ $total }}</td>
+                @endif
+                
             </tr>
             </tbody>
       </table>

@@ -181,16 +181,6 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public function mostrarSolicitudesContador(){
         $solicitudes2 = DB::table('orden')
                             ->where('respuesta_conta','0')
@@ -258,25 +248,27 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+    public function mostrarOrdenesDirector(){
+        $countorden = DB::table('orden')->where('respuesta_conta', '1')->count();
+        Session::put('countOrdenesAprobadas',$countorden); 
 
+        $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                                        WHERE respuesta_conta = '1'
+                                        AND s.id = o.id_solicitud
+                                        AND e.id = o.id_proveedor
+                                        AND p.id = o.id_proyecto;"));                             
+    
+        return view('VistaOrdenesDirector')->with('ordenes',$ordenes);
+    }
 
+    public function mostrarPDFDirector($idOrden){
+        $orden = DB::select(DB::raw("SELECT *
+                                    FROM orden
+                                    WHERE id = '$idOrden';")); 
 
-
-
-    /*public function mostrarSolicitudes(){
-        $solicitudes = solicitude::where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudes',$solicitudes);
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.proveedor,s.listado, s.partida, s.rol, p.nombre_proyecto 
-                                            FROM solicitudes AS s, proyectos AS p 
-                                            WHERE s.respondido_director = '0' AND s.id_proyecto = p.id;"));
-        $solicitudes = solicitude::all();
-        $solicitudes = solicitude::where('respondido_director','0')
-                                    //->orderBy('name','desc')
-                                    //->take(10) //obtener solo 10 registros
-                                    ->get();
-        return view('VistaPedidosAdmin', [ 'querySolicitudes' => $solicitudes ]);
-    }*/
+        return view('verPDFDirector')->with('orden',$orden);
+    }
 
 
     
