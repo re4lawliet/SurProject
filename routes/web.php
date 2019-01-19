@@ -292,8 +292,6 @@ Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}', 'Control
 
 Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}', 'ControladorModuloSolicitudes@verSolicitudComprasProv');
 
-Route::get('/OrdenSolicitud/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}/{tabla}', 'ControladorModuloSolicitudes@crearOrden');
-
 Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
 
