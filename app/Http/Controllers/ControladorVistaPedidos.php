@@ -135,7 +135,7 @@ class ControladorVistaPedidos extends Controller{
 
         $email = Auth::user()->email;
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director
+        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
                                             FROM solicitudes AS s, proyectos AS p, partidas AS pa
                                             WHERE s.mostrar = '1' 
                                             AND s.email = '$email'
@@ -209,6 +209,11 @@ class ControladorVistaPedidos extends Controller{
         $solicitud->fecha_contador = $fecha;
         $solicitud->save();
 
+        //jalo la solicitud y le pondre 3 que es aceptada final
+        $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+        $solicitud3->orden_creada='3';
+        $solicitud3->save();
+
         $solicitudes2 = DB::table('orden')
                             ->where('respuesta_conta','0')
                             ->count();
@@ -236,6 +241,11 @@ class ControladorVistaPedidos extends Controller{
         $solicitud->comentario_conta=$request->comentario;
         $solicitud->fecha_contador = $fecha;
         $solicitud->save();
+
+        //jalo la solicitud y le pondre 2 que es rechazada por conta
+        $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+        $solicitud3->orden_creada='2';
+        $solicitud3->save();
 
         $solicitudes2 = DB::table('orden')
                             ->where('respuesta_conta','0')

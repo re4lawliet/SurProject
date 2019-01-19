@@ -24,6 +24,9 @@
                         <td><div class="alert alert-danger">
                 <h7><B>Solicitud Rechazada</B></h7>
                 </div></td>
+                        <td><div class="alert alert-primary">
+                        <h7><B>Solicitud en Orden de Compra</B></h7>
+                        </div></td>
                     </tr>
                     </table>
                 </div>
@@ -88,20 +91,69 @@
                                     @elseif($solicitud->respondido_director == 1)
                                         <!-- el director ya la vio -->
                                         @if($solicitud->aprobado_director == 1)
-                                            <!-- el director ya la acepto VERDE -->
-                                            <tr class="alert alert-success">
-                                                <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
-                                                <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
-                                                <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
-                                                <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
-                                                <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
-                                                <!-- Boton DEJAR -->
-                                                <td>
-                                                    <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
-                                                        <i class="fa fa-btn fa-pencil"></i>Eliminar
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            <!-- el director ya la acepto-->
+                                            <!-- si se creo la orden en 1 gris-->
+                                            @if($solicitud->orden_creada == 1)
+                                                <tr class="alert alert-primary">
+                                                    <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <!-- Boton DEJAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <!-- si se creo la orden en 0 gris-->
+                                            @elseif($solicitud->orden_creada == 0)
+                                                <tr class="alert alert-dark">
+                                                    <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <!-- Boton DEJAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <!-- si se creo la orden en 2 rechazada por conta-->
+                                            @elseif($solicitud->orden_creada == 2)
+                                                <tr class="alert alert-danger">
+                                                    <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <!-- Boton DEJAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <!-- si se creo la orden en 3 aprobada enviada-->
+                                            @elseif($solicitud->orden_creada == 3)
+                                                <tr class="alert alert-success">
+                                                    <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
+                                                    <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <!-- Boton DEJAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                         @elseif($solicitud->aprobado_director == 0)
                                             <!-- el director ya la rechazo ROJO -->
                                             <tr class="alert alert-danger">
