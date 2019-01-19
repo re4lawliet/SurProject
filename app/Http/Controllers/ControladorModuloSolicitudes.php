@@ -314,6 +314,38 @@ class ControladorModuloSolicitudes extends Controller
 
 
 
+    public function verSolicitudRechazada($id){
+
+        $sol = orden::findOrFail($id);
+
+        Session::put('r_id', $id);
+        Session::put('r_idpro', $sol->id_proveedor);
+        Session::put('r_idsol', $sol->id_solicitud);
+        Session::put('r_idproy', $sol->id_proyecto);
+
+        $solicitud = solicitude::findOrFail($sol->id_solicitud);
+        $prove = empresa::findOrFail($sol->id_proveedor);
+        $proyecto = proyecto::findOrFail($sol->id_proyecto);
+
+        //nombre provedor
+        Session::put('r_nproveedor', $prove->nombre_empresa);
+        //solicitud
+        Session::put('r_nsolicitud', $solicitud->titulo_solicitud);
+        //proyecto
+        Session::put('r_nproyecto', $proyecto->nombre_proyecto);
+        //pdf
+        Session::put('r_npdf', $sol->pdf);
+
+        //fechas
+        Session::put('r_fechacreacion', $sol->fecha_creacion);
+        Session::put('r_fecharechazo', $sol->fecha_contador);
+        //comentario
+        Session::put('r_comentario', $sol->comentario_conta);
+
+
+        return view('/homeSolicitudRechazada');
+    }
+
 
     
 

@@ -302,11 +302,22 @@ Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 Route::get('/MostrarSolicitudesContador','ControladorVistaPedidos@mostrarSolicitudesContador')->name('MostrarSolicitudesContador');
 //------------------Mostrar solicitud especifica a Contador
 Route::get('/SolicitudContador/{id}', 'ControladorModuloSolicitudes@verSolicitudContador');
-//------------------Aceptar solicitud por Director
+//------------------Aceptar solicitud por Contador
 Route::get('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
-//------------------Rechazar solicitud por Director
+//------------------Rechazar solicitud por Contador
 Route::put('/RechazarSolicitudContador/{id}', 'ControladorVistaPedidos@rechazarSolicitudContador');
 
+
+
+
+
+
+//------------------Mostrar solicitudes a Compras Rechazadas
+Route::get('/MostrarSolicitudesRechazadas','ControladorVistaPedidos@mostrarSolicitudesRechazadas')->name('MostrarSolicitudesRechazadas');
+//------------------Mostrar solicitud especifica a REchazada
+Route::get('/SolicitudRechazada/{id}', 'ControladorModuloSolicitudes@verSolicitudRechazada');
+//------------------Aceptar solicitud por Rechazada
+Route::get('/AceptarSolicitudRechazada/{id}', 'ControladorVistaPedidos@aceptarSolicitudRechazada');
 
 /*************************************************************************************************/
 

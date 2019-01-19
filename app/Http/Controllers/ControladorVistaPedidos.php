@@ -255,12 +255,46 @@ class ControladorVistaPedidos extends Controller{
         return redirect('MostrarSolicitudesContador');
     }
 
+    
 
 
 
 
 
 
+    public function mostrarSolicitudesRechazadas(){
+        $solicitudes2 = DB::table('orden')
+                            ->where('respuesta_conta','2')
+                            ->count();
+        Session::put('countOrdenesRechazadas',$solicitudes2);
+
+        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador
+                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
+                                            WHERE ord.id_solicitud = s.id 
+                                            AND ord.id_proveedor = pro.id 
+                                            AND ord.id_proyecto = p.id 
+                                            AND ord.respuesta_conta = '2';
+                                            "));                             
+    
+        return view('VistaPedidosOrdenesRechazadas', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+
+    public function aceptarSolicitudRechazada($id){
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+        $solicitud = orden::findOrFail($id);
+        $solicitud->respuesta_conta='4';
+        $solicitud->save();
+
+        $solicitudes2 = DB::table('orden')
+                            ->where('respuesta_conta','2')
+                            ->count();
+        Session::put('countOrdenesRechazadas',$solicitudes2);
+
+        return redirect('MostrarSolicitudesRechazadas');
+    }
 
 
     /*public function mostrarSolicitudes(){
