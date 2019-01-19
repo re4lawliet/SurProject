@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ControladorCompras extends Controller
 {
@@ -36,6 +37,9 @@ class ControladorCompras extends Controller
                                     ->where('orden_creada','0')
                                     ->count();
         Session::put('countSolicitudesCompras',$solicitudes);
+
+        $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
+        Session::put('countOrdenesRechazadas',$orden);
 
         $name = $request->get('name');
         
