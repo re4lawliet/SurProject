@@ -354,6 +354,7 @@ Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDire
 
 
 Route::get('/crearPresupuesto/{idProyecto}','ControladorPresupuesto@mostrarPresupuesto');
+Route::post('/Presupuesto','ControladorPresupuesto@guardarPresupuesto');
 
 
 //------------------ Loguin
