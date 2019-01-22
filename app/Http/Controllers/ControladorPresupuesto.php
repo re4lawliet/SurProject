@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Http\Request;
 use SUR\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use SUR\presupuesto;
 
 class ControladorPresupuesto extends Controller
 {
