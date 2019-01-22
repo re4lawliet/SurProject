@@ -17,7 +17,6 @@
             @endforeach
         </div>
         <br><br>
-<<<<<<< HEAD
         <!-- enctype de este tipo para enviar datos del formulario que despues seran variables -->
         <form id="crear_presupuesto_frm" action="{{ url('Presupuesto') }}" method="POST" >
             {{ csrf_field() }}
@@ -81,40 +80,6 @@
                                                 @foreach ($nuevas as $part)
                                                     <tr>
 
-=======
-        
-        @if(count($presupuesto)==NULL)
-            <!-- enctype de este tipo para enviar datos del formulario que despues seran variables -->
-            <form id="crear_orden_frm" action="{{ url('#') }}" method="POST" >
-                {{ csrf_field() }}
-
-                <!-- Detalle de Pedido -->
-                <div class="container">
-                    <div class="card">
-                        <div class="card-header"><!-- Encabezado -->
-                            Partidas del Proyecto
-                        </div>
-                        <div class="card-body">
-                            <!-- Inicio Contenido -->
-                            <div class="col-sm-10">
-                                <br>
-                                @if(count($partidas)>0)
-                                    <div class="panel-body">
-                                        <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
-                                            <!-- Encabezado de Tabla -->
-                                            <thead>
-                                                <th style='text-align:center' width="15%">ID Partida</td>
-                                                <th style='text-align:center' width="35%">Nombre Partida</th>
-                                                <th style='text-align:center' width="20%">Divisa de Partida</th>
-                                                <th style='text-align:center' width="15%">Presupuesto</th>
-                                                <th style='text-align:center' width="15%">Orden Sumada</th>
-                                                <th style='text-align:center' width="15%">Saldo</th>
-                                            </thead>
-                                            <!-- Cuerpo de Tabla -->
-                                            <tbody>
-                                                @foreach ($partidas as $part)
-                                                    <tr>
->>>>>>> 314cdc2d8eb097fbe6a974742180045c0de19461
                                                         <td style='text-align:center' class="table-text">{{ $part->id_partida }}</td>
                                                         <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
                                                         <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
@@ -124,7 +89,6 @@
                                                         @elseif($part->divisa=='QGT')
                                                         <td style='text-align:center' class="table-text">Q {{ $part->total_partida }}</td>
                                                         @endif
-<<<<<<< HEAD
                                                         <td style='text-align:center' class="table-text"> 0 </td>
                                                     </tr>
                                                 @endforeach
@@ -142,22 +106,6 @@
                             <br>
                             <div class="form-group">
                                 <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularSaldos()">Calcular Saldos</button><br><br>
-=======
-                                                        <td style='text-align:center' class="table-text"> </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <input id ="id_txt_ids" name="txt_ids" type="hidden" value="">
-                                        <input id ="id_txt_precios_unitarios" name="txt_precios_unitarios" type="hidden" value="">
-                                        <input id="id_txt_subtotales" name="txt_subtotales" type="hidden" value="">
-                                    </div>
-                                @endif
-
-
-                                <div class="form-group">
-                                    <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularSaldos()">Calcular Saldos</button><br><br>
->>>>>>> 314cdc2d8eb097fbe6a974742180045c0de19461
 
                                 </div>
                             </div>
@@ -165,23 +113,12 @@
                         </div> 
                     </div>
                 </div>
-<<<<<<< HEAD
             </div>
             <br>
             <div class="form-group">
                 <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button><br><br>
             </div>
         </form>
-=======
-                <br>
-            </form>
-        @else
-
-        @endif
-
-
-        
->>>>>>> 314cdc2d8eb097fbe6a974742180045c0de19461
         
         
     </center>
