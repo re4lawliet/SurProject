@@ -144,3 +144,16 @@ cantidad INT NULL,
 created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL
 );
+
+
+CREATE TABLE presupuesto (
+id_proyecto INT,
+id_partida INT,
+divisa VARCHAR(250),
+presupuesto VARCHAR(250) NULL,
+orden_sumada VARCHAR(250) NULL,
+saldo VARCHAR(250) NULL,
+created_at TIMESTAMP NULL,
+updated_at TIMESTAMP NULL,
+PRIMARY KEY(id_proyecto,id_partida,divisa)
+);
