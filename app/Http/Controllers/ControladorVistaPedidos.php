@@ -329,15 +329,46 @@ class ControladorVistaPedidos extends Controller{
         foreach ($orden as $or) {
             Session::put('pdf_enviar',$or->pdf);
             Session::put('pdf_correos',$or->correos);
+            
             //$file = $request->file('file');
             //$extension = $file->getClientOriginalExtension();
             //$nombre=$file->getClientOriginalName();
             Storage::disk('local')->put('OrdenCompra.pdf', \File::get($or->pdf));
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$or->id_solicitud';"));
+            foreach ($solicitud as $sol) {
+                if($sol->presupuesto!=NULL){
+                    Session::put('pdf_presupuesto',$sol->presupuesto);
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get($sol->presupuesto));
+                }else{
+                    Session::put('pdf_presupuesto','PDF/orderfile1.pdf');
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get("PDF/orderfile1.pdf"));
+                }          
+            }
+
+
+            $proyecto = DB::select(DB::raw("SELECT *
+                                    FROM proyectos
+                                    WHERE id = '$or->id_proyecto';"));
+            foreach ($proyecto as $proy) {
+                Session::put('pdf_proyecto',$proy->nombre_proyecto);        
+            }
+
+            $provedor = DB::select(DB::raw("SELECT *
+                                    FROM empresas
+                                    WHERE id = '$or->id_proveedor';"));
+            foreach ($provedor as $prov) {
+                Session::put('pdf_provedor',$prov->nombre_encargado);        
+            }
+
         }
         
-        //inicio MAILS
+        //seteamos en el local el archivo de presupuesto
+
         
-        //-------FIn MAILS
+        
                                     
         return view('verPDFDirector')->with('orden',$orden);
     }
@@ -346,26 +377,33 @@ class ControladorVistaPedidos extends Controller{
     {
         $destinos=Session::get('pdf_correos');
         $idOrden=Session::get('pdf_idOrden');
+        $proyectoNombre=Session::get('pdf_proyecto');
+        $provedorNombre=Session::get('pdf_provedor');
 
         $valores = $destinos; 
         $valor = explode(',',$valores); 
 
         foreach($valor as $llave => $valorsito) 
         {
+            //PDF/pres27OrdenDePagooopooo.pdf
             $nombre="OrdenCompra.pdf";
             $pathToFile= storage_path('app') ."/". $nombre;
+            $nombre2="Presupuesto.pdf";
+            $pathToFile2= storage_path('app') ."/". $nombre2;
             $containfile=true;
             $destinatario2="re4lawliet@gmail.com";
-            $asunto="correo de sur";
-            $contenido="ORDEN DE COMPRA GENERADA";
+            $asunto="Orden de Compra De: ".$proyectoNombre;
+            $contenido="Orden de Compra De: ".$proyectoNombre;
 
     
-            $data = array('contenido' => $contenido);
-            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile) {
-                $message->from('sur.app.correos@gmail.com', 'Sur Desarrollos: Orden de Compra Generada');
+            $data = array('contenido' => $contenido, 'nombre' => $provedorNombre);
+            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile,$pathToFile2, $proyectoNombre) {
+                $titulo="Sur Desarrollos: Orden de Compra: ".$proyectoNombre;
+                $message->from('sur.app.correos@gmail.com', $titulo);
                 $message->to($valorsito)->subject($asunto);
                 if($containfile){
                 $message->attach($pathToFile);
+                $message->attach($pathToFile2);
                 }
 
             });      
