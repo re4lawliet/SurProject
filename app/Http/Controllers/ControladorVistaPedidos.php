@@ -5,11 +5,13 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use SUR\solicitude;
 use SUR\proyecto;
 use SUR\orden;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Mail;
 
 class ControladorVistaPedidos extends Controller{
 
@@ -322,10 +324,71 @@ class ControladorVistaPedidos extends Controller{
     public function mostrarPDFDirector($idOrden){
         $orden = DB::select(DB::raw("SELECT *
                                     FROM orden
-                                    WHERE id = '$idOrden';")); 
-
+                                    WHERE id = '$idOrden';"));
+        Session::put('pdf_idOrden',$idOrden);
+        foreach ($orden as $or) {
+            Session::put('pdf_enviar',$or->pdf);
+            Session::put('pdf_correos',$or->correos);
+            //$file = $request->file('file');
+            //$extension = $file->getClientOriginalExtension();
+            //$nombre=$file->getClientOriginalName();
+            Storage::disk('local')->put('OrdenCompra.pdf', \File::get($or->pdf));
+        }
+        
+        //inicio MAILS
+        
+        //-------FIn MAILS
+                                    
         return view('verPDFDirector')->with('orden',$orden);
     }
+
+    public function enviar()
+    {
+        $destinos=Session::get('pdf_correos');
+        $idOrden=Session::get('pdf_idOrden');
+
+        $valores = $destinos; 
+        $valor = explode(',',$valores); 
+
+        foreach($valor as $llave => $valorsito) 
+        {
+            $nombre="OrdenCompra.pdf";
+            $pathToFile= storage_path('app') ."/". $nombre;
+            $containfile=true;
+            $destinatario2="re4lawliet@gmail.com";
+            $asunto="correo de sur";
+            $contenido="ORDEN DE COMPRA GENERADA";
+
+    
+            $data = array('contenido' => $contenido);
+            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile) {
+                $message->from('sur.app.correos@gmail.com', 'Sur Desarrollos: Orden de Compra Generada');
+                $message->to($valorsito)->subject($asunto);
+                if($containfile){
+                $message->attach($pathToFile);
+                }
+
+            });      
+        }
+        //2 rechazada por conta
+        //ahora tengo que colocar 3 por que fue enviada
+
+        $solicitud = orden::findOrFail($idOrden);
+        $solicitud->respuesta_conta='3';
+        $solicitud->enviado='1';
+        $solicitud->save();
+
+        Session::flash('messageOrden','Orden de Compra Aprobada Se Enviaron Los Correos');
+
+
+        return redirect('/homeDirector');
+    }
+
+
+
+
+
+
 
 
 

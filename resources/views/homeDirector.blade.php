@@ -21,6 +21,14 @@
 
                     <br><br><br> 
 
+                    <div class="card-body">
+                            @if(Session::has('messageOrden'))
+                                <div class="alert alert-success">
+                                <h7><B>{{Session::get('messageOrden')}}</B></h7>
+                                </div>
+                            @endif
+                        </div>
+
 <div class="container">
 
         <div class="col-12"><h2>Buscar Proyecto
