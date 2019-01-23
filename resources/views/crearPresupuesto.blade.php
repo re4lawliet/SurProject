@@ -33,7 +33,7 @@
                         <!-- Inicio Contenido -->
                         <div class="col-sm-10">
                             <br>
-                            @if(count($partidas)>0)
+                            @if(count($partidas)>0 OR count($nuevas)>0)
                                 <div class="panel-body">
                                     <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
@@ -113,11 +113,12 @@
                         </div> 
                     </div>
                 </div>
+                <br>
+                <div class="form-group">
+                    <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button><br><br>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button><br><br>
-            </div>
+            
         </form>
         
         

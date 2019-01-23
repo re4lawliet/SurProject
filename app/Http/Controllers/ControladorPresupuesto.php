@@ -65,7 +65,7 @@ class ControladorPresupuesto extends Controller
         $arr_saldos = explode(",",$val_saldos);
 
         //ELIMINAMOS LOS VIEJOS DATOS 
-        $insertarPresupuestos = DB::select(DB::raw("DELETE FROM presupuesto WHERE id_proyecto=30;
+        $insertarPresupuestos = DB::select(DB::raw("DELETE FROM presupuesto WHERE id_proyecto=$val_id_proyecto;
                                                     "));
         
         
@@ -76,21 +76,15 @@ class ControladorPresupuesto extends Controller
                                                         VALUES ($val_id_proyecto, $arr_ids[$i], '$arr_divisas[$i]', '$arr_presupuestos[$i]', '$arr_orden_sumada[$i]', '$arr_saldos[$i]');"));
         }
 
-        echo($val_id_proyecto.'<br>');
-        echo($val_ids.'<br>');
-        echo($val_divisas.'<br>');
-        echo($val_presupuestos.'<br>');
-        echo($val_orden_sumada.'<br>');
-        echo($val_saldos.'<br>');
+        return redirect('vistaPresupuesto/'.$val_id_proyecto);
     }
-}
 
 
-/*
-SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, SUM(o.total) as total_partida, pr.presupuesto, pr.orden_sumada, pr.saldo
+    public function consultaPresupuesto($idProyecto){
+        $partidas = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, SUM(o.total) as total_partida, pr.presupuesto, pr.orden_sumada, pr.saldo
                                             FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o, presupuesto as pr
-                                            WHERE p.id = 30
-                                            AND o.id_proyecto = 30
+                                            WHERE p.id = $idProyecto
+                                            AND o.id_proyecto = $idProyecto
                                             AND o.enviado = '1'
                                             AND s.id = o.id_solicitud
                                             AND pa.id = s.id_partida
@@ -98,20 +92,39 @@ SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as
                                             AND pr.id_proyecto = p.id
                                             AND pr.id_partida = pa.id
                                             AND pr.divisa = e.divisa
-                                            GROUP BY pa.id, e.divisa
+                                            GROUP BY pa.id, e.divisa ;"));
+    
+       
+    
+        $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
+                                        FROM proyectos
+                                        WHERE id = $idProyecto ;"));
+    
+        return view('consultarPresupuesto')->with('partidas',$partidas)
+                                        ->with('proyectos',$proyecto);
+    }
+
+    
+    public function desglose($idProyecto,$idPartida,$divisa){
+        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, o.total
+                                        FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                        WHERE p.id = $idProyecto
+                                        AND o.id_proyecto = $idProyecto
+                                        AND o.enviado = '1'
+                                        AND s.id = o.id_solicitud
+                                        AND pa.id = s.id_partida
+                                        AND pa.id = $idPartida
+                                        AND e.id = o.id_proveedor
+                                        AND e.divisa = '$divisa';"));
+
+        $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
+                                        FROM proyectos
+                                        WHERE id = $idProyecto ;"));
 
 
+        return view('tablaDesglose')->with('compras', $compras)
+                                            ->with('proyecto',$proyecto);
+    }
 
+}
 
-                                            SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, SUM(o.total) as total_partida
-                                            FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
-                                            WHERE p.id = 30
-                                            AND o.id_proyecto = 30
-                                            AND o.enviado = '1'
-                                            AND s.id = o.id_solicitud
-                                            AND pa.id = s.id_partida
-                                            AND e.id = o.id_proveedor
-                                            GROUP BY pa.id, e.divisa
-
-
-                                            */
