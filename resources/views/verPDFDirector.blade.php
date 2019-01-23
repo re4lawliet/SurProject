@@ -10,16 +10,8 @@
         </div>
         @endforeach
 
-        <div class="form-group">
-        <div class="btn btn-default btn-file">
-            <i class="fa fa-paperclip"></i> Adjuntar Archivo {{Session::get('pdf_enviar')}}
-            <input type="file"  id="file" name="file" class="email_archivo" >
-        </div>
-        <p class="help-block"  >Max. 20MB</p>
-        <div id="texto_notificacion">
         
-        </div>
-        </div>
+        
 
         <div class="form-group">
             <a href="#">
