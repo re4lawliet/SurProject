@@ -333,11 +333,24 @@ class ControladorVistaPedidos extends Controller{
             //$extension = $file->getClientOriginalExtension();
             //$nombre=$file->getClientOriginalName();
             Storage::disk('local')->put('OrdenCompra.pdf', \File::get($or->pdf));
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$or->id_solicitud';"));
+            foreach ($solicitud as $sol) {
+                if($sol->presupuesto!=NULL){
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get($sol->presupuesto));
+                }else{
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get("PDF/orderfile1.pdf"));
+                }          
+            }
+
         }
         
-        //inicio MAILS
+        //seteamos en el local el archivo de presupuesto
+
         
-        //-------FIn MAILS
+        
                                     
         return view('verPDFDirector')->with('orden',$orden);
     }
@@ -352,8 +365,11 @@ class ControladorVistaPedidos extends Controller{
 
         foreach($valor as $llave => $valorsito) 
         {
+            //PDF/pres27OrdenDePagooopooo.pdf
             $nombre="OrdenCompra.pdf";
             $pathToFile= storage_path('app') ."/". $nombre;
+            $nombre2="Presupuesto.pdf";
+            $pathToFile2= storage_path('app') ."/". $nombre2;
             $containfile=true;
             $destinatario2="re4lawliet@gmail.com";
             $asunto="correo de sur";
@@ -361,11 +377,12 @@ class ControladorVistaPedidos extends Controller{
 
     
             $data = array('contenido' => $contenido);
-            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile) {
+            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile,$pathToFile2) {
                 $message->from('sur.app.correos@gmail.com', 'Sur Desarrollos: Orden de Compra Generada');
                 $message->to($valorsito)->subject($asunto);
                 if($containfile){
                 $message->attach($pathToFile);
+                $message->attach($pathToFile2);
                 }
 
             });      
