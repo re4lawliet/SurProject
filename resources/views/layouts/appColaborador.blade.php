@@ -35,7 +35,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes: {{Session::get('countSolicitudesColaborador')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes: {{Session::get('pdf_enviar')}}</a></li>
                             <li class="nav-item"><a href="#" class="nav-link">EnlaceColaborador #2</a></li>
                         </ul>
                         <li class="dropdown">
