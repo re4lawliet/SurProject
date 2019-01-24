@@ -366,7 +366,7 @@ Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDire
 Route::get('/crearPresupuesto/{idProyecto}','ControladorPresupuesto@mostrarPresupuesto');
 Route::post('/Presupuesto','ControladorPresupuesto@guardarPresupuesto');
 Route::get('/vistaPresupuesto/{idProyecto}','ControladorPresupuesto@consultaPresupuesto');
-Route::get('/desglose/{idProyecto}/{idPartida}/{divisa}','ControladorPresupuesto@desglose');
+Route::get('/desglose/{idProyecto}/{idPartida}','ControladorPresupuesto@desglose');
 
 
 //------------------ Loguin

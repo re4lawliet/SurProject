@@ -39,7 +39,6 @@
                                         <thead>
                                             <th style='text-align:center; display:none;' width="10%">ID Partida</td>
                                             <th style='text-align:center' width="30%">Nombre Partida</th>
-                                            <th style='text-align:center' width="15%">Divisa de Partida</th>
                                             <th style='text-align:center' width="18%">Presupuesto</th>
                                             <th style='text-align:center' width="18%">Total</th>
                                             <th style='text-align:center' width="18%">Saldo</th>
@@ -48,31 +47,15 @@
                                         <tbody>
                                             @foreach ($partidas as $part)
                                                 <tr>
-
                                                     <td style='text-align:center; display:none;' class="table-text">{{ $part->id_partida }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
-
-                                                    @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="table-text">$ {{ $part->presupuesto }}</td>
-                                                    @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="table-text" >Q {{ $part->presupuesto }}</td>
-                                                    @endif
-                                                    
-                                                    
-                                                    @if($part->divisa=='USD')
-                                                        <td style='text-align:center' class="table-text"><a href="/desglose/{{$part->id_proyecto}}/{{$part->id_partida}}/{{$part->divisa}}" data-toggle="tooltip" title="Desglosar Gastos">$ {{ $part->total_partida }}</a></td>
-                                                    @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="table-text"><a href="/desglose/{{$part->id_proyecto}}/{{$part->id_partida}}/{{$part->divisa}}" data-toggle="tooltip" title="Desglosar Gastos">Q {{ $part->total_partida }}</a></td>
-                                                    @endif
-
-                                                    @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="table-text">$ {{ $part->saldo }} </td>
-                                                    @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="table-text">Q {{ $part->saldo }} </td>
-                                                    @endif
-
-                                                    
+                                                    <td style='text-align:center' class="table-text">{{ $part->nombre }}</td>
+                                                    <td style='text-align:center' class="table-text">Q {{ $part->presupuesto }}</td>    
+                                                    @if($part->orden_sumada>0)
+                                                        <td style='text-align:center' class="table-text"><a href="/desglose/{{$part->id_proyecto}}/{{$part->id_partida}}" data-toggle="tooltip" title="Desglosar Gastos">Q {{ $part->orden_sumada }}</a></td>
+                                                    @else
+                                                        <td style='text-align:center' class="table-text"  >Q {{ $part->orden_sumada }}</td>  
+                                                    @endif                                                                                                    
+                                                    <td style='text-align:center' class="table-text"  >Q {{ $part->saldo }}</td>
                                                 </tr>
                                             @endforeach
                                             

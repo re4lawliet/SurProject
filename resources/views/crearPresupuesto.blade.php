@@ -25,77 +25,38 @@
                     <div class="card-header"><!-- Encabezado -->
                         @foreach($proyectos as $proyecto)
                             <h6>Proyecto: {{ $proyecto->nombre_proyecto }}</h6>
-                            <input name="txt_id_proyecto" type="hidden" value="{{ $proyecto->id }}">
+                            <input id="id_txt_id_proyecto" name="txt_id_proyecto" type="hidden" value="{{ $proyecto->id }}">
                         @endforeach
                     </div>
                     <div class="card-body">
                         <!-- Inicio Contenido -->
                         <div class="col-sm-12">
                             <br>
-                            @if(count($partidas)>0 OR count($nuevas)>0)
+                            @if(count($nuevas)>0)
                                 <div class="panel-body">
                                     <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
                                         <thead>
                                             <th style='text-align:center; display:none;' width="10%">ID Partida</td>
                                             <th style='text-align:center' width="30%">Nombre Partida</th>
-                                            <th style='text-align:center' width="15%">Divisa de Partida</th>
                                             <th style='text-align:center' width="18%">Presupuesto</th>
                                             <th style='text-align:center' width="18%">Total</th>
                                             <th style='text-align:center' width="18%">Saldo</th>
                                         </thead>
                                         <!-- Cuerpo de Tabla -->
                                         <tbody>
-                                            @foreach ($partidas as $part)
+                                            @foreach ($nuevas as $nueva)
                                                 <tr>
-
-                                                    <td style='text-align:center; display:none;' class="table-text">{{ $part->id_partida }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
-
-                                                    @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">$ {{ $part->presupuesto }}</td>
-                                                    @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">Q {{ $part->presupuesto }}</td>
-                                                    @endif
-                                                    
-                                                    
-                                                    @if($part->divisa=='USD')
-                                                        <td style='text-align:center' class="table-text">$ {{ $part->total_partida }}</td>
-                                                    @elseif($part->divisa=='QGT')
-                                                     <td style='text-align:center' class="table-text">Q {{ $part->total_partida }}</td>
-                                                    @endif
-
-                                                    @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="table-text">$ {{ $part->saldo }} </td>
-                                                    @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="table-text">Q {{ $part->saldo }} </td>
-                                                    @endif
-
-                                                    
+                                                    <td style='text-align:center; display:none;' class="table-text">{{ $nueva->id_partida }}</td>
+                                                    <td style='text-align:center' class="table-text">{{ $nueva->nombre }}</td>
+                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)" >Q {{ $nueva->presupuesto }}</td>                                                    
+                                                    <td style='text-align:center' class="table-text"  >Q {{ $nueva->orden_sumada }}</td>                                                    
+                                                    <td style='text-align:center' class="table-text"  >Q {{ $nueva->saldo }}</td>                                                    
                                                 </tr>
                                             @endforeach
-                                            @if(count($nuevas)>0)
-                                                @foreach ($nuevas as $part)
-                                                    <tr>
-
-                                                        <td style='text-align:center; display:none;' class="table-text">{{ $part->id_partida }}</td>
-                                                        <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
-                                                        <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
-                                                        <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">0</td>
-                                                        @if($part->divisa=='USD')
-                                                            <td style='text-align:center' class="table-text">$ {{ $part->total_partida }}</td>
-                                                        @elseif($part->divisa=='QGT')
-                                                        <td style='text-align:center' class="table-text">Q {{ $part->total_partida }}</td>
-                                                        @endif
-                                                        <td style='text-align:center' class="table-text"> 0 </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
                                         </tbody>
                                     </table>
                                     <input id ="id_txt_ids" name="txt_ids" type="hidden" value="">
-                                    <input id ="id_txt_divisas" name="txt_divisas" type="hidden" value="">
                                     <input id ="id_txt_presupuestos" name="txt_presupuestos" type="hidden" value="">
                                     <input id ="id_txt_orden_sumada" name="txt_orden_sumada" type="hidden" value="">
                                     <input id ="id_txt_saldos" name="txt_saldos" type="hidden" value="">
@@ -113,8 +74,10 @@
                     </div>
                 </div>
                 <br>
-                <div class="form-group">
-                    <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button><br><br>
+                <div class="">
+                    <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button id="btn_subtotal" type="submit" form="no_form" class="btn btn-primary"  onclick="irVista()">Ver Detalle Presupuesto</button><br><br>
                 </div>
             </div>
             
@@ -130,59 +93,54 @@
         var table = document.getElementById("tabla_de_detalle");
         //limpiar divisas
         for( var i = 1; i < table.rows.length; i++){
-            var divisa = "";
-            if(table.rows[i].cells[2].innerHTML == 'USD'){
-                divisa="$";
-            }else if(table.rows[i].cells[2].innerHTML == 'QGT'){
-                divisa="Q";
-            }
+            var divisa = "Q";
             if(table.rows[i].cells[3].innerHTML.indexOf(divisa)!== -1){
                 table.rows[i].cells[3].innerHTML = table.rows[i].cells[3].innerHTML.replace(divisa,'');
             }
             if(table.rows[i].cells[4].innerHTML.indexOf(divisa)!== -1){
                 table.rows[i].cells[4].innerHTML = table.rows[i].cells[4].innerHTML.replace(divisa,'');
             } 
-            if(table.rows[i].cells[5].innerHTML.indexOf(divisa)!== -1){
-                table.rows[i].cells[5].innerHTML = table.rows[i].cells[5].innerHTML.replace(divisa,'');
+            if(table.rows[i].cells[2].innerHTML.indexOf(divisa)!== -1){
+                table.rows[i].cells[2].innerHTML = table.rows[i].cells[2].innerHTML.replace(divisa,'');
             }       
         }
-        //calcular saldos
+
         var ids="";
-        var divisas="";
         var presupuestos="";
         var ordenes_sumadas="";
         var saldos="";
         for( var i = 1; i < table.rows.length; i++){
             //calculos
-            table.rows[i].cells[5].innerHTML = parseFloat(table.rows[i].cells[3].innerHTML) - parseFloat(table.rows[i].cells[4].innerHTML);    
+            table.rows[i].cells[4].innerHTML = parseFloat(table.rows[i].cells[2].innerHTML) - parseFloat(table.rows[i].cells[3].innerHTML);    
             //concatenaciones
             ids = ids + table.rows[i].cells[0].innerHTML + ',';
-            divisas = divisas + table.rows[i].cells[2].innerHTML + ',';
-            presupuestos = presupuestos + table.rows[i].cells[3].innerHTML + ',';
-            ordenes_sumadas = ordenes_sumadas + table.rows[i].cells[4].innerHTML + ',';
-            saldos = saldos + table.rows[i].cells[5].innerHTML + ',';
-            //agregar divisas
-            var divisa = "";
-            if(table.rows[i].cells[2].innerHTML == 'USD'){
-                divisa="$";
-            }else if(table.rows[i].cells[2].innerHTML == 'QGT'){
-                divisa="Q";
-            }
-            table.rows[i].cells[5].innerHTML = divisa + table.rows[i].cells[5].innerHTML;   
-            table.rows[i].cells[4].innerHTML = divisa + table.rows[i].cells[4].innerHTML;   
-            table.rows[i].cells[3].innerHTML = divisa + table.rows[i].cells[3].innerHTML;   
+            presupuestos = presupuestos + table.rows[i].cells[2].innerHTML + ',';
+            ordenes_sumadas = ordenes_sumadas + table.rows[i].cells[3].innerHTML + ',';
+            saldos = saldos + table.rows[i].cells[4].innerHTML + ',';
+
+            table.rows[i].cells[2].innerHTML = "Q" + table.rows[i].cells[2].innerHTML;   
+            table.rows[i].cells[4].innerHTML = "Q" + table.rows[i].cells[4].innerHTML;   
+            table.rows[i].cells[3].innerHTML = "Q" + table.rows[i].cells[3].innerHTML;   
         }
+
         //limpiando ultima coma
         ids = ids.slice(0,-1);
-        divisas = divisas.slice(0,-1);
         presupuestos = presupuestos.slice(0,-1);
         ordenes_sumadas = ordenes_sumadas.slice(0,-1);
         saldos = saldos.slice(0,-1);
         //colocar concatenaciones en textbos hidden
         document.getElementById("id_txt_ids").value = ids;
-        document.getElementById("id_txt_divisas").value = divisas;
         document.getElementById("id_txt_presupuestos").value = presupuestos;
         document.getElementById("id_txt_orden_sumada").value = ordenes_sumadas;
         document.getElementById("id_txt_saldos").value = saldos;
+        
+        
+    }
+    
+</script>
+<script>
+function irVista(){
+        var idp = document.getElementById("id_txt_id_proyecto").value;
+        location.href="/vistaPresupuesto/"+idp;
     }
 </script>

@@ -29,7 +29,6 @@
                                         <thead>
                                             <th style='text-align:center' width="30%">Nombre Proveedor</th>
                                             <th style='text-align:center' width="18%">Titulo de Solicitud</th>
-                                            <th style='text-align:center' width="18%">Divisa</th>
                                             <th style='text-align:center' width="18%">Total</th>
                                         </thead>
                                         <!-- Cuerpo de Tabla -->
@@ -38,13 +37,8 @@
                                                 <tr>
                                                     <td style='text-align:center' class="table-text">{{ $part->nombre_empresa }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $part->titulo_solicitud }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
-
-                                                    @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="table-text" >$ {{ $part->total }}</td>
-                                                    @elseif($part->divisa=='QGT')
                                                     <td style='text-align:center' class="table-text" >Q {{ $part->total }}</td>
-                                                    @endif
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -94,7 +88,9 @@
 }
     $(document).ready( function () {
         $('#myTable').DataTable({
-            "language": idioma_espanol
+            "language": idioma_espanol,
+            "paging": false,
+            "info": false
         });
     } );
 </script>
