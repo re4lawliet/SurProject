@@ -163,6 +163,7 @@ class ControladorModuloSolicitudes extends Controller
             'txt_total' => 'required',
             'txt_enviara' => 'required',
             'id_proyecto' => 'required',
+            'id_proyecto' => 'required',
             
         ]);
     

@@ -166,7 +166,7 @@
                                 <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly">
 
                                 <label for="taza" class="control-label">Taza de Cambio</label><br>
-                                <input id="txt_taza" type="text" name="txt_taza" class="form-control" value="0">
+                                <input id="txt_taza" type="text" name="txt_taza" class="form-control" value="1">
                             </div>
                         </div>
                         <!-- Fin del Contenido -->
