@@ -9,12 +9,8 @@
 
         <div>
 
-            <h6>CREACION DE PRESUPUESTO</h6>
-            <h6>DEL PROYECTO</h6>
-            @foreach($proyectos as $proyecto)
-                <h6>{{ $proyecto->nombre_proyecto }}</h6>
-                <input name="txt_id_proyecto" type="hidden" value="{{ $proyecto->id }}">
-            @endforeach
+            <h1>CREACION DE PRESUPUESTO</h1>
+            
         </div>
         <br><br>
         <!-- enctype de este tipo para enviar datos del formulario que despues seran variables -->
@@ -27,22 +23,25 @@
             <div class="container">
                 <div class="card">
                     <div class="card-header"><!-- Encabezado -->
-                        Partidas del Proyecto
+                        @foreach($proyectos as $proyecto)
+                            <h6>Proyecto: {{ $proyecto->nombre_proyecto }}</h6>
+                            <input name="txt_id_proyecto" type="hidden" value="{{ $proyecto->id }}">
+                        @endforeach
                     </div>
                     <div class="card-body">
                         <!-- Inicio Contenido -->
-                        <div class="col-sm-10">
+                        <div class="col-sm-12">
                             <br>
                             @if(count($partidas)>0 OR count($nuevas)>0)
                                 <div class="panel-body">
                                     <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
                                         <thead>
-                                            <th style='text-align:center' width="10%">ID Partida</td>
+                                            <th style='text-align:center; display:none;' width="10%">ID Partida</td>
                                             <th style='text-align:center' width="30%">Nombre Partida</th>
                                             <th style='text-align:center' width="15%">Divisa de Partida</th>
                                             <th style='text-align:center' width="18%">Presupuesto</th>
-                                            <th style='text-align:center' width="18%">Orden Sumada</th>
+                                            <th style='text-align:center' width="18%">Total</th>
                                             <th style='text-align:center' width="18%">Saldo</th>
                                         </thead>
                                         <!-- Cuerpo de Tabla -->
@@ -50,14 +49,14 @@
                                             @foreach ($partidas as $part)
                                                 <tr>
 
-                                                    <td style='text-align:center' class="table-text">{{ $part->id_partida }}</td>
+                                                    <td style='text-align:center; display:none;' class="table-text">{{ $part->id_partida }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
 
                                                     @if($part->divisa=='USD')
-                                                    <td style='text-align:center' class="editable" contenteditable="true">$ {{ $part->presupuesto }}</td>
+                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">$ {{ $part->presupuesto }}</td>
                                                     @elseif($part->divisa=='QGT')
-                                                    <td style='text-align:center' class="editable" contenteditable="true">Q {{ $part->presupuesto }}</td>
+                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">Q {{ $part->presupuesto }}</td>
                                                     @endif
                                                     
                                                     
@@ -80,10 +79,10 @@
                                                 @foreach ($nuevas as $part)
                                                     <tr>
 
-                                                        <td style='text-align:center' class="table-text">{{ $part->id_partida }}</td>
+                                                        <td style='text-align:center; display:none;' class="table-text">{{ $part->id_partida }}</td>
                                                         <td style='text-align:center' class="table-text">{{ $part->nombre_partida }}</td>
                                                         <td style='text-align:center' class="table-text">{{ $part->divisa }}</td>
-                                                        <td style='text-align:center' class="editable" contenteditable="true">0</td>
+                                                        <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">0</td>
                                                         @if($part->divisa=='USD')
                                                             <td style='text-align:center' class="table-text">$ {{ $part->total_partida }}</td>
                                                         @elseif($part->divisa=='QGT')

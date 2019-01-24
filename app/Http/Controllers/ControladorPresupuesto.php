@@ -106,7 +106,7 @@ class ControladorPresupuesto extends Controller
 
     
     public function desglose($idProyecto,$idPartida,$divisa){
-        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, o.total
+        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, o.total, e.nombre_empresa, s.titulo_solicitud
                                         FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
                                         WHERE p.id = $idProyecto
                                         AND o.id_proyecto = $idProyecto
