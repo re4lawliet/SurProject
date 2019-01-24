@@ -41,6 +41,9 @@ class ControladorCompras extends Controller
         $orden = DB::table('orden')->where('respuesta_conta', '3')->count();
         Session::put('countOrdenesRechazadas',$orden); 
 
+        $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
+        Session::put('countOrdenesFinalizadas',$orden); 
+
         $name = $request->get('name');
         
         $proyectos = proyecto::orderBy('id', 'DESC')

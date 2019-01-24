@@ -1,5 +1,10 @@
 <!-- ENCABEZADO -->
-@extends('layouts.appDirector')
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
+    )
 @section('content')
     <center>
         <h1> Vista Previa Orden y Cotizacion</h1>
@@ -22,8 +27,12 @@
         <div class="form-group">
             <a href="#">
                 <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/homes'">HOME</button> 
+                <button type="submit" class="btn btn-danger" onclick="location.href='/AceptarSolicitudRechazada/{{Session::get('pdf_idOrden')}}'">
+                    <i class="fa fa-btn fa-pencil" ></i> Eliminar de Notificaciones
+                </button>    
             </a>
         </div>
+
 
     </center>
 @endsection
