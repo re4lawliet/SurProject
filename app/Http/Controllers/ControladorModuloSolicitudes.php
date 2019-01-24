@@ -305,8 +305,19 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('c_nsolicitud', $solicitud->titulo_solicitud);
         //proyecto
         Session::put('c_nproyecto', $proyecto->nombre_proyecto);
-        //pdf
+        //pdf orden
         Session::put('c_npdf', $sol->pdf);
+        //pdf presupuesto
+        $solicitudd = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$sol->id_solicitud';"));
+        foreach ($solicitudd as $soli) {
+            if($soli->presupuesto!=NULL){
+                Session::put('c_npdfpresupuesto',$soli->presupuesto);
+            }else{
+                Session::put('c_npdfpresupuesto','PDF/orderfile1.pdf');
+            }          
+        }
 
         return view('/homeSolicitudContador');
     }
@@ -322,6 +333,7 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('r_idpro', $sol->id_proveedor);
         Session::put('r_idsol', $sol->id_solicitud);
         Session::put('r_idproy', $sol->id_proyecto);
+        
 
         $solicitud = solicitude::findOrFail($sol->id_solicitud);
         $prove = empresa::findOrFail($sol->id_proveedor);
@@ -331,6 +343,7 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('r_nproveedor', $prove->nombre_empresa);
         //solicitud
         Session::put('r_nsolicitud', $solicitud->titulo_solicitud);
+        Session::put('r_idpart', $solicitud->id_partida);
         //proyecto
         Session::put('r_nproyecto', $proyecto->nombre_proyecto);
         //pdf
@@ -346,7 +359,238 @@ class ControladorModuloSolicitudes extends Controller
         return view('/homeSolicitudRechazada');
     }
 
+    public function verSolicitudComprasRechazada($id_solicitud, $id_partida, $id_proyecto){
+        $sol = solicitude::findOrFail($id_solicitud);
+        Session::put('s_id', $id_solicitud);
+        Session::put('s_titulo', $sol->titulo_solicitud);
+        Session::put('s_id_partida', $sol->id_partida);
+        Session::put('s_solicitante', $sol->rol);
+        Session::put('s_proveedor', $sol->proveedor);
+        //nombre partida
+        $partida = DB::select(DB::raw("SELECT *
+                                        FROM partidas
+                                        WHERE id = $id_partida;"));
+        //proyecto
+        $proyecto = DB::select(DB::raw("SELECT *
+                                        FROM proyectos
+                                        WHERE id = $id_proyecto;"));
+        
+        //lista de productos solicitados
+        $lista_Solicitud = DB::select(DB::raw("SELECT *
+                                            FROM listados
+                                            WHERE id_solicitud = $id_solicitud;"));
+
+        //solicitud
+        $solicitud = DB::select(DB::raw("SELECT *
+                                            FROM solicitudes
+                                            WHERE id = $id_solicitud;"));
+        
+        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+
+        $prove = DB::select(DB::raw("SELECT * 
+                                        FROM empresas
+                                        WHERE id = 'inexistente';"));
+
+        return view('homeOrdenSolicitudRechazada')
+                                            ->with('queryListado',$lista_Solicitud)
+                                            ->with('partidas',$partida)
+                                            ->with('queryEmpresas' , $emp)
+                                            ->with('queryProveedores',$prove)
+                                            ->with('queryProyecto',$proyecto)
+                                            ->with('querySolicitud',$solicitud);
+    }
 
     
+    public function verSolicitudComprasProvRechazada($id_solicitud, $id_partida, $id_proyecto, $id_proveedor){
+        $sol = solicitude::findOrFail($id_solicitud);
+        Session::put('s_id', $id_solicitud);
+        Session::put('s_titulo', $sol->titulo_solicitud);
+        Session::put('s_id_partida', $sol->id_partida);
+        Session::put('s_solicitante', $sol->rol);
+        Session::put('s_proveedor', $sol->proveedor);
+        //nombre partida
+        $partida = DB::select(DB::raw("SELECT *
+                                        FROM partidas
+                                        WHERE id = $id_partida;"));
+        //proyecto
+        $proyecto = DB::select(DB::raw("SELECT *
+                                        FROM proyectos
+                                        WHERE id = $id_proyecto;"));
+        //lista de productos solicitados
+        $lista_Solicitud = DB::select(DB::raw("SELECT *
+                                            FROM listados
+                                            WHERE id_solicitud = $id_solicitud;"));
+
+        //solicitud
+        $solicitud = DB::select(DB::raw("SELECT *
+                                            FROM solicitudes
+                                            WHERE id = $id_solicitud;"));
+        
+        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+
+        $prove = DB::select(DB::raw("SELECT * 
+                                        FROM empresas 
+                                        WHERE id = $id_proveedor;"));
+
+        return view('homeOrdenSolicitudRechazada')
+                                        ->with('queryListado',$lista_Solicitud)
+                                        ->with('partidas',$partida)
+                                        ->with('queryEmpresas' , $emp)
+                                        ->with('queryProveedores',$prove)
+                                        ->with('queryProyecto',$proyecto)
+                                        ->with('querySolicitud',$solicitud);
+    }
+
+    public function crearOrdenRechazada(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_emp' => 'required',
+            'tipo_pago' => 'required',
+            'txt_id_solicitud' => 'required',
+            'txt_precios_unitarios' => 'required',
+            'txt_subtotales' => 'required',
+            'txt_subtotales' => 'required',
+            'txt_total' => 'required',
+            'txt_enviara' => 'required',
+            'id_proyecto' => 'required',
+            
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect('/MostrarSolicitudesCompras')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $val_id_proveedor = $request->id_emp;
+        $val_tipo_pago = $request->tipo_pago;
+        $str_tipo_pago="NaN";
+        if($val_tipo_pago == 1){
+            $str_tipo_pago = "Transferencia";
+        }else if($val_tipo_pago == 2){
+            $str_tipo_pago = "Cheque";
+        }
+
+        $val_id_solicitud = $request->txt_id_solicitud;
+
+        $val_ids = $request->txt_ids;
+        $val_precios_unitarios = $request->txt_precios_unitarios;
+        $val_subtotales = $request->txt_subtotales;
+
+        $val_total = $request->txt_total;
+
+        $val_enviar_a = $request->txt_enviara;
+        $val_id_proyecto = $request->id_proyecto;
+        $val_correos = $request->correos;
+        
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+
+
+        //Insertar en Orden
+        $idOrden=Session::get('r_id');
+        
+        $insertarOrden = DB::select(DB::raw("DELETE FROM orden WHERE id=$idOrden;"));
+        
+        
+
+
+        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
+                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos','1','1','','$fecha');"));
+        
+        $maxidorden = DB::table('orden')->find(DB::table('orden')->max('id'));
+        $updateOrden = DB::select(DB::raw("UPDATE orden
+                                            SET id = $idOrden
+                                            WHERE id=$maxidorden->id;    
+        "));
+        
+
+        //Insertar precios
+        $arr_ids=explode(",",$val_ids);
+        $arr_precios=explode(",",$val_precios_unitarios);
+        $arr_subtotales = explode(",",$val_subtotales);
+        for($i =0; $i<sizeof($arr_ids);$i++){
+            $insertarPrecios = DB::select(DB::raw("UPDATE listados
+                                                    SET precio_unitario = $arr_precios[$i], subtotal = $arr_subtotales[$i]
+                                                    WHERE id = $arr_ids[$i];"));
+        }
+        //actualizar Solicitud
+        $insertarSolicitud = DB::select(DB::raw("UPDATE solicitudes
+                                                    SET orden_creada = '1'
+                                                    WHERE id = $val_id_solicitud;"));
+        if ($_FILES['presupuesto']['name'] != null) {
+            $nombrep = 'pres'.$val_id_solicitud;
+            $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+            $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+            $ruta="PDF/".$nombrep.$nombreimg;
+            if(strpos($ruta, '.pdf')){
+                move_uploaded_file($archivo,$ruta);
+            }else{
+                $ruta="";
+            }
+            $insertarSolicitud2 = DB::select(DB::raw("UPDATE solicitudes
+                                                    SET presupuesto = '$ruta'
+                                                    WHERE id = $val_id_solicitud;"));
+        }
+
+        //Datos proveedor
+        $data_proveedor = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        //Datos de Solicitud 
+        $data_solicitud = DB::table('solicitudes')->where('id', $val_id_solicitud)->first();
+        //Detalle de Factura
+        $data_factura = DB::table('listados')->where('id_solicitud', $val_id_solicitud)->get();
+        //Datos Proyecto
+        $data_proyecto = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
+       
+
+        
+
+        $data = ['proveedor' => $data_proveedor,
+                'tipo_pago' => $str_tipo_pago,
+                'fecha' => $fecha,
+                'solicitud' => $data_solicitud,
+                'detalle' => $data_factura,
+                'proyecto' => $data_proyecto,
+                'enviar_a' => $val_enviar_a,
+                'total' => $val_total];
+                
+        //direccion del correo
+        $maxid = DB::table('orden')->find(DB::table('orden')->max('id'));
+        $name = 'orderfile'.$maxid->id.'.pdf';
+        $path = 'PDF/orderfile'.$maxid->id.'.pdf';
+        
+        //update ORDEN
+        $insertarPDF = DB::select(DB::raw("UPDATE orden
+                                                    SET pdf ='$path'
+                                                    WHERE id = $maxid->id;"));
+
+        // return view('myPDF')->with('proveedor' , $data_proveedor)
+        //                     ->with('tipo_pago' , $str_tipo_pago)
+        //                     ->with('fecha' , $fecha)
+        //                     ->with('solicitud' , $data_solicitud)
+        //                     ->with('detalle' , $data_factura)
+        //                     ->with('proyecto',$data_proyecto)
+        //                     ->with('enviar_a',$val_enviar_a)
+        //                     ->with('total',$val_total);
+        $pdf = PDF::loadView('myPDF', $data);
+        file_put_contents($path, $pdf->output()); 
+
+        //incrementar correlativo de empresa
+        $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        $corr = $provv->correlativo + 1;
+        $updateProveedor = DB::select(DB::raw("UPDATE empresas
+                                                    SET correlativo ='$corr'
+                                                    WHERE id = $val_id_proveedor;"));
+
+        return view('guardarPDF')->with('path',$path);
+        //return $pdf->stream($name);
+        
+    }
+
+
+
+
+
+
+
 
 }

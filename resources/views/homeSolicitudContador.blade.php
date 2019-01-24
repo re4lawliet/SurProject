@@ -16,6 +16,7 @@
         </div>
         <br><br>
         
+        <h3>Mostrar ORDEN:</h3>
         <div class="col-sm-7">
             <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Propuesta de Presupuesto</button>
         </div>
@@ -26,7 +27,17 @@
             
         </div>
 
-        
+        <br><br>
+        <h3>Mostrar Presupuesto:</h3>
+        <div class="col-sm-7">
+            <button id="btn_pr2" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto2()">Ver Propuesta de Presupuesto</button>
+        </div>
+        <br>
+        <div class="col-sm-7" id="divPresupuesto2" style="display:none">
+            <embed src="/{{ Session::get('c_npdfpresupuesto', 'pdf invalido') }}" type="application/pdf" width="100%" height="600px">
+            <br><br>
+            
+        </div>
 
         <br>
         <br>
@@ -41,13 +52,15 @@
                 </div>  
                 <br>
                 <!-- Boton Rechazar -->
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-danger" name="rechazar_orden">
                     <i class="fa fa-btn fa-pencil"></i> Rechazar Orden de Compra
                 </button>    
+                <button type="submit" class="btn btn-success" name="aceptar_orden">
+                    <i class="fa fa-btn fa-pencil"></i>Aceptar Orden de Compra
+                </button>     
             </form>  
-            <button type="submit" class="btn btn-success" onclick="location.href='/AceptarSolicitudContador/{{Session::get('c_id')}}'">
-                <i class="fa fa-btn fa-pencil"></i>Aceptar Orden de Compra
-            </button>     
+
+            
 
         </div>
         
@@ -59,6 +72,20 @@
         function mostrarPresupuesto() {
             var y = document.getElementById("btn_pr");
             var x = document.getElementById("divPresupuesto");
+            if (x.style.display === "none") {
+                y.className = "btn btn-danger";
+                y.innerHTML = "Esconder Propuesta de Presupuesto";
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+                y.className = "btn btn-info"
+                y.innerHTML = "Ver Propuesta de Presupuesto";
+            }
+        }
+
+        function mostrarPresupuesto2() {
+            var y = document.getElementById("btn_pr2");
+            var x = document.getElementById("divPresupuesto2");
             if (x.style.display === "none") {
                 y.className = "btn btn-danger";
                 y.innerHTML = "Esconder Propuesta de Presupuesto";

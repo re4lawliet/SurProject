@@ -46,6 +46,7 @@
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesRechazadas') }}" class="nav-link"> Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a></li>
                         
                         </ul>
+                        <!--
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúCompras #2 <b class="caret"></b>
@@ -58,6 +59,7 @@
                                 <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
                         </li>
+                        -->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

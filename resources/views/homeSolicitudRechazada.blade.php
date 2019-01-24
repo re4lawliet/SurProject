@@ -40,9 +40,16 @@
             <button type="submit" class="btn btn-success" onclick="location.href='/homeCompras'">
                 <i class="fa fa-btn fa-pencil"></i>Home
             </button>
+            
             <button type="submit" class="btn btn-danger" onclick="location.href='/AceptarSolicitudRechazada/{{Session::get('r_id')}}'">
                     <i class="fa fa-btn fa-pencil" ></i> Eliminar de Notificaciones
-                </button>         
+                </button>    
+                
+                
+            
+            <button type="submit" class="btn btn-primary" onclick="location.href='/OrdenSolicitudRechazada/{{Session::get('r_idsol')}}/{{Session::get('r_idpart')}}/{{Session::get('r_idproy')}}'">
+                <i class="fa fa-btn fa-pencil" ></i> Rehacer Orden de Compra
+            </button>   
 
         </div>
         

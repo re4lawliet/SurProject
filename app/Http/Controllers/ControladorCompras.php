@@ -38,7 +38,7 @@ class ControladorCompras extends Controller
                                     ->count();
         Session::put('countSolicitudesCompras',$solicitudes);
 
-        $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
+        $orden = DB::table('orden')->where('respuesta_conta', '3')->count();
         Session::put('countOrdenesRechazadas',$orden); 
 
         $name = $request->get('name');

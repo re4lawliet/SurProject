@@ -39,6 +39,7 @@
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesDirector')}}</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes: {{Session::get('countOrdenesAprobadas')}}</a></li>
                         </ul>
+                        <!--
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúDirector #2 <b class="caret"></b>
@@ -51,6 +52,7 @@
                                 <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
                         </li>
+                        -->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

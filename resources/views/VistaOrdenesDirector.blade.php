@@ -22,8 +22,8 @@
                     <table class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>Fecha de Creacion</th>
-                            <th>Fecha aprobacion contabilidad</th>
+                            <th>Fecha de Creacion por Compras</th>
+                            <!--<th>Fecha aprobacion contabilidad</th>-->
                             <th>Titulo de Solicitud</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
@@ -34,7 +34,7 @@
                         @foreach ($ordenes as $orden)
                             <tr>
                                 <td class="table-text"><div>{{ $orden->fecha_creacion }}</div></td>
-                                <td class="table-text"><div>{{ $orden->fecha_contador }}</div></td>
+                                <!--<td class="table-text"><div>{{ $orden->fecha_contador }}</div></td> -->
                                 <td class="table-text"><div>{{ $orden->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $orden->nombre_empresa }}</div></td>
                                 <td class="table-text"><div>{{ $orden->nombre_proyecto }}</div></td>
