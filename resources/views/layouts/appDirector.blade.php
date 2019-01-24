@@ -38,6 +38,7 @@
                         <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesDirector')}}</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes: {{Session::get('countOrdenesAprobadas')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
                         </ul>
                         <!--
                         <li class="dropdown">

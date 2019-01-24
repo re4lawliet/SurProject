@@ -472,8 +472,70 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
+    public function mostrarOrdenesFinalizadas(){
+        $countorden = DB::table('orden')->where('respuesta_conta', '2')->count();
+        Session::put('countOrdenesFinalizadas',$countorden); 
+        $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                                        WHERE respuesta_conta = '2'
+                                        AND s.id = o.id_solicitud
+                                        AND e.id = o.id_proveedor
+                                        AND p.id = o.id_proyecto;"));                             
+    
+        return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
+    }
+
+    public function mostrarPDFFinalizada($idOrden){
+        $orden = DB::select(DB::raw("SELECT *
+                                    FROM orden
+                                    WHERE id = '$idOrden';"));
+        Session::put('pdf_idOrden',$idOrden);
+        foreach ($orden as $or) {
+            Session::put('pdf_enviar',$or->pdf);
+            Session::put('pdf_correos',$or->correos);
+            
+            //$file = $request->file('file');
+            //$extension = $file->getClientOriginalExtension();
+            //$nombre=$file->getClientOriginalName();
+            Storage::disk('local')->put('OrdenCompra.pdf', \File::get($or->pdf));
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$or->id_solicitud';"));
+            foreach ($solicitud as $sol) {
+                if($sol->presupuesto!=NULL){
+                    Session::put('pdf_presupuesto',$sol->presupuesto);
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get($sol->presupuesto));
+                }else{
+                    Session::put('pdf_presupuesto','PDF/orderfile1.pdf');
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get("PDF/orderfile1.pdf"));
+                }          
+            }
 
 
+            $proyecto = DB::select(DB::raw("SELECT *
+                                    FROM proyectos
+                                    WHERE id = '$or->id_proyecto';"));
+            foreach ($proyecto as $proy) {
+                Session::put('pdf_proyecto',$proy->nombre_proyecto);        
+            }
+
+            $provedor = DB::select(DB::raw("SELECT *
+                                    FROM empresas
+                                    WHERE id = '$or->id_proveedor';"));
+            foreach ($provedor as $prov) {
+                Session::put('pdf_provedor',$prov->nombre_encargado);        
+            }
+
+        }
+        
+        //seteamos en el local el archivo de presupuesto
+
+        
+        
+                                    
+        return view('verPDFFinalizada')->with('orden',$orden);
+    }
 
 
 

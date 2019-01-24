@@ -35,6 +35,9 @@ class ControladorDirector extends Controller
         $orden = DB::table('orden')->where('respuesta_conta', '0')->count();
         Session::put('countOrdenesAprobadas',$orden); 
 
+        $orden2 = DB::table('orden')->where('respuesta_conta', '2')->count();
+        Session::put('countOrdenesFinalizadas',$orden2); 
+
         $name = $request->get('name');
         
         $proyectos = proyecto::orderBy('id', 'DESC')

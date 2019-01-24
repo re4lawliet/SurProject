@@ -389,3 +389,8 @@ Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
 
 //Enviar Mails
 Route::get('/enviar_correo', 'ControladorVistaPedidos@enviar');
+
+//------------------Mostrar Ordenes Finalizadas
+Route::get('/MostrarOrdenesFinalizadas','ControladorVistaPedidos@mostrarOrdenesFinalizadas');
+//------------------Mostrar PDF a Director
+Route::get('/verOrdenFinalizada/{idOrden}','ControladorVistaPedidos@mostrarPDFFinalizada');
