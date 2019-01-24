@@ -6,7 +6,7 @@
     <center>
         <!--TITULO -->
         <div class="panel-title">
-            <h1><center>VISTA DE ORDENES POR ENVIAR</center></h1>
+            <h1><center>HISTORIAL de Ordenes Finalizadas</center></h1>
         </div>
 
 
@@ -15,7 +15,7 @@
             <!-- si el resultado de la consulta es mayor a 0-->
             @if (count($ordenes) > 0)
                 <div class="panel panel-default">
-                    <h2>Listado De Ordenes</h2>
+                    <h2>Listado De Ordenes Finalizadas</h2>
                 </div>
                 <br>
                 <div class="panel-body">
@@ -41,7 +41,7 @@
                                 <!-- Boton VER -->
                                 <td>
                                 <!-- // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_proveedor">Crear Orden</button> -->
-                                <button type="submit" class="btn btn-primary" onclick="location.href='verOrdenDirector/{{ $orden->id }}'">
+                                <button type="submit" class="btn btn-primary" onclick="location.href='verOrdenFinalizada/{{ $orden->id }}'">
                                         <i class="fa fa-btn fa-pencil"></i>Ver Orden
                                     </button>
                                     

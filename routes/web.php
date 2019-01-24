@@ -296,6 +296,16 @@ Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
 
 
+Route::get('/OrdenSolicitudRechazada/{id_solicitud}/{id_partida}/{id_proyecto}', 'ControladorModuloSolicitudes@verSolicitudComprasRechazada');
+
+Route::get('/OrdenSolicitudRechazada/{id_solicitud}/{id_partida}/{id_proyecto}/{id_proveedor}', 'ControladorModuloSolicitudes@verSolicitudComprasProvRechazada');
+
+Route::post('/OrdenCreadaRechazada', 'ControladorModuloSolicitudes@crearOrdenRechazada');
+
+
+
+
+
 
 
 //------------------Mostrar solicitudes a Contador
@@ -303,7 +313,7 @@ Route::get('/MostrarSolicitudesContador','ControladorVistaPedidos@mostrarSolicit
 //------------------Mostrar solicitud especifica a Contador
 Route::get('/SolicitudContador/{id}', 'ControladorModuloSolicitudes@verSolicitudContador');
 //------------------Aceptar solicitud por Contador
-Route::get('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
+Route::put('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
 //------------------Rechazar solicitud por Contador
 Route::put('/RechazarSolicitudContador/{id}', 'ControladorVistaPedidos@rechazarSolicitudContador');
 
@@ -379,3 +389,8 @@ Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
 
 //Enviar Mails
 Route::get('/enviar_correo', 'ControladorVistaPedidos@enviar');
+
+//------------------Mostrar Ordenes Finalizadas
+Route::get('/MostrarOrdenesFinalizadas','ControladorVistaPedidos@mostrarOrdenesFinalizadas');
+//------------------Mostrar PDF a Director
+Route::get('/verOrdenFinalizada/{idOrden}','ControladorVistaPedidos@mostrarPDFFinalizada');

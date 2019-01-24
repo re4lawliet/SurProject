@@ -185,7 +185,7 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarSolicitudesContador(){
         $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','0')
+                            ->where('respuesta_conta','1')
                             ->count();
         Session::put('countSolicitudesConta',$solicitudes2);
 
@@ -194,37 +194,14 @@ class ControladorVistaPedidos extends Controller{
                                             WHERE ord.id_solicitud = s.id 
                                             AND ord.id_proveedor = pro.id 
                                             AND ord.id_proyecto = p.id 
-                                            AND ord.respuesta_conta = '0';
+                                            AND ord.respuesta_conta = '1';
                                             "));                             
     
         return view('VistaPedidosContador', [ 'querySolicitudes' => $solicitudes ]);
     }
 
     
-    public function aceptarSolicitudContador($id){
-        
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-        $solicitud = orden::findOrFail($id);
-        $solicitud->respuesta_conta='1';
-        $solicitud->comentario_conta='aceptada';
-        $solicitud->fecha_contador = $fecha;
-        $solicitud->save();
-
-        //jalo la solicitud y le pondre 3 que es aceptada final
-        $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
-        $solicitud3->orden_creada='3';
-        $solicitud3->save();
-
-        $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','0')
-                            ->count();
-        Session::put('countSolicitudesConta',$solicitudes2);
-
-        return redirect('MostrarSolicitudesContador');
-    }
-
-    public function rechazarSolicitudContador(Request $request,$id){
+    public function aceptarSolicitudContador(Request $request,$id){
 
         $validator = Validator::make($request->all(), [
             'comentario' => 'required|max:2000',   
@@ -235,31 +212,103 @@ class ControladorVistaPedidos extends Controller{
                 ->withInput()
                 ->withErrors($validator);
         }
-        
+       
+        $comentarioAceptada="[Aceptada] ".$request->comentario;
+
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
         $solicitud = orden::findOrFail($id);
         $solicitud->respuesta_conta='2';
-        $solicitud->comentario_conta=$request->comentario;
+        $solicitud->comentario_conta=$comentarioAceptada;
         $solicitud->fecha_contador = $fecha;
         $solicitud->save();
 
-        //jalo la solicitud y le pondre 2 que es rechazada por conta
+        //jalo la solicitud y le pondre 3 que es aceptada final
         $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
-        $solicitud3->orden_creada='2';
+        $solicitud3->orden_creada='3';
         $solicitud3->save();
 
         $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','0')
+                            ->where('respuesta_conta','1')
                             ->count();
         Session::put('countSolicitudesConta',$solicitudes2);
 
         return redirect('MostrarSolicitudesContador');
     }
 
+    public function rechazarSolicitudContador(Request $request,$id){
+
+
+        if(isset($_POST['aceptar_orden'])){
+
+            $validator = Validator::make($request->all(), [
+                'comentario' => 'required|max:2000',   
+            ]);
+        
+            if ($validator->fails()) {
+                return redirect('MostrarSolicitudesContador')
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+           
+            $comentarioAceptada="[Aceptada] ".$request->comentario;
+    
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = orden::findOrFail($id);
+            $solicitud->respuesta_conta='2';
+            $solicitud->comentario_conta=$comentarioAceptada;
+            $solicitud->fecha_contador = $fecha;
+            $solicitud->save();
+    
+            //jalo la solicitud y le pondre 3 que es aceptada final
+            $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+            $solicitud3->orden_creada='3';
+            $solicitud3->save();
+    
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','1')
+                                ->count();
+            Session::put('countSolicitudesConta',$solicitudes2);
+
+        }else if(isset($_POST['rechazar_orden'])){
+
+            $validator = Validator::make($request->all(), [
+                'comentario' => 'required|max:2000',   
+            ]);
+        
+            if ($validator->fails()) {
+                return redirect('MostrarSolicitudesContador')
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+            
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = orden::findOrFail($id);
+            $solicitud->respuesta_conta='3';
+            $solicitud->comentario_conta=$request->comentario;
+            $solicitud->fecha_contador = $fecha;
+            $solicitud->save();
+    
+            //jalo la solicitud y le pondre 2 que es rechazada por conta
+            $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+            $solicitud3->orden_creada='2';
+            $solicitud3->save();
+    
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','1')
+                                ->count();
+            Session::put('countSolicitudesConta',$solicitudes2);
+    
+        }
+
+        return redirect('MostrarSolicitudesContador');
+    }
+
     public function mostrarSolicitudesRechazadas(){
         $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','2')
+                            ->where('respuesta_conta','3')
                             ->count();
         Session::put('countOrdenesRechazadas',$solicitudes2);
 
@@ -268,7 +317,7 @@ class ControladorVistaPedidos extends Controller{
                                             WHERE ord.id_solicitud = s.id 
                                             AND ord.id_proveedor = pro.id 
                                             AND ord.id_proyecto = p.id 
-                                            AND ord.respuesta_conta = '2';
+                                            AND ord.respuesta_conta = '3';
                                             "));                             
     
         return view('VistaPedidosOrdenesRechazadas', [ 'querySolicitudes' => $solicitudes ]);
@@ -284,7 +333,7 @@ class ControladorVistaPedidos extends Controller{
         $solicitud->save();
 
         $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','2')
+                            ->where('respuesta_conta','3')
                             ->count();
         Session::put('countOrdenesRechazadas',$solicitudes2);
 
@@ -309,11 +358,11 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarOrdenesDirector(){
-    $countorden = DB::table('orden')->where('respuesta_conta', '1')->count();
+    $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
     Session::put('countOrdenesAprobadas',$countorden); 
         $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                                        WHERE respuesta_conta = '1'
+                                        WHERE respuesta_conta = '0'
                                         AND s.id = o.id_solicitud
                                         AND e.id = o.id_proveedor
                                         AND p.id = o.id_proyecto;"));                             
@@ -412,19 +461,81 @@ class ControladorVistaPedidos extends Controller{
         //ahora tengo que colocar 3 por que fue enviada
 
         $solicitud = orden::findOrFail($idOrden);
-        $solicitud->respuesta_conta='3';
+        $solicitud->respuesta_conta='1';
         $solicitud->enviado='1';
         $solicitud->save();
 
-        Session::flash('messageOrden','Orden de Compra Aprobada Se Enviaron Los Correos');
+        Session::flash('messageOrden','Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
 
 
         return redirect('/homeDirector');
     }
 
 
+    public function mostrarOrdenesFinalizadas(){
+        $countorden = DB::table('orden')->where('respuesta_conta', '2')->count();
+        Session::put('countOrdenesFinalizadas',$countorden); 
+        $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                                        WHERE respuesta_conta = '2'
+                                        AND s.id = o.id_solicitud
+                                        AND e.id = o.id_proveedor
+                                        AND p.id = o.id_proyecto;"));                             
+    
+        return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
+    }
+
+    public function mostrarPDFFinalizada($idOrden){
+        $orden = DB::select(DB::raw("SELECT *
+                                    FROM orden
+                                    WHERE id = '$idOrden';"));
+        Session::put('pdf_idOrden',$idOrden);
+        foreach ($orden as $or) {
+            Session::put('pdf_enviar',$or->pdf);
+            Session::put('pdf_correos',$or->correos);
+            
+            //$file = $request->file('file');
+            //$extension = $file->getClientOriginalExtension();
+            //$nombre=$file->getClientOriginalName();
+            Storage::disk('local')->put('OrdenCompra.pdf', \File::get($or->pdf));
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$or->id_solicitud';"));
+            foreach ($solicitud as $sol) {
+                if($sol->presupuesto!=NULL){
+                    Session::put('pdf_presupuesto',$sol->presupuesto);
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get($sol->presupuesto));
+                }else{
+                    Session::put('pdf_presupuesto','PDF/orderfile1.pdf');
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get("PDF/orderfile1.pdf"));
+                }          
+            }
 
 
+            $proyecto = DB::select(DB::raw("SELECT *
+                                    FROM proyectos
+                                    WHERE id = '$or->id_proyecto';"));
+            foreach ($proyecto as $proy) {
+                Session::put('pdf_proyecto',$proy->nombre_proyecto);        
+            }
+
+            $provedor = DB::select(DB::raw("SELECT *
+                                    FROM empresas
+                                    WHERE id = '$or->id_proveedor';"));
+            foreach ($provedor as $prov) {
+                Session::put('pdf_provedor',$prov->nombre_encargado);        
+            }
+
+        }
+        
+        //seteamos en el local el archivo de presupuesto
+
+        
+        
+                                    
+        return view('verPDFFinalizada')->with('orden',$orden);
+    }
 
 
 

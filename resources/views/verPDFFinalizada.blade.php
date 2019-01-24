@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <a href="#">
-                <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/enviar_correo'">ENVIAR</button> 
+                <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/homes'">HOME</button> 
             </a>
         </div>
 

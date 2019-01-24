@@ -35,9 +35,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes: {{Session::get('pdf_enviar')}}</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceColaborador #2</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes: {{Session::get('countSolicitudesColaborador')}}</a></li>
+                            <li class="nav-item"><a href="{{ url('/homeColaborador') }}" class="nav-link">Home Colaborador</a></li>
                         </ul>
+                        <!--
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúColaborador #2 <b class="caret"></b>
@@ -50,6 +51,7 @@
                                 <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
                         </li>
+                        -->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

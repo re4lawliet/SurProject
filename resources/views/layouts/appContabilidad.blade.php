@@ -35,7 +35,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a  class="nav-link">Ordenes Pendientes: {{Session::get('countSolicitudesConta')}}</a></li>
+                        <li class="nav-item"><a  href="/MostrarSolicitudesContador" class="nav-link">Ordenes Pendientes: {{Session::get('countSolicitudesConta')}}</a></li>
                             <li class="nav-item"><a href="/homeContabilidad" class="nav-link">Home Contabilidad</a></li>
                         </ul>
                         <li class="dropdown">

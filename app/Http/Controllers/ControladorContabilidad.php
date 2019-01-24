@@ -33,7 +33,7 @@ class ControladorContabilidad extends Controller
     public function indexContabilidad(Request $request)
     {
         $solicitudes = DB::table('orden')
-                            ->where('respuesta_conta','0')
+                            ->where('respuesta_conta','1')
                             ->count();
         Session::put('countSolicitudesConta',$solicitudes);
 
