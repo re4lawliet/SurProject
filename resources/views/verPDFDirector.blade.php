@@ -10,18 +10,12 @@
             <embed src="/{{ $o->pdf }}" type="application/pdf" width="100%" height="1150px">
         </div>
         @endforeach
-<<<<<<< HEAD
-
-        
-        
-=======
         <br>
         <br>
         <h3> Cotizacion</h3>
         <div class="container">
             <embed src="/{{ Session::get('pdf_presupuesto') }}" type="application/pdf" width="100%" height="1150px">
         </div>
->>>>>>> 8be43520202d74a384d4d15e0392f35ceadbe5bd
 
 
 
