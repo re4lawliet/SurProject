@@ -42,6 +42,7 @@
                         <li class="nav-item"><a href="{{ url('/homeCompras') }}" class="nav-link"> Home Compras</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesRechazadas') }}" class="nav-link"> Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
                         
                         </ul>
                         <!--

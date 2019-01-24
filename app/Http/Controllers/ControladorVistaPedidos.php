@@ -337,7 +337,7 @@ class ControladorVistaPedidos extends Controller{
                             ->count();
         Session::put('countOrdenesRechazadas',$solicitudes2);
 
-        return redirect('MostrarSolicitudesRechazadas');
+        return redirect('/homes');
     }
 
 
