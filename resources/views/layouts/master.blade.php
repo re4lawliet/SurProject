@@ -41,9 +41,9 @@
                         <li class="nav-item"><a href="{{ url('/homeCompras') }}" class="nav-link"> Home Compras</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
                         <li class="nav-item"><a href="{{ url('/MostrarSolicitudesRechazadas') }}" class="nav-link"> Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a></li>
-                        
+                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
                         </ul>
-                        <li class="dropdown">
+                        <!--li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúCompras #2 <b class="caret"></b>
                             </a>
@@ -54,7 +54,7 @@
                                 <li class="divider"></li>
                                 <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
-                        </li>
+                        </li-->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

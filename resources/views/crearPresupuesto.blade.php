@@ -3,10 +3,6 @@
 @section('content')
         <center>
         <!--TITULO -->
-        <div class="panel-title">
-            <h1><center>{{Session::get('s_titulo')}}</center></h1>
-        </div>
-
         <div>
 
             <h1>CREACION DE PRESUPUESTO</h1>

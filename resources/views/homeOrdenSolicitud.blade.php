@@ -51,7 +51,7 @@
                                 <div class="input-group">
                                     @if(count($queryProveedores)>0)
                                         @foreach($queryProveedores as $prov)
-                                        <input type="text" class="form-control" id="selected" list="browsers" name="browser" value="{{ $prov->nombre_empresa }}">
+                                        <input type="text" class="form-control" id="selected" list="browsers" name="browser" value="{{ $prov->nombre_empresa }}" onclick="document.execCommand('selectAll',false,null)">
                                         <input  name="id_emp" type="hidden" value="{{ $prov->id }}">
                                         <input type="hidden" id="txt_divisa" value="{{ $prov->divisa }}">
                                         @endforeach
@@ -114,11 +114,11 @@
                                 @foreach($queryProveedores as $prov)
                                     @if($prov->divisa=='USD')
                                     <label for="tasa" class="control-label">Tasa de Cambio</label><br>
-                                    <input id="txt_tasa" type="text" name="txt_tasa" class="form-control">
+                                    <input id="id_txt_tasa" type="text" name="txt_tasa" class="form-control">
+                                    @else
+                                    <input id="id_txt_tasa" type="hidden" name="txt_tasa" class="form-control" value="1">
                                     @endif
                                 @endforeach
-                            @else
-                                <input id="txt_tasa" type="hidden" name="txt_taza" class="form-control" value="1">
                             @endif
                             
                                 
@@ -159,7 +159,7 @@
                                                     <td style='text-align:center' class="table-text">{{ $material->cantidad }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $material->unidad }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $material->descripcion }}</td>
-                                                    <td style='text-align:center' class="editable" contenteditable="true">0</td>
+                                                    <td style='text-align:center' class="editable" contenteditable="true" onclick="document.execCommand('selectAll',false,null)">0</td>
                                                     <td style='text-align:center' class="table-text"><div></div></td>
                                                 </tr>
                                             @endforeach
@@ -176,6 +176,7 @@
                                 <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularTotales()">Calcular Totales</button><br><br>
                                 <label for="total" class="control-label">Total</label><br>
                                 <input id="txtTotal" type="hidden" name="txt_total" class="form-control" readonly="readonly">
+                                <input type="hidden" id="mul">
                                 <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly">
                             </div>
                         </div>
@@ -195,7 +196,7 @@
                         <div class="col-sm-7">
                         <div class="form-group">
                             <label for="enviara" class="control-label">Enviar a:</label><br>
-                            <input  type="text" name="txt_enviara" class="form-control">
+                            <input  id="id_txt_enviara" type="text" name="txt_enviara" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="total" class="control-label">Factura a:</label><br>
@@ -250,7 +251,7 @@
                                     <input type="file" name="presupuesto" class="form-control" accept=".pdf">
                                 </div>
                             @else
-                                <label style="background: #ddd;"> No hay Propuesta de Cotizacion</label>
+                                <label style="background: #ddd;"> No hay Propuesta de Cotizacion</label><br>
                                 <label class="control-label">Agregar Presupuesto</label>
                                 <input type="file" name="presupuesto" class="form-control" accept=".pdf">
                             @endif
@@ -265,7 +266,7 @@
             
 
             <div class="form-group">
-                <button name="btn_Orden" id="btn_Orden" form="crear_orden_frm" type="submit" class="btn btn-primary">Crear Orden</button> 
+                <button name="btn_Orden" id="btn_Orden" form="crear_orden_frmmmm" type="submit" class="btn btn-primary" onclick="validacion()">Crear Orden</button> 
             </div>
         </form>
         
@@ -323,7 +324,7 @@
         if(textdiv!==null){
             if(textdiv.value=="USD"){
                 divisa="$ ";
-            }else if(textdiv.value=="QGT"){
+            }else if(textdiv.value=="GTQ"){
                 divisa="Q ";
             }
         }else{
@@ -356,6 +357,34 @@
         document.getElementById("id_txt_subtotales").value = str_subtotales;
         document.getElementById("txtTotal").value = total;
         document.getElementById("txtTotal_show").value = divisa + total;
+        var mult = parseFloat(document.getElementById("txtTotal").value) * parseFloat(document.getElementById("id_txt_tasa").value);
+        document.getElementById("mul").value = mult;
+    }
+
+    function validacion(){
+        var textdiv = document.getElementById("txt_divisa");
+        var texttasa = document.getElementById("id_txt_tasa").value;
+        var textboxTotal = document.getElementById("id_txt_ids").value;
+        var textboxEnviara = document.getElementById("id_txt_enviara").value;
+
+        if(textdiv!==null){//validando que haya seleccionado Proveedor
+            if(texttasa!==""){//validando que seleccionara Tasa de Cambio
+                if(textboxTotal!==""){//validando que haya calculado TOTALES Y SUBTOTALES
+                    if(textboxEnviara!==""){//validando que haya seleccionado ENVIAR A
+                        document.forms["crear_orden_frm"].submit()
+                    }else{
+                        alert('No se ha designado direccion de envio');
+                    }
+                }else{
+                    alert('No se han calculado los detalles de subtotales y totales.');
+                }
+            }else{
+                alert('El proveedor es una cuenta en dolares y no ha designado la Tasa de Cambio.');
+            }
+        }else{
+            alert('No ha seleccionado ningun proveedor.');
+        }
+        
     }
 
 </script>

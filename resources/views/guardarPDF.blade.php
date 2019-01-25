@@ -4,7 +4,7 @@
     <center>
         <h1> Vista Previa</h1>
         <div class="container">
-            <embed src="{{ $path }}" type="application/pdf" width="100%" height="600px">
+            <embed src="{{ $path }}" type="application/pdf" width="100%" height="1150px">
         </div>
         <div class="form-group">
             <a href="{{ url('/MostrarSolicitudesCompras') }}">

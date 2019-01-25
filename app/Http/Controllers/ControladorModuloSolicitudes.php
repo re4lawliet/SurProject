@@ -163,8 +163,7 @@ class ControladorModuloSolicitudes extends Controller
             'txt_total' => 'required',
             'txt_enviara' => 'required',
             'id_proyecto' => 'required',
-            'id_proyecto' => 'required',
-            
+            'txt_tasa' => 'required',
         ]);
     
         if ($validator->fails()) {
@@ -193,15 +192,19 @@ class ControladorModuloSolicitudes extends Controller
         $val_enviar_a = $request->txt_enviara;
         $val_id_proyecto = $request->id_proyecto;
         $val_correos = $request->correos;
+
+        $val_tasa = $request->txt_tasa;
         
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
 
 
         //Insertar en Orden
-        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
-                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_total',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
+                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
         
+        
+
         //Insertar precios
         $arr_ids=explode(",",$val_ids);
         $arr_precios=explode(",",$val_precios_unitarios);
@@ -260,6 +263,27 @@ class ControladorModuloSolicitudes extends Controller
         $insertarPDF = DB::select(DB::raw("UPDATE orden
                                                     SET pdf ='$path'
                                                     WHERE id = $maxid->id;"));
+
+        //Actualizar presupuesto
+        $presupuestoViejo = DB::select(DB::raw("SELECT p.orden_sumada, p.id_partida
+                                                FROM presupuesto as p, solicitudes as s, orden as o
+                                                WHERE p.id_proyecto = $val_id_proyecto
+                                                AND o.id = $maxid->id
+                                                AND s.id = o.id_solicitud
+                                                AND p.id_partida = s.id_partida;"));
+        foreach($presupuestoViejo as $p){
+            $nuevoTotal = floatval($p->orden_sumada) + floatval($val_total) * floatval($val_tasa);
+            
+
+            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                                                    SET orden_sumada = $nuevoTotal
+                                                    WHERE id_proyecto = $val_id_proyecto
+                                                    AND id_partida = $p->id_partida;"));
+            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                                                    SET saldo = presupuesto - orden_sumada
+                                                    WHERE id_proyecto = $val_id_proyecto
+                                                    AND id_partida = $p->id_partida;"));
+        }
 
         // return view('myPDF')->with('proveedor' , $data_proveedor)
         //                     ->with('tipo_pago' , $str_tipo_pago)
