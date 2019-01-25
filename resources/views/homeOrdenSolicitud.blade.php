@@ -109,6 +109,19 @@
                                     <option value="2">Cheque</option>
                                 </select>
                             </div>
+                            
+                            @if(count($queryProveedores)>0)
+                                @foreach($queryProveedores as $prov)
+                                    @if($prov->divisa=='USD')
+                                    <label for="tasa" class="control-label">Tasa de Cambio</label><br>
+                                    <input id="txt_tasa" type="text" name="txt_tasa" class="form-control">
+                                    @endif
+                                @endforeach
+                            @else
+                                <input id="txt_tasa" type="hidden" name="txt_taza" class="form-control" value="1">
+                            @endif
+                            
+                                
                         </div>
                         <!-- Fin del Contenido -->
                     </div> 
@@ -164,9 +177,6 @@
                                 <label for="total" class="control-label">Total</label><br>
                                 <input id="txtTotal" type="hidden" name="txt_total" class="form-control" readonly="readonly">
                                 <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly">
-
-                                <label for="taza" class="control-label">Taza de Cambio</label><br>
-                                <input id="txt_taza" type="text" name="txt_taza" class="form-control" value="1">
                             </div>
                         </div>
                         <!-- Fin del Contenido -->
