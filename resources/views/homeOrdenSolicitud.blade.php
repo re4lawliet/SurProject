@@ -56,7 +56,7 @@
                                         <input type="hidden" id="txt_divisa" value="{{ $prov->divisa }}">
                                         @endforeach
                                     @else
-                                        <input type="text" class="form-control" id="selected" list="browsers" name="browser" >
+                                        <input type="text" class="form-control" id="selected" list="browsers" name="browser" onclick="document.execCommand('selectAll',false,null)" >
                                     @endif
                                     
                                     <datalist id="browsers">
@@ -179,6 +179,21 @@
                                 <input type="hidden" id="mul">
                                 <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly">
                             </div>
+                            <div>
+                                <button form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="mostrarDivOrdenAbierta()">Orden Abierta</button>
+                                <br>
+                                <br>
+                                <div id="div_Orden_Abierta" style="display:none;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span id="span_PrimerPago" class="input-group-text">Primer Pago</span>
+                                        </div>
+                                        <input id="id_txt_primerpago" name="txt_primerpago" type="text" class="form-control" value="">
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
                         </div>
                         <!-- Fin del Contenido -->
                     </div> 
@@ -262,9 +277,6 @@
                 </div>
             </div>
             <br>
-
-            
-
             <div class="form-group">
                 <button name="btn_Orden" id="btn_Orden" form="crear_orden_frmmmm" type="submit" class="btn btn-primary" onclick="validacion()">Crear Orden</button> 
             </div>
@@ -275,6 +287,30 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    function mostrarDivOrdenAbierta(){
+        var div = document.getElementById("div_Orden_Abierta");
+        divisa="";
+        if(div.style.display === "none"){
+            var textdiv = document.getElementById("txt_divisa");
+            if(textdiv!==null){
+                if(textdiv.value=="USD"){
+                    divisa=" $ ";
+                }else if(textdiv.value=="GTQ"){
+                    divisa=" Q ";
+                }
+                var primerPago = document.getElementById("span_PrimerPago");
+                primerPago.innerHTML = "Primer Pago "+divisa;
+                div.style.display = "block";
+            }else{
+                alert('No ha seleccionado ningun proveedor y no existe divisa.');
+            }
+        }else{
+            div.style.display = "none";
+        }
+        
+    }
+</script>
 <script>
     function mostrarPresupuesto() {
         var y = document.getElementById("btn_pr");
@@ -293,22 +329,25 @@
 
 <script>
     $(document).ready(function() {
-        var data = {}; 
-        $("#browsers option").each(function(i,el) {  
-        data[$(el).data("value")] = $(el).val();
+            var data = {}; 
+            $("#browsers option").each(function(i,el) {  
+            data[$(el).data("value")] = $(el).val();
         });
 
         // `data` : object of `data-value` : `value`
         console.log(data, $("#browsers option").val());
 
         $('#botoncito').click(function(){
-        var value = $('#selected').val();
-        var val_id_proveedor = $('#browsers [value="' + value + '"]').data('value');
-        //alert(iden);
-        var val_id_proyecto = $('#id_proyecto').val();
-        var val_id_partida = $('#id_partida').val();
+            var value = $('#selected').val();
+            var val_id_proveedor = $('#browsers [value="' + value + '"]').data('value');
+            var val_id_proyecto = $('#id_proyecto').val();
+            var val_id_partida = $('#id_partida').val();
 
-        location.href='/OrdenSolicitud/{{Session::get('s_id')}}/'+val_id_partida+'/'+val_id_proyecto+'/'+val_id_proveedor;
+            if(typeof val_id_proveedor === 'undefined'){
+                alert('No ha seleccionado ningun Proveedor');
+            }else{
+                location.href='/OrdenSolicitud/{{Session::get('s_id')}}/'+val_id_partida+'/'+val_id_proyecto+'/'+val_id_proveedor;
+            }
         });
     });
 </script>
@@ -363,15 +402,23 @@
 
     function validacion(){
         var textdiv = document.getElementById("txt_divisa");
-        var texttasa = document.getElementById("id_txt_tasa").value;
-        var textboxTotal = document.getElementById("id_txt_ids").value;
-        var textboxEnviara = document.getElementById("id_txt_enviara").value;
-
+        var texttasa = document.getElementById("id_txt_tasa");
+        var textboxTotal = document.getElementById("id_txt_ids");
+        var textboxEnviara = document.getElementById("id_txt_enviara");
+        var txtOrdenAbierta = document.getElementById("id_txt_primerpago");
         if(textdiv!==null){//validando que haya seleccionado Proveedor
-            if(texttasa!==""){//validando que seleccionara Tasa de Cambio
-                if(textboxTotal!==""){//validando que haya calculado TOTALES Y SUBTOTALES
-                    if(textboxEnviara!==""){//validando que haya seleccionado ENVIAR A
-                        document.forms["crear_orden_frm"].submit()
+            if(texttasa.value!==""){//validando que seleccionara Tasa de Cambio
+                if(textboxTotal.value!==""){//validando que haya calculado TOTALES Y SUBTOTALES
+                    if(textboxEnviara.value!==""){//validando que haya seleccionado ENVIAR A
+                        if(txtOrdenAbierta.value!==""){
+                            if(confirm('Crear Orden de Pago Abierta?')){
+                                document.forms["crear_orden_frm"].submit();
+                            }
+                        }else{
+                            if(confirm('Crear Orden de Pago?')){
+                                document.forms["crear_orden_frm"].submit();
+                            }
+                        }
                     }else{
                         alert('No se ha designado direccion de envio');
                     }

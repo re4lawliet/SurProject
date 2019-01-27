@@ -118,7 +118,47 @@
 
 
 
+<script>
+    function mostrarDivOrdenAbierta(){
+        var div = document.getElementById("div_Orden_Abierta");
+        divisa="";
+        if(div.style.display === "none"){
+            var textdiv = document.getElementById("txt_divisa");
+            if(textdiv!==null){
+                if(textdiv.value=="USD"){
+                    divisa=" $ ";
+                }else if(textdiv.value=="GTQ"){
+                    divisa=" Q ";
+                }
+                var primerPago = document.getElementById("span_PrimerPago");
+                primerPago.innerHTML = "Primer Pago "+divisa;
+                div.style.display = "block";
+            }else{
+                alert('No ha seleccionado ningun proveedor y no existe divisa.');
+            }
+        }else{
+            div.style.display = "none";
+        }
+        
+    }
+</script>
 
+
+<div>
+                                <button form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="mostrarDivOrdenAbierta()">Orden Abierta</button>
+                                <br>
+                                <br>
+                                <div id="div_Orden_Abierta" style="display:none;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span id="span_PrimerPago" class="input-group-text">Primer Pago</span>
+                                        </div>
+                                        <input id="id_txt_primerpago" type="text" class="form-control">
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
 
 
 

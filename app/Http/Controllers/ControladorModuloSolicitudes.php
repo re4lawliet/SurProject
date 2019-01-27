@@ -151,6 +151,7 @@ class ControladorModuloSolicitudes extends Controller
                                         ->with('querySolicitud',$solicitud);
     }
 
+    
 
     public function crearOrden(Request $request){
         $validator = Validator::make($request->all(), [
@@ -163,7 +164,7 @@ class ControladorModuloSolicitudes extends Controller
             'txt_total' => 'required',
             'txt_enviara' => 'required',
             'id_proyecto' => 'required',
-            'txt_tasa' => 'required',
+            'txt_tasa' => 'required'
         ]);
     
         if ($validator->fails()) {
@@ -188,7 +189,7 @@ class ControladorModuloSolicitudes extends Controller
         $val_subtotales = $request->txt_subtotales;
 
         $val_total = $request->txt_total;
-
+        $val_ordenAbierta = $request->txt_primerpago;
         $val_enviar_a = $request->txt_enviara;
         $val_id_proyecto = $request->id_proyecto;
         $val_correos = $request->correos;
@@ -200,8 +201,14 @@ class ControladorModuloSolicitudes extends Controller
 
 
         //Insertar en Orden
-        $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
-                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+        if($val_ordenAbierta==""){
+            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+        }else{
+            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+        }
+        
         
         
 
@@ -218,6 +225,7 @@ class ControladorModuloSolicitudes extends Controller
         $insertarSolicitud = DB::select(DB::raw("UPDATE solicitudes
                                                     SET orden_creada = '1'
                                                     WHERE id = $val_id_solicitud;"));
+
         if ($_FILES['presupuesto']['name'] != null) {
             $nombrep = 'pres'.$val_id_solicitud;
             $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
@@ -242,18 +250,6 @@ class ControladorModuloSolicitudes extends Controller
         //Datos Proyecto
         $data_proyecto = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
        
-
-        
-
-        $data = ['proveedor' => $data_proveedor,
-                'tipo_pago' => $str_tipo_pago,
-                'fecha' => $fecha,
-                'solicitud' => $data_solicitud,
-                'detalle' => $data_factura,
-                'proyecto' => $data_proyecto,
-                'enviar_a' => $val_enviar_a,
-                'total' => $val_total];
-                
         //direccion del correo
         $maxid = DB::table('orden')->find(DB::table('orden')->max('id'));
         $name = 'orderfile'.$maxid->id.'.pdf';
@@ -263,6 +259,34 @@ class ControladorModuloSolicitudes extends Controller
         $insertarPDF = DB::select(DB::raw("UPDATE orden
                                                     SET pdf ='$path'
                                                     WHERE id = $maxid->id;"));
+
+        //insertar Orden_abierta si es Abierta
+        if($val_ordenAbierta!=""){
+            $insertarOrden_Abierta = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo)
+                                                VALUES($maxid->id,'$fecha',0,'$val_total','-','$val_total');"));
+        }
+        //insertar primer Pago si es Abierta
+        if($val_ordenAbierta!=""){
+            $val_saldo = floatval($val_total) - floatval($val_ordenAbierta);
+            $insertarOrden_Abierta_pago = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo)
+                                                VALUES($maxid->id,'$fecha',1,'-','$val_ordenAbierta','$val_saldo');"));
+        }
+
+        //data Orden Abierta
+        $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $maxid->id)->get();
+        
+
+        $data = ['proveedor' => $data_proveedor,
+                'tipo_pago' => $str_tipo_pago,
+                'fecha' => $fecha,
+                'solicitud' => $data_solicitud,
+                'detalle' => $data_factura,
+                'proyecto' => $data_proyecto,
+                'enviar_a' => $val_enviar_a,
+                'total' => $val_total,
+                'orden_abierta' => $data_Orden_Abierta];
+                
+        
 
         //Actualizar presupuesto
         $presupuestoViejo = DB::select(DB::raw("SELECT p.orden_sumada, p.id_partida
@@ -292,7 +316,8 @@ class ControladorModuloSolicitudes extends Controller
         //                     ->with('detalle' , $data_factura)
         //                     ->with('proyecto',$data_proyecto)
         //                     ->with('enviar_a',$val_enviar_a)
-        //                     ->with('total',$val_total);
+        //                     ->with('total',$val_total)
+        //                     ->with('orden_abierta', $data_Orden_Abierta);
         $pdf = PDF::loadView('myPDF', $data);
         file_put_contents($path, $pdf->output()); 
 

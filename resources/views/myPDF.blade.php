@@ -279,13 +279,13 @@
                     <td class="desc">{{ $prod->descripcion }}</td>
                     @if($proveedor->divisa=='USD')
                         <td class="unit">$ {{ $prod->precio_unitario }}</td>
-                    @else if($proveedor->divisa=='QGT')
+                    @else if($proveedor->divisa=='GTQ')
                         <td class="unit">Q {{ $prod->precio_unitario }}</td>
                     @endif
                     <td class="qty">{{ $prod->cantidad }}</td>
                     @if($proveedor->divisa=='USD')
                         <td class="total">$ {{ $prod->subtotal }}</td>
-                    @else if($proveedor->divisa=='QGT')
+                    @else if($proveedor->divisa=='GTQ')
                         <td class="total">Q {{ $prod->subtotal }}</td>
                     @endif
                 </tr>
@@ -294,14 +294,74 @@
                 <td colspan="4" class="grand total">TOTAL</td>
                 @if($proveedor->divisa=='USD')
                     <td class="grand total">$ {{ $total }}</td>
-                @else if($proveedor->divisa=='QGT')
+                @else if($proveedor->divisa=='GTQ')
                     <td class="grand total">Q {{ $total }}</td>
                 @endif
                 
             </tr>
             </tbody>
-      </table>
-      
+        </table>
+        <br>
+        <br>
+        <div id="wrapper" >
+        <div id="first">
+        </div>
+
+        <div id="second">
+            <div><span style="font-weight:bold">Detalle de Pagos</span></div>
+        </div>
+
+        <div id="third">
+        </div>
+    </div> 
+    <br>
+        <br>
+        @if(count($orden_abierta)>0)
+            <table>
+                <thead>
+                <tr>
+                    <th>FECHA</th>
+                    <th>DETALLE</th>
+                    <th>DEBE</th>
+                    <th>HABER</th>
+                    <th>SALDO</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach($orden_abierta as $orden)
+                        <tr>
+                            <td>{{ $orden->fecha }}</td>
+                            <td>Abono No. {{ $orden->abono }}</td>
+                            @if($proveedor->divisa=='USD')
+                                @if($orden->debe=='-')
+                                    <td></td>
+                                @else
+                                    <td>$ {{ $orden->debe }}</td>
+                                @endif
+                                @if($orden->haber=='-')
+                                    <td></td>
+                                @else
+                                <td>$ {{ $orden->haber }}</td>
+                                @endif
+                                <td>$ {{ $orden->saldo }}</td>
+                            @else if($proveedor->divisa=='GTQ')
+                                @if($orden->debe=='-')
+                                    <td></td>
+                                @else
+                                    <td>$ {{ $orden->debe }}</td>
+                                @endif
+                                @if($orden->haber=='-')
+                                    <td></td>
+                                @else
+                                <td>$ {{ $orden->haber }}</td>
+                                @endif
+                                <td>Q {{ $orden->saldo }}</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
       <!--div id="notices">
         <div>NOTICE:</div>
         <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
