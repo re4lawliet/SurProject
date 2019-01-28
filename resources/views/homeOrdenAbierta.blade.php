@@ -16,14 +16,14 @@
                     <h6>Solicitante: {{ $e->rol }}</h6>
                     <h6>Proyecto: "{{ $e->nombre_proyecto }}"</h6>
                     <input id="id_partida" name="id_partida" type="hidden" value="{{ $e->id_partida }}">
-                    <input id="id_proyecto" name="id_proyecto" type="hidden" value="{{ $e->id_proyecto }}">
+                    
                 @endforeach
             @endif
         </div>
         
         <br><br>
 
-        <form id="crear_orden_frm" action="{{ url('OrdenCreada') }}" method="POST" enctype="multipart/form-data">
+        <form id="hacer_abono_frm" action="{{ url('CrearAbono') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
 
             <!-- Datos de Proveedor -->
@@ -137,10 +137,14 @@
                                                     if($divisa == 'USD'){
                                                 ?>
                                                     <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly" value="$ {{ $o->total }}">
+                                                    <input type="hidden" name="txt_id_solicitud" value="{{ $o->id_solicitud }}">
+                                                    <input type="hidden" name="txt_id_orden" value="{{ $o->id }}">
                                                 <?php
                                                     }else{
                                                 ?>
                                                     <input id="txtTotal_show" type="text" name="txt_total_show" class="form-control" readonly="readonly" value="Q {{ $o->total }}">
+                                                    <input type="hidden" name="txt_id_solicitud" value="{{ $o->id_solicitud }}">
+                                                    <input type="hidden" name="txt_id_orden" value="{{ $o->id }}">
                                                 <?php
                                                     }
                                                 ?>
@@ -252,6 +256,53 @@
                 </div>
             </div>
             <br>
+            <!-- Datos de Facturacion -->
+            <div class="container">
+                <div class="card">
+                    <div class="card-header"><!-- Encabezado -->
+                        Datos de Facturacion
+                    </div>
+                    <div class="card-body">
+                        <!-- Inicio Contenido -->
+                        <div class="col-sm-7">
+                        <div class="form-group">
+                            <label for="enviara" class="control-label">Enviar a:</label><br>
+                            <input  id="id_txt_enviara" type="text" name="txt_enviara" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="total" class="control-label">Factura a:</label><br>
+                            @if(count($queryProyecto)>0)
+                                @foreach($queryProyecto as $proyecto)
+                                <input id="facturaa" type="text" name="facturaa" class="form-control" readonly="readonly" value="{{ $proyecto->nombre_proyecto }}">
+                                <input id="id_proyecto" name="id_proyecto" type="hidden" value="{{ $proyecto->id }}">
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="nit" class="control-label">NIT:</label><br>
+                            @if(count($queryProyecto)>0)
+                                @foreach($queryProyecto as $proyecto)
+                                <input id="nit" type="text" name="nit" class="form-control" readonly="readonly" value="{{ $proyecto->factura_numero }}">
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="dir_fiscal" class="control-label">Direccion Fiscal:</label><br>
+                            <input id="nit" type="text" name="nit" class="form-control" readonly="readonly" value="Diagonal 6 19-30 Zona 10">
+                        </div>
+                        <div class="form-group">
+                            <label for="total" class="control-label">Correos: (Separar por comas ',')</label><br>
+                            <div class="tags-input" data-name="tags-input"></div>
+                        </div>
+                        </div>
+                        <!-- Fin del Contenido -->
+                    </div> 
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <button name="btn_Orden" id="btn_Orden" form="crear_orden_frmmmm" type="submit" class="btn btn-primary" onclick="validacion()">Crear Orden</button> 
+            </div>
         </form>
         
         
@@ -259,3 +310,35 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    function validacion(){
+        var textdiv = document.getElementById("txt_divisa");
+        var texttasa = document.getElementById("id_txt_tasa");
+        var textboxTotal = document.getElementById("txtTotal_show");
+        var txtAbono = document.getElementById("id_txt_abono");
+        var textboxEnviara = document.getElementById("id_txt_enviara");
+        
+        if(textdiv!==""){//validando que haya seleccionado Proveedor
+            if(texttasa.value!==""){//validando que seleccionara Tasa de Cambio
+                if(textboxTotal.value!==""){//validando que haya calculado TOTALES Y SUBTOTALES
+                    if(textboxEnviara.value!==""){//validando que haya seleccionado ENVIAR A
+                        if(txtAbono.value!==""){
+                            if(confirm('Crear Abono?')){
+                                document.forms["hacer_abono_frm"].submit();
+                            }
+                        }
+                    }else{
+                        alert('No se ha designado direccion de envio');
+                    }
+                }else{
+                    alert('No se han calculado los detalles de subtotales y totales.');
+                }
+            }else{
+                alert('El proveedor es una cuenta en dolares y no ha designado la Tasa de Cambio.');
+            }
+        }else{
+            alert('No ha seleccionado ningun proveedor.');
+        }
+        
+    }
+</script>

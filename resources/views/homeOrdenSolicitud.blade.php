@@ -436,10 +436,3 @@
     }
 
 </script>
-<script>
-    function funcion(){
-        if(confirm('Crear Orden de Pago Abierta?')){
-                                document.forms["crear_orden_frm"].submit();
-                            }
-    }
-</script>

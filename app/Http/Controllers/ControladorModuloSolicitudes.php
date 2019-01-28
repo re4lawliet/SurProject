@@ -327,8 +327,9 @@ class ControladorModuloSolicitudes extends Controller
         $updateProveedor = DB::select(DB::raw("UPDATE empresas
                                                     SET correlativo ='$corr'
                                                     WHERE id = $val_id_proveedor;"));
-
-        return view('guardarPDF')->with('path',$path);
+        $salida = '0';
+        return view('guardarPDF')->with('path',$path)
+                                ->with('salida',$salida);
         //return $pdf->stream($name);
         
     }
@@ -637,7 +638,7 @@ class ControladorModuloSolicitudes extends Controller
     }
 
 
-
+   
 
 
 

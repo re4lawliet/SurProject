@@ -7,9 +7,15 @@
             <embed src="{{ $path }}" type="application/pdf" width="100%" height="1150px">
         </div>
         <div class="form-group">
-            <a href="{{ url('/MostrarSolicitudesCompras') }}">
-                <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" >OK</button> 
-            </a>
+            @if($salida=='0')
+                <a href="{{ url('/MostrarSolicitudesCompras') }}">
+                    <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" >OK</button> 
+                </a>
+            @elseif($salida=='1')
+                <a href="{{ url('/MostrarOrdenesAbiertas') }}">
+                    <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" >OK</button> 
+                </a>
+            @endif
         </div>
     </center>
 @endsection

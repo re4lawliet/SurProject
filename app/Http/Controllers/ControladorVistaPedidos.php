@@ -12,6 +12,7 @@ use SUR\orden;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mail;
+use PDF;
 
 class ControladorVistaPedidos extends Controller{
 
@@ -358,8 +359,8 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarOrdenesDirector(){
-    $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
-    Session::put('countOrdenesAprobadas',$countorden); 
+        $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
+        Session::put('countOrdenesAprobadas',$countorden); 
         $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                                         WHERE respuesta_conta = '0'
@@ -571,7 +572,7 @@ class ControladorVistaPedidos extends Controller{
                                                 AND e.id = o.id_proveedor;"));
 
         //data detalle
-        $data_detalle = DB::select(DB::raw("SELECT l.id, l.descripcion, l.unidad, l.cantidad, l.precio_unitario, l.subtotal
+        $data_detalle = DB::select(DB::raw("SELECT l.id, l.descripcion, l.unidad, l.cantidad, l.precio_unitario, l.subtotal, l.id_solicitud
                                                 FROM orden as o, solicitudes as s, listados as l
                                                 WHERE o.id = $id_Orden
                                                 AND s.id = o.id_solicitud
@@ -587,12 +588,105 @@ class ControladorVistaPedidos extends Controller{
                                             FROM orden_abierta
                                             WHERE id_orden = $id_Orden;"));
 
+        //data proyecto
+        $data_proyecto = DB::select(DB::raw("SELECT p.id, p.nombre_proyecto, p.zona_proyecto, p.logo_proyecto, p.estado_proyecto, p.factura_a, p.factura_numero
+                                                FROM proyectos as p, orden as o
+                                                WHERE p.id = o.id_proyecto
+                                                AND o.id = $id_Orden;"));
+
         return view('homeOrdenAbierta')->with('encabezado',$data_solicitud)
                                         ->with('proveedor',$data_proveedor)
                                         ->with('detalle',$data_detalle)
                                         ->with('orden',$data_orden)
-                                        ->with('abonos',$data_abonos);
+                                        ->with('abonos',$data_abonos)
+                                        ->with('queryProyecto',$data_proyecto);
     }
+
+    public function hacerAbono(Request $request){
+
+        //OBTENCION DE DATOS
+        $val_id_proveedor = $request->id_emp;
+        $val_tipo_pago = $request->tipo_pago;
+        $str_tipo_pago="NaN";
+        if($val_tipo_pago == 1){
+            $str_tipo_pago = "Transferencia";
+        }else if($val_tipo_pago == 2){
+            $str_tipo_pago = "Cheque";
+        }
+        $val_id_solicitud = $request->txt_id_solicitud;
+        $val_id_orden = $request->txt_id_orden;
+        //$val_ids = $request->txt_ids;
+        //$val_precios_unitarios = $request->txt_precios_unitarios;
+        //$val_subtotales = $request->txt_subtotales;
+        $val_total = $request->txt_total;
+        $val_Abono = $request->txt_abono;
+        $val_enviar_a = $request->txt_enviara;
+        $val_id_proyecto = $request->id_proyecto;
+        $val_correos = $request->correos;
+        $val_tasa = $request->txt_tasa;
+        date_default_timezone_set('America/Guatemala');
+        $fecha = date('d/m/y');
+
+        //Agregar ABONO
+        $abono_Maximo = DB::select(DB::raw("SELECT id_orden, fecha, abono, debe, haber, saldo
+                                                FROM orden_abierta
+                                                WHERE id_orden = 39
+                                                AND abono = (SELECT MAX(abono) as abono
+                                                                FROM orden_abierta 
+                                                                WHERE id_orden = 39);"));
+
+        //Datos proveedor
+        $data_proveedor = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        //Detalle de Factura
+        $data_factura = DB::table('listados')->where('id_solicitud', $val_id_solicitud)->get();
+        //Datos Proyecto
+        $data_proyecto = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
+        
+        //direccion del PDF
+        $name = '.pdf';
+        $path = '.pdf';
+        $data_Orden_Abierta = "";
+        foreach($abono_Maximo as $a){
+            $nuevoAbono = $a->abono + 1;
+            $nuevoSaldo = $a->saldo - $val_Abono;
+            $name = 'orderfile'.$a->id_orden.'Abono'.$nuevoAbono.'.pdf';
+            $path = 'PDF/'.$name;
+            $Insertar_Abono = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo,pdf)
+                                                    VALUES ($a->id_orden, '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path')"));
+
+            //data Orden Abierta
+            $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)->get();
+  
+        }
+               
+        $data = ['proveedor' => $data_proveedor,
+                'tipo_pago' => $str_tipo_pago,
+                'fecha' => $fecha,
+                'detalle' => $data_factura,
+                'proyecto' => $data_proyecto,
+                'enviar_a' => $val_enviar_a,
+                'total' => $val_total,
+                'orden_abierta' => $data_Orden_Abierta];
+
+        
+        
+        
+
+        $pdf = PDF::loadView('myPDF', $data);
+        file_put_contents($path, $pdf->output()); 
+        //incrementar correlativo de empresa
+        $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        $corr = $provv->correlativo + 1;
+        $updateProveedor = DB::select(DB::raw("UPDATE empresas
+                                                    SET correlativo ='$corr'
+                                                    WHERE id = $val_id_proveedor;"));
+
+        $salida = '1';
+        return view('guardarPDF')->with('path',$path)
+                                    ->with('salida',$salida);
+
+    }
+
 
 
 
