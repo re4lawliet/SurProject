@@ -35,19 +35,19 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManager') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesManager')}}</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceManager #2</a></li>
+                        <li class="nav-item"><a href="{{ url('/homes') }}" class="nav-link">Home Manager</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManager') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesManager')}}</a></li>
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
-                                MenúManager #2 <b class="caret"></b>
+                                Menú Manager <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" class="nav-link">AcciónManager #1</a></li>
-                                <li><a href="#" class="nav-link">Acción #2</a></li>
+                                    <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes Realizadas: {{Session::get('countSolicitudesMiasManager')}}</a></li>
+                                <!--<li><a href="#" class="nav-link">Acción #2</a></li>
                                 <li><a href="#" class="nav-link">Acción #3</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acción #4</a></li>
+                                <li><a href="#" class="nav-link">Acción #4</a></li>-->
                             </ul>
                         </li>
                     </ul>

@@ -206,7 +206,6 @@
         <div><span style="text-align: left;">Diagonal 6 19-30 Zona 10</span> </div>
       </div>
     </header>
-
     <br>
     <main>
     <div id="wrapper">

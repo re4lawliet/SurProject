@@ -35,25 +35,21 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesDirector')}}</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes: {{Session::get('countOrdenesAprobadas')}}</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home Director</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesDirector')}}</a></li>
                         </ul>
-                        <!--
+                        
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
-                                MenúDirector #2 <b class="caret"></b>
+                                Menú Ordenes del Director<b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" class="nav-link">AcciónDirector #1</a></li>
-                                <li><a href="#" class="nav-link">Acción #2</a></li>
-                                <li><a href="#" class="nav-link">Acción #3</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acción #4</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes de Enviar: {{Session::get('countOrdenesAprobadas')}}</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ver Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes Realizadas: {{Session::get('countSolicitudesMiasDirector')}}</a></li>
                             </ul>
                         </li>
-                        -->
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->

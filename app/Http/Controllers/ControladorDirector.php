@@ -32,6 +32,12 @@ class ControladorDirector extends Controller
                                     ->count();
         Session::put('countSolicitudesDirector',$nsolicitudes);
 
+        
+        $solicitudes2 = solicitude::where('mostrar','1')
+                                    ->where('email',Auth::user()->email)
+                                    ->count();
+        Session::put('countSolicitudesMiasDirector',$solicitudes2);
+
         $orden = DB::table('orden')->where('respuesta_conta', '0')->count();
         Session::put('countOrdenesAprobadas',$orden); 
 
