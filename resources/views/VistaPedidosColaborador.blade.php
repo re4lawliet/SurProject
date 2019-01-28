@@ -1,7 +1,11 @@
 <!-- ENCABEZADO -->
-@extends('layouts.appColaborador')
-
-
+@extends(    
+Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+    ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+        (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+            (Auth::user()->rol == 'compras' ? 'layouts.appCompras' :
+                (Auth::user()->rol == 'recepcion' ? 'layouts.appRecepcion' : 'layouts.appAdmin'))))
+)
 @section('content')
     <center>
         <!--TITULO -->

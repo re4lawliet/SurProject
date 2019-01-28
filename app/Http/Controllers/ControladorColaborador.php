@@ -32,10 +32,39 @@ class ControladorColaborador extends Controller
         Session::put('countSolicitudesColaborador',$solicitudes);
 
         $name = $request->get('name');
+
+        //-------------Restringe Colaboradores::::::::::::::::::::::
         
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
+        if(Auth::user()->email=="s.garcia@sur.gt" || Auth::user()->email=="p.gutierrez@sur.gt" ){//granat
+            $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
+            ->orwhere('nombre_proyecto','NARAMA')
+            ->orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+        }else if(Auth::user()->email=="a.velasquez@sur.gt" || Auth::user()->email=="j.hernandez@sur.gt" ){//Narama
+            $proyectos = proyecto::where('nombre_proyecto','NARAMA')
+            ->orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+        }else if(Auth::user()->email=="h.barillas@sur.gt"|| Auth::user()->email=="g.debroy@sur.gt"){//Roque
+            $proyectos = proyecto::where('nombre_proyecto','ROQUE, Ciudad Nueva')
+            ->orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+
+        }else if(Auth::user()->email=="s.garcia@sur.gt"){//Sur Properties
+            $proyectos = proyecto::where('nombre_proyecto','SUR PROPERTIES, S.A.')
+            ->orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+        }else{
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+        }
+        //-------------Restringe Colaboradores::::::::::::::::::::::
         
         return view('homeColaborador', compact('proyectos'));
     }

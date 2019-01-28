@@ -78,6 +78,13 @@ class ControladorPedidoProyecto extends Controller{
             $solicitud->respondido_director='1';
             $solicitud->aprobado_director ='1';
             $solicitud->fecha_director = $fecha;
+        }else if(Auth::user()->rol == 'compras'){
+            $solicitud->respondido_manager='1';
+            $solicitud->aprobado_manager='1';
+            $solicitud->fecha_manager = $fecha;
+            $solicitud->respondido_director='1';
+            $solicitud->aprobado_director ='1';
+            $solicitud->fecha_director = $fecha;
         }
         
         $solicitud->orden_creada = '0';
