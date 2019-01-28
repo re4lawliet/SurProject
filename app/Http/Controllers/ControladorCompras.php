@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
 use SUR\solicitude;
+use SUR\orden_abierta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -36,13 +37,22 @@ class ControladorCompras extends Controller
                                     ->where('aprobado_director','1')
                                     ->where('orden_creada','0')
                                     ->count();
+
         Session::put('countSolicitudesCompras',$solicitudes);
 
         $orden = DB::table('orden')->where('respuesta_conta', '3')->count();
+
         Session::put('countOrdenesRechazadas',$orden); 
 
         $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
+
         Session::put('countOrdenesFinalizadas',$orden); 
+
+        $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+
+        Session::put('countOrdenesAbiertas',$orden_abierta); 
+
+        
 
         $name = $request->get('name');
         

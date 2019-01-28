@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.appCompras')
 
 @section('title','Menu de Compras SUR')
 

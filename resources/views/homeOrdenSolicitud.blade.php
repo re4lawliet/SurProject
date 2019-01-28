@@ -128,6 +128,8 @@
                 </div>
             </div>
             <br>
+
+
             <!-- Detalle de Pedido -->
             <div class="container">
                 <div class="card">
@@ -246,7 +248,6 @@
             <br>
             <!-- Datos de Cotizacion -->
             <div class="container">
-
                 <div class="card">
                     <div class="card-header">
                         Propuesta de Cotizacion
@@ -434,4 +435,11 @@
         
     }
 
+</script>
+<script>
+    function funcion(){
+        if(confirm('Crear Orden de Pago Abierta?')){
+                                document.forms["crear_orden_frm"].submit();
+                            }
+    }
 </script>
