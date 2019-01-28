@@ -1,5 +1,7 @@
 <!-- ENCABEZADO -->
-@extends('layouts.master')
+@extends('layouts.appCompras')
+
+@section('title','Menu de Compras SUR')
 
 @section('title','Menu de Compras')
 

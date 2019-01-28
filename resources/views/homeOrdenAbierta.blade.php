@@ -317,10 +317,17 @@
         var textboxTotal = document.getElementById("txtTotal_show");
         var txtAbono = document.getElementById("id_txt_abono");
         var textboxEnviara = document.getElementById("id_txt_enviara");
+        var divisa="";
         
-        if(textdiv!==""){//validando que haya seleccionado Proveedor
+        if(textdiv.value!==""){//validando que haya seleccionado Proveedor
+            if(textdiv.value=="USD"){
+                divisa="$ ";
+            }else if(textdiv.value=="GTQ"){
+                divisa="Q ";
+            }
             if(texttasa.value!==""){//validando que seleccionara Tasa de Cambio
                 if(textboxTotal.value!==""){//validando que haya calculado TOTALES Y SUBTOTALES
+                    document.getElementById("txtTotal_show").value = document.getElementById("txtTotal_show").value.replace(divisa,'');
                     if(textboxEnviara.value!==""){//validando que haya seleccionado ENVIAR A
                         if(txtAbono.value!==""){
                             if(confirm('Crear Abono?')){

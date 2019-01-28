@@ -618,7 +618,7 @@ class ControladorVistaPedidos extends Controller{
         //$val_ids = $request->txt_ids;
         //$val_precios_unitarios = $request->txt_precios_unitarios;
         //$val_subtotales = $request->txt_subtotales;
-        $val_total = $request->txt_total;
+        $val_total = $request->txt_total_show;
         $val_Abono = $request->txt_abono;
         $val_enviar_a = $request->txt_enviara;
         $val_id_proyecto = $request->id_proyecto;
