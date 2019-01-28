@@ -50,6 +50,7 @@
                                     <option value="director" >Director</option>
                                     <option value="compras" >Compras</option>
                                     <option value="contabilidad" >Contabilidad</option>
+                                    <option value="recepcion" >Recepcion</option>
                                     <option value="admin" >Admin</option>
                                 </select>
                                 @if ($errors->has('rol'))

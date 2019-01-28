@@ -84,6 +84,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="users/{{ Auth::user()->id }}" class="nav-link">Mi Usuario</a>
                                 </div>
                             </li>
                         @endguest
