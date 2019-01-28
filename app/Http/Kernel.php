@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'compras' => \SUR\Http\Middleware\Compras::class,
         'proyecto' => \SUR\Http\Middleware\Proyectos::class,
         'contabilidad' => \SUR\Http\Middleware\Contabilidad::class,
+        'recepcion' => \SUR\Http\Middleware\recepcion::class,
 
     ];
 }

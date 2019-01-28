@@ -152,6 +152,8 @@ Route::get('/', function () {
             return view('welcomeCompras');
         }elseif (Auth::user()->rol =='contabilidad'){
             return view('welcomeContabilidad');
+        }elseif (Auth::user()->rol =='recepcion'){
+            return view('welcomeRecepcion');
         }
 
     }else{
@@ -175,6 +177,8 @@ Route::get('/homes', function () {
             return redirect('/homeCompras');
         }elseif (Auth::user()->rol =='contabilidad'){
             return redirect('/homeContabilidad');
+        }elseif (Auth::user()->rol =='recepcion'){
+            return redirect('/homeRecepcion');
         }
 
     }else{
@@ -222,6 +226,7 @@ Route::delete('/empresa/{id}', 'ControladorModuloEmpresas@EliminarEmpresa');
 
 //------------------ Modificar Empresas
 Route::put('/empresa/{id}', 'ControladorModuloEmpresas@ModificarEmpresa');
+
 
 
 /************************************************************************************************* */
@@ -379,6 +384,7 @@ Route::get('/homeDirector', 'ControladorDirector@indexDirector')->name('homeDire
 Route::get('/homeColaborador', 'ControladorColaborador@indexColaborador')->name('homeColaborador');
 Route::get('/homeCompras', 'ControladorCompras@indexCompras')->name('homeCompras');
 Route::get('/homeContabilidad', 'ControladorContabilidad@indexContabilidad')->name('homeContabilidad');
+Route::get('/homeRecepcion', 'ControladorRecepcion@indexRecepcion')->name('homeRecepcion');
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
@@ -394,3 +400,8 @@ Route::get('/enviar_correo', 'ControladorVistaPedidos@enviar');
 Route::get('/MostrarOrdenesFinalizadas','ControladorVistaPedidos@mostrarOrdenesFinalizadas');
 //------------------Mostrar PDF a Director
 Route::get('/verOrdenFinalizada/{idOrden}','ControladorVistaPedidos@mostrarPDFFinalizada');
+
+//------------------ Modificar User
+Route::put('/user/{id}', 'HomeController@ModificarUser');
+//------------------ Mostrar Edicion User
+Route::get('/users/{id}', 'HomeController@mostrarUsersEditar');

@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Menu de Administrador SUR</title>
+    <title>Menu de Recepcion SUR</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -24,8 +24,8 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/surlogo.png">
-                    <img src="images/logologo.png">
+                    <img src="/images/surlogo.png">
+                    <img src="/images/logologo.png">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -35,19 +35,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="/homes" class="nav-link">Home Admin</a></li>
-                            <!--<li class="nav-item"><a href="#" class="nav-link"></a></li>-->
+                        <li class="nav-item"><a  href="/MostrarOrdenesFinalizadas" class="nav-link">Ordenes Finalizadas: {{Session::get('countSolicitudesConta')}}</a></li>
+                            <li class="nav-item"><a href="/homeRecepcion" class="nav-link">Home Recepcion</a></li>
                         </ul>
                         <li class="dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">
-                                Modulos Administrador <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('/proyectos') }}" class="nav-link">Modulo de Proyectos</a></li>
-                                <li><a href="{{ url('/empresas') }}" class="nav-link">Modulo de Empresas</a></li>
-                                <li><a href="{{ url('/clientes') }}" class="nav-link">Modulo de Clientes</a></li>
-                                <li><a href="{{ url('/register2') }}" class="nav-link">Registrar Usuarios</a></li>
-                            </ul>
+                            
                         </li>
                     </ul>
 
@@ -66,7 +58,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Administrador: {{ Auth::user()->name }} <span class="caret"></span>
+                                    Recepcion: {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

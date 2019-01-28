@@ -3,7 +3,9 @@
     Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
         ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
             (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
-                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' :
+                    (Auth::user()->rol == 'recepcion' ? 'layouts.appRecepcion' : 
+                        (Auth::user()->rol == 'contabilidad' ? 'layouts.appContabilidad' : 'layouts.appAdmin')))))
     )
 @section('content')
     <center>
