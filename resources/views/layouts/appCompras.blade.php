@@ -50,23 +50,22 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/homeCompras') }}" class="nav-link"> Home Compras</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesRechazadas') }}" class="nav-link"> Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
+                            <li class="nav-item"><a href="{{ url('/homeCompras') }}" class="nav-link"> Home Compras</a></li>
+                            <li class="nav-item"><a href="{{ url('/MostrarSolicitudesCompras') }}" class="nav-link">Solicitudes Pendientes: {{Session::get('countSolicitudesCompras')}}</a></li>
+                            
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Ordenes Pendientes <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/MostrarOrdenesAbiertas') }}" >Ordenes Abiertas: {{Session::get('countOrdenesAbiertas')}}</a>
+                                    <a class="dropdown-item" href="{{ url('/MostrarSolicitudesRechazadas') }}" >Ordenes Rechazadas: {{Session::get('countOrdenesRechazadas')}}</a>
+                                    <a class="dropdown-item" href="{{ url('/MostrarOrdenesFinalizadas') }}">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a>
+                                </div>
+                            </li>
                         </ul>
-                        <!--li class="dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">
-                                MenúCompras #2 <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                            <li><a href="#" class="nav-link">Acción #1</a></li>
-                                <li><a href="#" class="nav-link">Acción #2</a></li>
-                                <li><a href="#" class="nav-link">Acción #3</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acción #4</a></li>
-                            </ul>
-                        </li-->
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -538,6 +538,61 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
+    public function mostrarOrdenesAbiertas(){
+        $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+
+        Session::put('countOrdenesAbiertas',$orden_abierta); 
+
+
+        $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado
+                                        FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
+                                        WHERE o.abierta = '1'
+                                        AND s.id = o.id_solicitud
+                                        AND pa.id = s.id_partida
+                                        AND pr.id = o.id_proyecto
+                                        AND e.id = o.id_proveedor;"));                             
+    
+        return view('VistaOrdenesAbiertas')->with('ordenes',$ordenesA);
+    }
+
+    public function mostrarOrdenAbierta($id_Orden){
+        //obteniendo datos de solicitud para titulo
+        $data_solicitud = DB::select(DB::raw("SELECT s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.id as id_proyecto, p.nombre_proyecto
+                                                FROM solicitudes as s, orden as o, proyectos as p, partidas as pa
+                                                WHERE o.id = $id_Orden
+                                                AND s.id = o.id_solicitud
+                                                AND p.id = o.id_proyecto
+                                                AND pa.id = s.id_partida;"));
+
+        //data de Proveedor
+        $data_proveedor = DB::select(DB::raw("SELECT e.id as id_proveedor , e.nombre_empresa, e.nit_empresa, e.direccion_empresa, e.nombre_banco, e.tipo_cuenta,e.no_cuenta, e.divisa
+                                                FROM orden as o, empresas as e
+                                                WHERE o.id = $id_Orden
+                                                AND e.id = o.id_proveedor;"));
+
+        //data detalle
+        $data_detalle = DB::select(DB::raw("SELECT l.id, l.descripcion, l.unidad, l.cantidad, l.precio_unitario, l.subtotal
+                                                FROM orden as o, solicitudes as s, listados as l
+                                                WHERE o.id = $id_Orden
+                                                AND s.id = o.id_solicitud
+                                                AND l.id_solicitud = s.id"));
+
+        //data orden
+        $data_orden = DB::select(DB::raw("SELECT *
+                                            FROM orden 
+                                            WHERE id = $id_Orden;"));
+
+        //data abonos
+        $data_abonos = DB::select(DB::raw("SELECT *
+                                            FROM orden_abierta
+                                            WHERE id_orden = $id_Orden;"));
+
+        return view('homeOrdenAbierta')->with('encabezado',$data_solicitud)
+                                        ->with('proveedor',$data_proveedor)
+                                        ->with('detalle',$data_detalle)
+                                        ->with('orden',$data_orden)
+                                        ->with('abonos',$data_abonos);
+    }
 
 
 

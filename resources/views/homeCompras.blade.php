@@ -1,5 +1,7 @@
 @extends('layouts.appCompras')
 
+@section('title','Menu de Compras SUR')
+
 
 @section('content')
 <div class="container">
