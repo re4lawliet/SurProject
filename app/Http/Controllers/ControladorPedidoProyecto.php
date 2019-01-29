@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use SUR\solicitude;
 use SUR\temporal_producto;
 use SUR\partida;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 class ControladorPedidoProyecto extends Controller{
 
@@ -21,23 +22,29 @@ class ControladorPedidoProyecto extends Controller{
 
     public function solicitud()
     {
-        //Session::put('rollogueado', Auth::user()->name);
-        //Session::put('rollogueado2', Auth::user()->apellido);
+        try{
+            //Session::put('rollogueado', Auth::user()->name);
+            //Session::put('rollogueado2', Auth::user()->apellido);
 
-        $oldlat = Auth::user()->name;
-        $oldlong = Auth::user()->apellido;
-        $oldMarker = $oldlat . ' ' . $oldlong;
+            $oldlat = Auth::user()->name;
+            $oldlong = Auth::user()->apellido;
+            $oldMarker = $oldlat . ' ' . $oldlong;
 
-        Session::put('rollogueado', $oldMarker);
+            Session::put('rollogueado', $oldMarker);
 
-        $temporal_productos = temporal_producto::all();
-        
-        $partidas = partida::all();
+            $temporal_productos = temporal_producto::all();
+            
+            $partidas = partida::all();
 
-        return view('ModuloProyecto.SolicitudProyecto', [ 'temporal_productos' => $temporal_productos ],[ 'partidas' => $partidas ]);
+            return view('ModuloProyecto.SolicitudProyecto', [ 'temporal_productos' => $temporal_productos ],[ 'partidas' => $partidas ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Solicitud Pedido de Proyecto');
+            return view('ErrorCatch');  
+        }
     }
 
     public function AgregarPedido(Request $request){
+        try{
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
         $validator = Validator::make($request->all(), [
@@ -106,6 +113,10 @@ class ControladorPedidoProyecto extends Controller{
                                     ->count();
         Session::put('countSolicitudesColaborador',$solicitudes);
         return redirect('solicitud');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Agregar Pedido');
+            return view('ErrorCatch');  
+        }
     }
 
 }

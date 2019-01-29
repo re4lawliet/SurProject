@@ -9,6 +9,7 @@ use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+Use Exception;
 
 class ControladorDirector extends Controller
 {
@@ -26,30 +27,37 @@ class ControladorDirector extends Controller
 
     public function indexDirector(Request $request)
     {
-        $nsolicitudes = solicitude::where('respondido_manager','1')
-                                    ->where('aprobado_manager','1')
-                                    ->where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudesDirector',$nsolicitudes);
+        try{
 
-        
-        $solicitudes2 = solicitude::where('mostrar','1')
-                                    ->where('email',Auth::user()->email)
-                                    ->count();
-        Session::put('countSolicitudesMiasDirector',$solicitudes2);
+            $nsolicitudes = solicitude::where('respondido_manager','1')
+                                        ->where('aprobado_manager','1')
+                                        ->where('respondido_director','0')
+                                        ->count();
+            Session::put('countSolicitudesDirector',$nsolicitudes);
 
-        $orden = DB::table('orden')->where('respuesta_conta', '0')->count();
-        Session::put('countOrdenesAprobadas',$orden); 
+            
+            $solicitudes2 = solicitude::where('mostrar','1')
+                                        ->where('email',Auth::user()->email)
+                                        ->count();
+            Session::put('countSolicitudesMiasDirector',$solicitudes2);
 
-        $orden2 = DB::table('orden')->where('respuesta_conta', '2')->count();
-        Session::put('countOrdenesFinalizadas',$orden2); 
+            $orden = DB::table('orden')->where('respuesta_conta', '0')->count();
+            Session::put('countOrdenesAprobadas',$orden); 
 
-        $name = $request->get('name');
-        
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('homeDirector', compact('proyectos'));
+            $orden2 = DB::table('orden')->where('respuesta_conta', '2')->count();
+            Session::put('countOrdenesFinalizadas',$orden2); 
+
+            $name = $request->get('name');
+            
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('homeDirector', compact('proyectos'));
+
+        } catch (Exception $e) { 
+            Session::flash('catch_error','Carga Home Director');
+            return view('ErrorCatch');  
+        }
     }
 }

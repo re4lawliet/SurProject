@@ -5,9 +5,10 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\temporal_producto;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 
 class ControladorModuloProductos_Temporal extends Controller
@@ -20,79 +21,116 @@ class ControladorModuloProductos_Temporal extends Controller
     }
 
     public function mostrarTemporal_Productos(){
+        try{
 
-        $temporal_productos = temporal_producto::all();
-        return view('temporal_productos', [ 'temporal_productos' => $temporal_productos ]);
+            $temporal_productos = temporal_producto::all();
+            return view('temporal_productos', [ 'temporal_productos' => $temporal_productos ]);
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Temporal de Productos Para Solicitud');
+            return view('ErrorCatch');  
+        }
         
     }
 
     public function mostrarTemporal_ProductosEditar($id){
+        try{
 
-        $temporal_producto = temporal_producto::findOrFail($id);
-        return view('temporal_producto-editar', [ 'temporal_producto' => $temporal_producto ]);
+            $temporal_producto = temporal_producto::findOrFail($id);
+            return view('temporal_producto-editar', [ 'temporal_producto' => $temporal_producto ]);
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Temporal de Productos Para Solicitud Editar');
+            return view('ErrorCatch');  
+        }
     }
 
     public function AgregarTemporal_Producto(Request $request){
         //
-        $validator = Validator::make($request->all(), [
-            'descripcion' => 'required|max:255',
-            'unidad' => 'required|max:255',
-            'cantidad' => 'numeric'
-    
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect('/temporal_productos')
-                ->withInput()
-                ->withErrors($validator);
+        try{
+            $validator = Validator::make($request->all(), [
+                'descripcion' => 'required|max:255',
+                'unidad' => 'required|max:255',
+                'cantidad' => 'numeric'
+        
+            ]);
+        
+            if ($validator->fails()) {
+                return redirect('/temporal_productos')
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+        
+            $temporal_product= new temporal_producto;
+            $temporal_product->descripcion = $request->descripcion;
+            $temporal_product->unidad = $request->unidad;
+            $temporal_product->cantidad = $request->cantidad;
+            $temporal_product->save();
+        
+            return redirect('/temporal_productos');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Agregar Producto Para Solicitud');
+            return view('ErrorCatch');  
         }
-    
-        $temporal_product= new temporal_producto;
-        $temporal_product->descripcion = $request->descripcion;
-        $temporal_product->unidad = $request->unidad;
-        $temporal_product->cantidad = $request->cantidad;
-        $temporal_product->save();
-    
-        return redirect('/temporal_productos');
-    
     }
 
     public function EliminarTemporal_Producto($id){
-        temporal_producto::findOrFail($id)->delete();
+        try{
 
-        return redirect('/temporal_productos');
+            temporal_producto::findOrFail($id)->delete();
+
+            return redirect('/temporal_productos');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Eliminar Producto Para Solicitud');
+            return view('ErrorCatch');  
+        }
     }
 
     public function ModificarTemporal_Producto(Request $request, $id){
 
         //
-        $validator = Validator::make($request->all(), [
-            'descripcion' => 'required|max:255',
-            'unidad' => 'required|max:255',
-            'cantidad' => 'numeric'
-    
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect('/temporal_productos')
-                ->withInput()
-                ->withErrors($validator);
-        }
+        try{
+
+            $validator = Validator::make($request->all(), [
+                'descripcion' => 'required|max:255',
+                'unidad' => 'required|max:255',
+                'cantidad' => 'numeric'
         
-        $temporal_product = temporal_producto::findOrFail($id);
-        $temporal_product->descripcion = $request->descripcion;
-        $temporal_product->unidad = $request->unidad;
-        $temporal_product->cantidad = $request->cantidad;
-        $temporal_product->save();
-        return redirect('/temporal_productos');
+            ]);
+        
+            if ($validator->fails()) {
+                return redirect('/temporal_productos')
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+            
+            $temporal_product = temporal_producto::findOrFail($id);
+            $temporal_product->descripcion = $request->descripcion;
+            $temporal_product->unidad = $request->unidad;
+            $temporal_product->cantidad = $request->cantidad;
+            $temporal_product->save();
+            return redirect('/temporal_productos');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Modificar Productos Para Solicitud');
+            return view('ErrorCatch');  
+        }
 
     }
 
 
     public function LimpiarTemporal_Producto(){
 
-        $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
-        
-        return redirect('/temporal_productos');
+        try{
+            $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
+            
+            return redirect('/temporal_productos');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Limpiar Temporal de Productos Para Solicitud');
+            return view('ErrorCatch');  
+        }
     }
 }

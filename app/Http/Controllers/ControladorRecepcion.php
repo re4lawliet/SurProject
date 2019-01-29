@@ -4,11 +4,12 @@ namespace SUR\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 class ControladorRecepcion extends Controller
 {
@@ -21,17 +22,22 @@ class ControladorRecepcion extends Controller
 
     public function indexRecepcion(Request $request)
     {
-        $solicitudes = DB::table('orden')
-                            ->where('respuesta_conta','2')
-                            ->count();
-        Session::put('countSolicitudesConta',$solicitudes);
+        try{
+            $solicitudes = DB::table('orden')
+                                ->where('respuesta_conta','2')
+                                ->count();
+            Session::put('countSolicitudesConta',$solicitudes);
 
-        $name = $request->get('name');
-        
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('homeRecepcion', compact('proyectos'));
+            $name = $request->get('name');
+            
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('homeRecepcion', compact('proyectos'));
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Home de Recepcion');
+            return view('ErrorCatch');  
+        }
     }
 }

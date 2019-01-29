@@ -10,6 +10,7 @@ use SUR\solicitude;
 use SUR\orden_abierta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+Use Exception;
 
 class ControladorCompras extends Controller
 {
@@ -33,34 +34,41 @@ class ControladorCompras extends Controller
 
     public function indexCompras(Request $request)
     {
-        $solicitudes = solicitude::where('aprobado_manager','1')
-                                    ->where('aprobado_director','1')
-                                    ->where('orden_creada','0')
-                                    ->count();
+        try{
 
-        Session::put('countSolicitudesCompras',$solicitudes);
+            $solicitudes = solicitude::where('aprobado_manager','1')
+                                        ->where('aprobado_director','1')
+                                        ->where('orden_creada','0')
+                                        ->count();
 
-        $orden = DB::table('orden')->where('respuesta_conta', '3')->count();
+            Session::put('countSolicitudesCompras',$solicitudes);
 
-        Session::put('countOrdenesRechazadas',$orden); 
+            $orden = DB::table('orden')->where('respuesta_conta', '3')->count();
 
-        $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
+            Session::put('countOrdenesRechazadas',$orden); 
 
-        Session::put('countOrdenesFinalizadas',$orden); 
+            $orden = DB::table('orden')->where('respuesta_conta', '2')->count();
 
-        $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+            Session::put('countOrdenesFinalizadas',$orden); 
 
-        Session::put('countOrdenesAbiertas',$orden_abierta); 
+            $orden_abierta = DB::table('orden')->where('abierta','1')->count();
 
-        
+            Session::put('countOrdenesAbiertas',$orden_abierta); 
 
-        $name = $request->get('name');
-        
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('homeCompras', compact('proyectos'));
+            
+
+            $name = $request->get('name');
+            
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('homeCompras', compact('proyectos'));
+
+        } catch (Exception $e) { 
+            Session::flash('catch_error','Carga Home Compras');
+            return view('ErrorCatch');  
+        }
     }
 
 }

@@ -10,53 +10,64 @@ use SUR\proyecto;
 use SUR\empresa;
 use SUR\orden;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use PDF;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 class ControladorModuloSolicitudes extends Controller
 {
     public function verSolicitud($id, $npa, $npr){
-        $sol = solicitude::findOrFail($id);
-        Session::put('s_id', $id);
-        Session::put('s_titulo', $sol->titulo_solicitud);
-        Session::put('s_id_partida', $sol->id_partida);
-        Session::put('s_solicitante', $sol->rol);
-        Session::put('s_proveedor', $sol->proveedor);
-        //nombre partida
-        Session::put('s_npartida', $npa);
-        //proyecto
-        Session::put('s_nproyecto', $npr);
+        try{
+            $sol = solicitude::findOrFail($id);
+            Session::put('s_id', $id);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            Session::put('s_npartida', $npa);
+            //proyecto
+            Session::put('s_nproyecto', $npr);
 
-        $solicitudes = DB::select(DB::raw("SELECT *
-                                            FROM listados
-                                            WHERE id_solicitud = $id;"));
-        return view('homeSolicitudManager', ['queryListado' => $solicitudes]);
+            $solicitudes = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id;"));
+            return view('homeSolicitudManager', ['queryListado' => $solicitudes]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud');
+            return view('ErrorCatch');  
+        }
     }
 
     
 
     public function verSolicitudDirector($id, $npa, $npr){
-        $sol = solicitude::findOrFail($id);
-        Session::put('s_id', $id);
-        Session::put('s_titulo', $sol->titulo_solicitud);
-        Session::put('s_id_partida', $sol->id_partida);
-        Session::put('s_solicitante', $sol->rol);
-        Session::put('s_proveedor', $sol->proveedor);
-        //nombre partida
-        Session::put('s_npartida', $npa);
-        //proyecto
-        Session::put('s_nproyecto', $npr);
+        try{
+            $sol = solicitude::findOrFail($id);
+            Session::put('s_id', $id);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            Session::put('s_npartida', $npa);
+            //proyecto
+            Session::put('s_nproyecto', $npr);
 
-        $listad = DB::select(DB::raw("SELECT *
-                                            FROM listados
-                                            WHERE id_solicitud = $id;"));
+            $listad = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id;"));
 
-        $solicitud = DB::select(DB::raw("SELECT *
-                                            FROM solicitudes
-                                            WHERE id = $id;"));
-        return view('homeSolicitudDirector')
-                                            ->with('queryListado', $listad)
-                                            ->with('querySolicitud',$solicitud);
+            $solicitud = DB::select(DB::raw("SELECT *
+                                                FROM solicitudes
+                                                WHERE id = $id;"));
+            return view('homeSolicitudDirector')
+                                                ->with('queryListado', $listad)
+                                                ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Director');
+            return view('ErrorCatch');  
+        }
     }
 
     public function verPresupuesto(Request $request){
@@ -70,90 +81,101 @@ class ControladorModuloSolicitudes extends Controller
 
 
     public function verSolicitudCompras($id_solicitud, $id_partida, $id_proyecto){
-        $sol = solicitude::findOrFail($id_solicitud);
-        Session::put('s_id', $id_solicitud);
-        Session::put('s_titulo', $sol->titulo_solicitud);
-        Session::put('s_id_partida', $sol->id_partida);
-        Session::put('s_solicitante', $sol->rol);
-        Session::put('s_proveedor', $sol->proveedor);
-        //nombre partida
-        $partida = DB::select(DB::raw("SELECT *
-                                        FROM partidas
-                                        WHERE id = $id_partida;"));
-        //proyecto
-        $proyecto = DB::select(DB::raw("SELECT *
-                                        FROM proyectos
-                                        WHERE id = $id_proyecto;"));
-        
-        //lista de productos solicitados
-        $lista_Solicitud = DB::select(DB::raw("SELECT *
-                                            FROM listados
-                                            WHERE id_solicitud = $id_solicitud;"));
+        try{
+            $sol = solicitude::findOrFail($id_solicitud);
+            Session::put('s_id', $id_solicitud);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            $partida = DB::select(DB::raw("SELECT *
+                                            FROM partidas
+                                            WHERE id = $id_partida;"));
+            //proyecto
+            $proyecto = DB::select(DB::raw("SELECT *
+                                            FROM proyectos
+                                            WHERE id = $id_proyecto;"));
+            
+            //lista de productos solicitados
+            $lista_Solicitud = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id_solicitud;"));
 
-        //solicitud
-        $solicitud = DB::select(DB::raw("SELECT *
-                                            FROM solicitudes
-                                            WHERE id = $id_solicitud;"));
-        
-        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+            //solicitud
+            $solicitud = DB::select(DB::raw("SELECT *
+                                                FROM solicitudes
+                                                WHERE id = $id_solicitud;"));
+            
+            $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
 
-        $prove = DB::select(DB::raw("SELECT * 
-                                        FROM empresas
-                                        WHERE id = 'inexistente';"));
+            $prove = DB::select(DB::raw("SELECT * 
+                                            FROM empresas
+                                            WHERE id = 'inexistente';"));
 
-        return view('homeOrdenSolicitud')
+            return view('homeOrdenSolicitud')
+                                                ->with('queryListado',$lista_Solicitud)
+                                                ->with('partidas',$partida)
+                                                ->with('queryEmpresas' , $emp)
+                                                ->with('queryProveedores',$prove)
+                                                ->with('queryProyecto',$proyecto)
+                                                ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Compras');
+            return view('ErrorCatch');  
+        }
+    }
+
+    
+    public function verSolicitudComprasProv($id_solicitud, $id_partida, $id_proyecto, $id_proveedor){
+        try{
+            $sol = solicitude::findOrFail($id_solicitud);
+            Session::put('s_id', $id_solicitud);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            $partida = DB::select(DB::raw("SELECT *
+                                            FROM partidas
+                                            WHERE id = $id_partida;"));
+            //proyecto
+            $proyecto = DB::select(DB::raw("SELECT *
+                                            FROM proyectos
+                                            WHERE id = $id_proyecto;"));
+            //lista de productos solicitados
+            $lista_Solicitud = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id_solicitud;"));
+
+            //solicitud
+            $solicitud = DB::select(DB::raw("SELECT *
+                                                FROM solicitudes
+                                                WHERE id = $id_solicitud;"));
+            
+            $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+
+            $prove = DB::select(DB::raw("SELECT * 
+                                            FROM empresas 
+                                            WHERE id = $id_proveedor;"));
+
+            return view('homeOrdenSolicitud')
                                             ->with('queryListado',$lista_Solicitud)
                                             ->with('partidas',$partida)
                                             ->with('queryEmpresas' , $emp)
                                             ->with('queryProveedores',$prove)
                                             ->with('queryProyecto',$proyecto)
                                             ->with('querySolicitud',$solicitud);
-    }
-
-    
-    public function verSolicitudComprasProv($id_solicitud, $id_partida, $id_proyecto, $id_proveedor){
-        $sol = solicitude::findOrFail($id_solicitud);
-        Session::put('s_id', $id_solicitud);
-        Session::put('s_titulo', $sol->titulo_solicitud);
-        Session::put('s_id_partida', $sol->id_partida);
-        Session::put('s_solicitante', $sol->rol);
-        Session::put('s_proveedor', $sol->proveedor);
-        //nombre partida
-        $partida = DB::select(DB::raw("SELECT *
-                                        FROM partidas
-                                        WHERE id = $id_partida;"));
-        //proyecto
-        $proyecto = DB::select(DB::raw("SELECT *
-                                        FROM proyectos
-                                        WHERE id = $id_proyecto;"));
-        //lista de productos solicitados
-        $lista_Solicitud = DB::select(DB::raw("SELECT *
-                                            FROM listados
-                                            WHERE id_solicitud = $id_solicitud;"));
-
-        //solicitud
-        $solicitud = DB::select(DB::raw("SELECT *
-                                            FROM solicitudes
-                                            WHERE id = $id_solicitud;"));
-        
-        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
-
-        $prove = DB::select(DB::raw("SELECT * 
-                                        FROM empresas 
-                                        WHERE id = $id_proveedor;"));
-
-        return view('homeOrdenSolicitud')
-                                        ->with('queryListado',$lista_Solicitud)
-                                        ->with('partidas',$partida)
-                                        ->with('queryEmpresas' , $emp)
-                                        ->with('queryProveedores',$prove)
-                                        ->with('queryProyecto',$proyecto)
-                                        ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Compras Carga de Proveedor');
+            return view('ErrorCatch');  
+        }
     }
 
     
 
     public function crearOrden(Request $request){
+        try{
         $validator = Validator::make($request->all(), [
             'id_emp' => 'required',
             'tipo_pago' => 'required',
@@ -331,14 +353,17 @@ class ControladorModuloSolicitudes extends Controller
         return view('guardarPDF')->with('path',$path)
                                 ->with('salida',$salida);
         //return $pdf->stream($name);
-        
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Crear Orden De Compra ');
+            return view('ErrorCatch');  
+        }
     }
 
 
 
 
     public function verSolicitudContador($id){
-
+        try{
         $sol = orden::findOrFail($id);
 
         Session::put('c_id', $id);
@@ -371,6 +396,10 @@ class ControladorModuloSolicitudes extends Controller
         }
 
         return view('/homeSolicitudContador');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Contador');
+            return view('ErrorCatch');  
+        }
     }
 
 
@@ -378,6 +407,7 @@ class ControladorModuloSolicitudes extends Controller
 
     public function verSolicitudRechazada($id){
 
+        try{
         $sol = orden::findOrFail($id);
 
         Session::put('r_id', $id);
@@ -408,9 +438,15 @@ class ControladorModuloSolicitudes extends Controller
 
 
         return view('/homeSolicitudRechazada');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Rechazada');
+            return view('ErrorCatch');  
+        }
     }
 
     public function verSolicitudComprasRechazada($id_solicitud, $id_partida, $id_proyecto){
+        try{
         $sol = solicitude::findOrFail($id_solicitud);
         Session::put('s_id', $id_solicitud);
         Session::put('s_titulo', $sol->titulo_solicitud);
@@ -449,10 +485,15 @@ class ControladorModuloSolicitudes extends Controller
                                             ->with('queryProveedores',$prove)
                                             ->with('queryProyecto',$proyecto)
                                             ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Compras Rechazada');
+            return view('ErrorCatch');  
+        }
     }
 
     
     public function verSolicitudComprasProvRechazada($id_solicitud, $id_partida, $id_proyecto, $id_proveedor){
+        try{
         $sol = solicitude::findOrFail($id_solicitud);
         Session::put('s_id', $id_solicitud);
         Session::put('s_titulo', $sol->titulo_solicitud);
@@ -490,10 +531,15 @@ class ControladorModuloSolicitudes extends Controller
                                         ->with('queryProveedores',$prove)
                                         ->with('queryProyecto',$proyecto)
                                         ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Compras Rechazada Carga Proveedor');
+            return view('ErrorCatch');  
+        }
     }
 
     public function crearOrdenRechazada(Request $request){
-        $validator = Validator::make($request->all(), [
+        try{
+            $validator = Validator::make($request->all(), [
             'id_emp' => 'required',
             'tipo_pago' => 'required',
             'txt_id_solicitud' => 'required',
@@ -634,6 +680,10 @@ class ControladorModuloSolicitudes extends Controller
 
         return view('guardarPDF')->with('path',$path);
         //return $pdf->stream($name);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Crear Orden De Compra Rechazada Por Contabilidad');
+            return view('ErrorCatch');  
+        }
         
     }
 

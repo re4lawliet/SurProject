@@ -9,6 +9,7 @@ use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+Use Exception;
 
 class ControladorContabilidad extends Controller
 {
@@ -32,17 +33,23 @@ class ControladorContabilidad extends Controller
 
     public function indexContabilidad(Request $request)
     {
-        $solicitudes = DB::table('orden')
-                            ->where('respuesta_conta','1')
-                            ->count();
-        Session::put('countSolicitudesConta',$solicitudes);
+        try{
+            $solicitudes = DB::table('orden')
+                                ->where('respuesta_conta','1')
+                                ->count();
+            Session::put('countSolicitudesConta',$solicitudes);
 
-        $name = $request->get('name');
-        
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('homeContabilidad', compact('proyectos'));
+            $name = $request->get('name');
+            
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('homeContabilidad', compact('proyectos'));
+
+        } catch (Exception $e) { 
+            Session::flash('catch_error','Carga Home Contabilidad');
+            return view('ErrorCatch');  
+        }
     }
 }

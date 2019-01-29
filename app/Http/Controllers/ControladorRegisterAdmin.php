@@ -5,8 +5,9 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\User;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 class ControladorModuloProyectos extends Controller
 {
@@ -19,26 +20,34 @@ class ControladorModuloProyectos extends Controller
     }
 
     public function mostrarUsuarios(Request $request){
-
-        $name = $request->get('name');
-        
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('proyectos', compact('proyectos'));
-        
+        try{
+            $name = $request->get('name');
+            
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('proyectos', compact('proyectos'));
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Usuarios Register Admin');
+            return view('ErrorCatch');  
+        }
         
     }
 
     public function mostrarProyectosEditar($id){
-
-        $proyecto = proyecto::findOrFail($id);
-        return view('proyecto-editar', [ 'proyecto' => $proyecto ]);
+        try{
+            $proyecto = proyecto::findOrFail($id);
+            return view('proyecto-editar', [ 'proyecto' => $proyecto ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Proyectos Editar Register Admin');
+            return view('ErrorCatch');  
+        }
     }
 
     public function AgregarUsuario(Request $request){
         //|email
+        try{
         $validator = Validator::make($request->all(), [
             'nombre_proyecto' => 'required|max:255',
             'zona_proyecto' => 'max:255',
@@ -79,17 +88,25 @@ class ControladorModuloProyectos extends Controller
         $proyect->save();
     
         return redirect('/proyectos');
-    
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Agregar Usuario Register Admin');
+            return view('ErrorCatch');  
+        }
     }
 
     public function EliminarProyecto($id){
+        try{
         proyecto::findOrFail($id)->delete();
 
         return redirect('/proyectos');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Eliminar Proyecto Register Admin');
+            return view('ErrorCatch');  
+        }
     }
 
     public function ModificarProyecto(Request $request, $id){
-
+        try{
         $validator = Validator::make($request->all(), [
             'nombre_proyecto' => 'required|max:255',
             'zona_proyecto' => 'max:255',
@@ -129,6 +146,9 @@ class ControladorModuloProyectos extends Controller
         $proyect->factura_numero = $request->factura_numero;
         $proyect->save();
         return redirect('/proyectos');
-
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Modificar Proyecto Register Admin');
+            return view('ErrorCatch');  
+        }
     }
 }

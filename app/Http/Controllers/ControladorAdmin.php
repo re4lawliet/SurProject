@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
+Use Exception;
 
 class ControladorAdmin extends Controller
 {
@@ -31,13 +32,19 @@ class ControladorAdmin extends Controller
 
     public function indexAdmin(Request $request)
     {
-
-        $name = $request->get('name');
-        $proyectos = proyecto::orderBy('id', 'DESC')
-        ->name($name)
-        ->paginate(10);
-        
-        return view('homeAdmin', compact('proyectos'));
+        try{
+            
+            $name = $request->get('name');
+            $proyectos = proyecto::orderBy('id', 'DESC')
+            ->name($name)
+            ->paginate(10);
+            
+            return view('homeAdmin', compact('proyectos'));
+      
+        } catch (Exception $e) { 
+            Session::flash('catch_error','Carga Home de Admin');
+            return view('ErrorCatch');  
+        }
     }
 
     public function register2(Request $request)

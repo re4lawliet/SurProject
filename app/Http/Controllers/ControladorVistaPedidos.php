@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use PDF;
+Use Exception;
 
 class ControladorVistaPedidos extends Controller{
 
@@ -23,47 +24,58 @@ class ControladorVistaPedidos extends Controller{
     }
 
     public function mostrarSolicitudesManager(){
-        $nsolicitudes = solicitude::where('respondido_manager','0')
-                                    ->count();
-        Session::put('countSolicitudesManager',$nsolicitudes);
+        try{
+            $nsolicitudes = solicitude::where('respondido_manager','0')
+                                        ->count();
+            Session::put('countSolicitudesManager',$nsolicitudes);
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                            WHERE s.respondido_manager = '0' AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
-    
-        return view('VistaPedidosManager', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '0' AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+        
+            return view('VistaPedidosManager', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Manager');
+            return view('ErrorCatch');  
+        }
     }
 
     public function responderSolicitudManager(){
-        $id = Session::get('s_id');
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-        //----PDF
-        $nombrep = 'pres'.$id;
-        $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
-        $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
-        $ruta="PDF/".$nombrep.$nombreimg;
-        if(strpos($ruta, '.pdf')){
-            move_uploaded_file($archivo,$ruta);
-        }else{
-            $ruta="";
+        try{
+            $id = Session::get('s_id');
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            //----PDF
+            $nombrep = 'pres'.$id;
+            $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+            $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+            $ruta="PDF/".$nombrep.$nombreimg;
+            if(strpos($ruta, '.pdf')){
+                move_uploaded_file($archivo,$ruta);
+            }else{
+                $ruta="";
+            }
+            $solicitud = solicitude::findOrFail($id);
+            $solicitud->respondido_manager='1';
+            if(isset($_POST['aceptar'])){
+                $solicitud->aprobado_manager='1';
+            }else if(isset($_POST['rechazar'])){
+                $solicitud->aprobado_manager='0';
+            }
+            if ($_FILES['presupuesto']['name'] != null) {
+                $solicitud->presupuesto=$ruta;
+            }
+            $solicitud->fecha_manager = $fecha;
+            $solicitud->save();
+            $solicitudes = solicitude::where('respondido_manager','0')
+                                        ->count();
+            Session::put('countSolicitudesManager',$solicitudes);
+            return redirect('MostrarSolicitudesManager');
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Responder Solicitud Manager');
+            return view('ErrorCatch');  
         }
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_manager='1';
-        if(isset($_POST['aceptar'])){
-            $solicitud->aprobado_manager='1';
-        }else if(isset($_POST['rechazar'])){
-            $solicitud->aprobado_manager='0';
-        }
-        if ($_FILES['presupuesto']['name'] != null) {
-            $solicitud->presupuesto=$ruta;
-        }
-        $solicitud->fecha_manager = $fecha;
-        $solicitud->save();
-        $solicitudes = solicitude::where('respondido_manager','0')
-                                    ->count();
-        Session::put('countSolicitudesManager',$solicitudes);
-        return redirect('MostrarSolicitudesManager');
     }
 
     
@@ -73,57 +85,70 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarSolicitudesDirector(){
-        $nsolicitudes = solicitude::where('respondido_manager','1')
-                                    ->where('aprobado_manager','1')
-                                    ->where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudesDirector',$nsolicitudes);
+        try{
+            $nsolicitudes = solicitude::where('respondido_manager','1')
+                                        ->where('aprobado_manager','1')
+                                        ->where('respondido_director','0')
+                                        ->count();
+            Session::put('countSolicitudesDirector',$nsolicitudes);
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                            WHERE s.respondido_manager = '1' 
-                                            AND s.aprobado_manager = '1'
-                                            AND s.respondido_director = '0'
-                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
-    
-        return view('VistaPedidosDirector', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' 
+                                                AND s.aprobado_manager = '1'
+                                                AND s.respondido_director = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+        
+            return view('VistaPedidosDirector', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Director');
+            return view('ErrorCatch');  
+        }
     }
 
     public function aceptarSolicitudDirector($id){
-        
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='1';
-        $solicitud->fecha_director = $fecha;
-        $solicitud->save();
+        try{
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = solicitude::findOrFail($id);
+            $solicitud->respondido_director='1';
+            $solicitud->aprobado_director='1';
+            $solicitud->fecha_director = $fecha;
+            $solicitud->save();
 
-        $nsolicitudes = solicitude::where('respondido_manager','1')
-                                    ->where('aprobado_manager','1')
-                                    ->where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudesDirector',$nsolicitudes);
-        return redirect('MostrarSolicitudesDirector');
+            $nsolicitudes = solicitude::where('respondido_manager','1')
+                                        ->where('aprobado_manager','1')
+                                        ->where('respondido_director','0')
+                                        ->count();
+            Session::put('countSolicitudesDirector',$nsolicitudes);
+            return redirect('MostrarSolicitudesDirector');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Aceptar Solicitud Director');
+            return view('ErrorCatch');  
+        }
     }
 
     public function rechazarSolicitudDirector($id){
-        
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->respondido_director='1';
-        $solicitud->aprobado_director='0';
-        $solicitud->fecha_director = $fecha;
-        $solicitud->save();
+        try{
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = solicitude::findOrFail($id);
+            $solicitud->respondido_director='1';
+            $solicitud->aprobado_director='0';
+            $solicitud->fecha_director = $fecha;
+            $solicitud->save();
 
-        $nsolicitudes = solicitude::where('respondido_manager','1')
-                                    ->where('aprobado_manager','1')
-                                    ->where('respondido_director','0')
-                                    ->count();
-        Session::put('countSolicitudesDirector',$nsolicitudes);
+            $nsolicitudes = solicitude::where('respondido_manager','1')
+                                        ->where('aprobado_manager','1')
+                                        ->where('respondido_director','0')
+                                        ->count();
+            Session::put('countSolicitudesDirector',$nsolicitudes);
 
-        return redirect('MostrarSolicitudesDirector');
+            return redirect('MostrarSolicitudesDirector');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Rechazar Solicitud Director');
+            return view('ErrorCatch');  
+        }
     }
 
 
@@ -131,32 +156,42 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarSolicitudesColaborador(){
-        $solicitudes = solicitude::where('mostrar','1')
-                                    ->where('email',Auth::user()->email)
-                                    ->count();
-        Session::put('countSolicitudesColaborador',$solicitudes);
+        try{
+            $solicitudes = solicitude::where('mostrar','1')
+                                        ->where('email',Auth::user()->email)
+                                        ->count();
+            Session::put('countSolicitudesColaborador',$solicitudes);
 
-        $email = Auth::user()->email;
+            $email = Auth::user()->email;
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                            WHERE s.mostrar = '1' 
-                                            AND s.email = '$email'
-                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
-    
-        return view('VistaPedidosColaborador', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.mostrar = '1' 
+                                                AND s.email = '$email'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+        
+            return view('VistaPedidosColaborador', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes al Colaborador');
+            return view('ErrorCatch');  
+        }
     }
 
     public function dejarSolicitud($id){
-        $solicitudes = solicitude::where('mostrar','1')
-                                    ->where('email',Auth::user()->email)
-                                    ->count();
-        Session::put('countSolicitudesColaborador',$solicitudes);
+        try{
+            $solicitudes = solicitude::where('mostrar','1')
+                                        ->where('email',Auth::user()->email)
+                                        ->count();
+            Session::put('countSolicitudesColaborador',$solicitudes);
 
-        $solicitud = solicitude::findOrFail($id);
-        $solicitud->mostrar='0';
-        $solicitud->save();
-        return redirect('MostrarSolicitudesColaborador');
+            $solicitud = solicitude::findOrFail($id);
+            $solicitud->mostrar='0';
+            $solicitud->save();
+            return redirect('MostrarSolicitudesColaborador');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Dejar Solicitud');
+            return view('ErrorCatch');  
+        }
     }
 
 
@@ -165,45 +200,55 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarSolicitudesCompras(){
-        $solicitudes = solicitude::where('aprobado_manager','1')
-                                    ->where('aprobado_director','1')
-                                    ->where('orden_creada','0')
-                                    ->count();
-        Session::put('countSolicitudesCompras',$solicitudes);
+        try{
+            $solicitudes = solicitude::where('aprobado_manager','1')
+                                        ->where('aprobado_director','1')
+                                        ->where('orden_creada','0')
+                                        ->count();
+            Session::put('countSolicitudesCompras',$solicitudes);
 
-        $email = Auth::user()->email;
+            $email = Auth::user()->email;
 
-        $solicitudes = DB::select(DB::raw("SELECT s.id as id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor, p.id as id_proyecto, pa.id as id_partida
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                            WHERE aprobado_manager = '1' 
-                                            AND aprobado_director = '1'
-                                            AND s.orden_creada = '0'
-                                            AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
-    
-        return view('VistaPedidosCompras', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT s.id as id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor, p.id as id_proyecto, pa.id as id_partida
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE aprobado_manager = '1' 
+                                                AND aprobado_director = '1'
+                                                AND s.orden_creada = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+        
+            return view('VistaPedidosCompras', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Compras');
+            return view('ErrorCatch');  
+        }
     }
 
 
     public function mostrarSolicitudesContador(){
-        $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','1')
-                            ->count();
-        Session::put('countSolicitudesConta',$solicitudes2);
+        try{
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','1')
+                                ->count();
+            Session::put('countSolicitudesConta',$solicitudes2);
 
-        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
-                                            WHERE ord.id_solicitud = s.id 
-                                            AND ord.id_proveedor = pro.id 
-                                            AND ord.id_proyecto = p.id 
-                                            AND ord.respuesta_conta = '1';
-                                            "));                             
-    
-        return view('VistaPedidosContador', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
+                                                WHERE ord.id_solicitud = s.id 
+                                                AND ord.id_proveedor = pro.id 
+                                                AND ord.id_proyecto = p.id 
+                                                AND ord.respuesta_conta = '1';
+                                                "));                             
+        
+            return view('VistaPedidosContador', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes al Contador');
+            return view('ErrorCatch');  
+        }
     }
 
     
     public function aceptarSolicitudContador(Request $request,$id){
-
+        try{
         $validator = Validator::make($request->all(), [
             'comentario' => 'required|max:2000',   
         ]);
@@ -235,11 +280,15 @@ class ControladorVistaPedidos extends Controller{
         Session::put('countSolicitudesConta',$solicitudes2);
 
         return redirect('MostrarSolicitudesContador');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Aceptar Solicitud por Contador');
+            return view('ErrorCatch');  
+        }
     }
 
     public function rechazarSolicitudContador(Request $request,$id){
 
-
+        try{
         if(isset($_POST['aceptar_orden'])){
 
             $validator = Validator::make($request->all(), [
@@ -305,40 +354,53 @@ class ControladorVistaPedidos extends Controller{
         }
 
         return redirect('MostrarSolicitudesContador');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Rechazar Solicitud Contador');
+            return view('ErrorCatch');  
+        }
     }
 
     public function mostrarSolicitudesRechazadas(){
-        $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','3')
-                            ->count();
-        Session::put('countOrdenesRechazadas',$solicitudes2);
+        try{
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','3')
+                                ->count();
+            Session::put('countOrdenesRechazadas',$solicitudes2);
 
-        $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador
-                                            FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
-                                            WHERE ord.id_solicitud = s.id 
-                                            AND ord.id_proveedor = pro.id 
-                                            AND ord.id_proyecto = p.id 
-                                            AND ord.respuesta_conta = '3';
-                                            "));                             
-    
-        return view('VistaPedidosOrdenesRechazadas', [ 'querySolicitudes' => $solicitudes ]);
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
+                                                WHERE ord.id_solicitud = s.id 
+                                                AND ord.id_proveedor = pro.id 
+                                                AND ord.id_proyecto = p.id 
+                                                AND ord.respuesta_conta = '3';
+                                                "));                             
+        
+            return view('VistaPedidosOrdenesRechazadas', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Rechazadas');
+            return view('ErrorCatch');  
+        }
     }
 
 
     public function aceptarSolicitudRechazada($id){
-        
-        date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-        $solicitud = orden::findOrFail($id);
-        $solicitud->respuesta_conta='4';
-        $solicitud->save();
+        try{
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = orden::findOrFail($id);
+            $solicitud->respuesta_conta='4';
+            $solicitud->save();
 
-        $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','3')
-                            ->count();
-        Session::put('countOrdenesRechazadas',$solicitudes2);
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','3')
+                                ->count();
+            Session::put('countOrdenesRechazadas',$solicitudes2);
 
-        return redirect('/homes');
+            return redirect('/homes');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Aceptar Solicitud Rechazada');
+            return view('ErrorCatch');  
+        }
     }
 
 
@@ -359,19 +421,25 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function mostrarOrdenesDirector(){
-        $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
-        Session::put('countOrdenesAprobadas',$countorden); 
-        $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                                        WHERE respuesta_conta = '0'
-                                        AND s.id = o.id_solicitud
-                                        AND e.id = o.id_proveedor
-                                        AND p.id = o.id_proyecto;"));                             
-    
-        return view('VistaOrdenesDirector')->with('ordenes',$ordenes);
+        try{
+            $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
+            Session::put('countOrdenesAprobadas',$countorden); 
+            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                                            FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                                            WHERE respuesta_conta = '0'
+                                            AND s.id = o.id_solicitud
+                                            AND e.id = o.id_proveedor
+                                            AND p.id = o.id_proyecto;"));                             
+        
+            return view('VistaOrdenesDirector')->with('ordenes',$ordenes);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Ordenes Director');
+            return view('ErrorCatch');  
+        }
     }
 
     public function mostrarPDFDirector($idOrden){
+        try{
         $orden = DB::select(DB::raw("SELECT *
                                     FROM orden
                                     WHERE id = '$idOrden';"));
@@ -421,10 +489,15 @@ class ControladorVistaPedidos extends Controller{
         
                                     
         return view('verPDFDirector')->with('orden',$orden);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar PDF Director');
+            return view('ErrorCatch');  
+        }
     }
 
     public function enviar()
     {
+        try{
         $destinos=Session::get('pdf_correos');
         $idOrden=Session::get('pdf_idOrden');
         $proyectoNombre=Session::get('pdf_proyecto');
@@ -470,23 +543,33 @@ class ControladorVistaPedidos extends Controller{
 
 
         return redirect('/homeDirector');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Envio de Orden De Compra Error En correos o Datos');
+            return view('ErrorCatch');  
+        }
     }
 
 
     public function mostrarOrdenesFinalizadas(){
-        $countorden = DB::table('orden')->where('respuesta_conta', '2')->count();
-        Session::put('countOrdenesFinalizadas',$countorden); 
-        $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                                        WHERE respuesta_conta = '2'
-                                        AND s.id = o.id_solicitud
-                                        AND e.id = o.id_proveedor
-                                        AND p.id = o.id_proyecto;"));                             
-    
-        return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
+        try{
+            $countorden = DB::table('orden')->where('respuesta_conta', '2')->count();
+            Session::put('countOrdenesFinalizadas',$countorden); 
+            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                                            FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                                            WHERE respuesta_conta = '2'
+                                            AND s.id = o.id_solicitud
+                                            AND e.id = o.id_proveedor
+                                            AND p.id = o.id_proyecto;"));                             
+        
+            return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Ordenes Finalizadas');
+            return view('ErrorCatch');  
+        }
     }
 
     public function mostrarPDFFinalizada($idOrden){
+        try{
         $orden = DB::select(DB::raw("SELECT *
                                     FROM orden
                                     WHERE id = '$idOrden';"));
@@ -536,27 +619,37 @@ class ControladorVistaPedidos extends Controller{
         
                                     
         return view('verPDFFinalizada')->with('orden',$orden);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Pdf de Orden Finalizada');
+            return view('ErrorCatch');  
+        }
     }
 
 
     public function mostrarOrdenesAbiertas(){
-        $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+        try{
+            $orden_abierta = DB::table('orden')->where('abierta','1')->count();
 
-        Session::put('countOrdenesAbiertas',$orden_abierta); 
+            Session::put('countOrdenesAbiertas',$orden_abierta); 
 
 
-        $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado
-                                        FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
-                                        WHERE o.abierta = '1'
-                                        AND s.id = o.id_solicitud
-                                        AND pa.id = s.id_partida
-                                        AND pr.id = o.id_proyecto
-                                        AND e.id = o.id_proveedor;"));                             
-    
-        return view('VistaOrdenesAbiertas')->with('ordenes',$ordenesA);
+            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado
+                                            FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
+                                            WHERE o.abierta = '1'
+                                            AND s.id = o.id_solicitud
+                                            AND pa.id = s.id_partida
+                                            AND pr.id = o.id_proyecto
+                                            AND e.id = o.id_proveedor;"));                             
+        
+            return view('VistaOrdenesAbiertas')->with('ordenes',$ordenesA);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Ordenes Abiertas Todas');
+            return view('ErrorCatch');  
+        }
     }
 
     public function mostrarOrdenAbierta($id_Orden){
+        try{
         //obteniendo datos de solicitud para titulo
         $data_solicitud = DB::select(DB::raw("SELECT s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.id as id_proyecto, p.nombre_proyecto
                                                 FROM solicitudes as s, orden as o, proyectos as p, partidas as pa
@@ -600,10 +693,14 @@ class ControladorVistaPedidos extends Controller{
                                         ->with('orden',$data_orden)
                                         ->with('abonos',$data_abonos)
                                         ->with('queryProyecto',$data_proyecto);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Orden Abierta Especifica');
+            return view('ErrorCatch');  
+        }
     }
 
     public function hacerAbono(Request $request){
-
+        try{
         //OBTENCION DE DATOS
         $val_id_proveedor = $request->id_emp;
         $val_tipo_pago = $request->tipo_pago;
@@ -684,6 +781,10 @@ class ControladorVistaPedidos extends Controller{
         $salida = '1';
         return view('guardarPDF')->with('path',$path)
                                     ->with('salida',$salida);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Hacer Abono');
+            return view('ErrorCatch');  
+        }
 
     }
 

@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use SUR\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use SUR\presupuesto;
+use Illuminate\Support\Facades\Session;
+Use Exception;
 
 class ControladorPresupuesto extends Controller
 {
     public function mostrarPresupuesto($idProyecto){
+
+        try{
+
         /*CONSULTA DE PARTIDAS CON SUS SUMAS
             SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, SUM(o.total) as total_partida
                                                     FROM proyectos as p, partidas as pa, solicitudes as s, orden as o
@@ -60,36 +65,49 @@ class ControladorPresupuesto extends Controller
 
         return view('crearPresupuesto')->with('proyectos',$proyecto)
                                         ->with('nuevas',$partidas_nuevas);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Presupuesto');
+            return view('ErrorCatch');  
+        }
     }
 
 
 
     public function guardarPresupuesto(Request $request){
-        $val_id_proyecto = $request->txt_id_proyecto;
-        $val_ids = $request->txt_ids;
-        $val_presupuestos = $request->txt_presupuestos;
-        $val_orden_sumada = $request->txt_orden_sumada;
-        $val_saldos = $request->txt_saldos;
+        try{
 
-        $arr_ids = explode(",",$val_ids);
-        $arr_presupuestos = explode(",",$val_presupuestos);
-        $arr_orden_sumada = explode(",",$val_orden_sumada);
-        $arr_saldos = explode(",",$val_saldos);
+            $val_id_proyecto = $request->txt_id_proyecto;
+            $val_ids = $request->txt_ids;
+            $val_presupuestos = $request->txt_presupuestos;
+            $val_orden_sumada = $request->txt_orden_sumada;
+            $val_saldos = $request->txt_saldos;
 
-               
-        //insertar en tabla Presupuesto
-        for($i =0; $i<sizeof($arr_ids);$i++){
-            $insertarPresupuestos = DB::select(DB::raw("UPDATE presupuesto
-                                                        SET presupuesto = '$arr_presupuestos[$i]', orden_sumada = '$arr_orden_sumada[$i]', saldo = '$arr_saldos[$i]'
-                                                        WHERE id_proyecto = $val_id_proyecto
-                                                        AND id_partida = $arr_ids[$i];"));
+            $arr_ids = explode(",",$val_ids);
+            $arr_presupuestos = explode(",",$val_presupuestos);
+            $arr_orden_sumada = explode(",",$val_orden_sumada);
+            $arr_saldos = explode(",",$val_saldos);
+
+                
+            //insertar en tabla Presupuesto
+            for($i =0; $i<sizeof($arr_ids);$i++){
+                $insertarPresupuestos = DB::select(DB::raw("UPDATE presupuesto
+                                                            SET presupuesto = '$arr_presupuestos[$i]', orden_sumada = '$arr_orden_sumada[$i]', saldo = '$arr_saldos[$i]'
+                                                            WHERE id_proyecto = $val_id_proyecto
+                                                            AND id_partida = $arr_ids[$i];"));
+            }
+
+            return redirect('vistaPresupuesto/'.$val_id_proyecto);
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Guardar Presupuesto: Primero Debe Calcular Saldos Antes de Guardar');
+            return view('ErrorCatch');  
         }
-
-        return redirect('vistaPresupuesto/'.$val_id_proyecto);
     }
 
 
     public function consultaPresupuesto($idProyecto){
+
+        try{        
         /*$partidas = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, e.divisa, SUM(o.total) as total_partida, pr.presupuesto, pr.orden_sumada, pr.saldo
                                             FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o, presupuesto as pr
                                             WHERE p.id = $idProyecto
@@ -114,10 +132,16 @@ class ControladorPresupuesto extends Controller
     
         return view('consultarPresupuesto')->with('partidas',$partidas)
                                         ->with('proyectos',$proyecto);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Consultar Presupuesto');
+            return view('ErrorCatch');  
+        }
     }
 
     
     public function desglose($idProyecto,$idPartida){
+
+        try{
         $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, o.total, e.nombre_empresa, s.titulo_solicitud
                                         FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
                                         WHERE p.id = $idProyecto
@@ -135,6 +159,10 @@ class ControladorPresupuesto extends Controller
 
         return view('tablaDesglose')->with('compras', $compras)
                                             ->with('proyecto',$proyecto);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Desglose De Presupuesto');
+            return view('ErrorCatch');  
+        }
     }
 
 }
