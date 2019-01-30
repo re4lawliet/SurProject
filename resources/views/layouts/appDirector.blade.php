@@ -36,7 +36,7 @@
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home Director</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesDirector')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes de Aprobar: <!--{{Session::get('countSolicitudesDirector')}}--></a></li>
                         </ul>
                         
                         <li class="dropdown">

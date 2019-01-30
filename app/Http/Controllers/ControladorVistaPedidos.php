@@ -86,19 +86,75 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarSolicitudesDirector(){
         try{
+            
             $nsolicitudes = solicitude::where('respondido_manager','1')
                                         ->where('aprobado_manager','1')
                                         ->where('respondido_director','0')
                                         ->count();
             Session::put('countSolicitudesDirector',$nsolicitudes);
 
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+            //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
+            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+
+                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' 
+                                                AND s.aprobado_manager = '1'
+
+                                                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                                                AND p.nombre_proyecto = 'NARAMA'
+
+                                                AND s.respondido_director = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
+
+            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
+
+                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' 
+                                                AND s.aprobado_manager = '1'
+
+                                                AND p.nombre_proyecto = 'BALDONE'
+                                                AND p.nombre_proyecto = 'AIRALI'
+
+                                                AND s.respondido_director = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
+
+            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
+
+                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' 
+                                                AND s.aprobado_manager = '1'
+
+                                                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
+
+                                                AND s.respondido_director = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
+
+
+            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+
+                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' 
+                                                AND s.aprobado_manager = '1'
+
+                                                AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
+
+                                                AND s.respondido_director = '0'
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
+
+            }else{ 
+                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa
                                                 WHERE s.respondido_manager = '1' 
                                                 AND s.aprobado_manager = '1'
                                                 AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
-        
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
+            }
+
+
             return view('VistaPedidosDirector', [ 'querySolicitudes' => $solicitudes ]);
         }catch (Exception $e) { 
             Session::flash('catch_error','Mostrar Solicitudes Director');

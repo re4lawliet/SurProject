@@ -40,6 +40,7 @@ class ControladorManager extends Controller
             $name = $request->get('name');
 
             //..............MANAGERS
+            /*
             if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
                 $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
                 ->orwhere('nombre_proyecto','NARAMA')
@@ -67,8 +68,11 @@ class ControladorManager extends Controller
                 ->name($name)
                 ->paginate(10);
             }
-
+            */
             //..............MANAGERS
+            $proyectos = proyecto::orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
 
 
             return view('homeManager', compact('proyectos'));

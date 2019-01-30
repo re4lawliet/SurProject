@@ -217,7 +217,7 @@
         </div>
 
         <div id="second">
-            <div><span style="font-weight:bold">ENVIAR A:</span></div>
+            <div><span style="font-weight:bold">ENVIAR MATERIAL A:</span></div>
             <div id="second_cont">{{ $enviar_a }}</div>
         </div>
 

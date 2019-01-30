@@ -49,9 +49,37 @@ class ControladorDirector extends Controller
 
             $name = $request->get('name');
             
-            $proyectos = proyecto::orderBy('id', 'DESC')
-            ->name($name)
-            ->paginate(10);
+            //..............MANAGERS 
+            
+            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+                $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
+                ->orwhere('nombre_proyecto','NARAMA')
+                ->orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
+            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
+                $proyectos = proyecto::where('nombre_proyecto','BALDONE')
+                ->orwhere('nombre_proyecto','AIRALI')
+                ->orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
+            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
+                $proyectos = proyecto::where('nombre_proyecto','SUR PROPERTIES, S.A.')
+                ->orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
+            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+                $proyectos = proyecto::where('nombre_proyecto','ROQUE, Ciudad Nueva')
+                ->orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
+            }else{
+                $proyectos = proyecto::orderBy('id', 'DESC')
+                ->name($name)
+                ->paginate(10);
+            }
+            
+            //..............MANAGERS
             
             return view('homeDirector', compact('proyectos'));
 
