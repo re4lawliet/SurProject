@@ -171,12 +171,13 @@ class ControladorVistaPedidos extends Controller{
             $solicitud->aprobado_director='1';
             $solicitud->fecha_director = $fecha;
             $solicitud->save();
-
+            /*
             $nsolicitudes = solicitude::where('respondido_manager','1')
                                         ->where('aprobado_manager','1')
                                         ->where('respondido_director','0')
                                         ->count();
-            Session::put('countSolicitudesDirector',$nsolicitudes);
+            Session::put('countSolicitudesDirector',$nsolicitudes);*/
+
             return redirect('MostrarSolicitudesDirector');
         }catch (Exception $e) { 
             Session::flash('catch_error','Aceptar Solicitud Director');
@@ -478,14 +479,61 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarOrdenesDirector(){
         try{
+            /*
             $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
-            Session::put('countOrdenesAprobadas',$countorden); 
-            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+            Session::put('countOrdenesAprobadas',$countorden); */
+
+            //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
+            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                AND p.nombre_proyecto = 'NARAMA'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;"));     
+            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali}    
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'BALDONE'
+                AND p.nombre_proyecto = 'AIRALI'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else{
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                                             FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                                             WHERE respuesta_conta = '0'
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
-                                            AND p.id = o.id_proyecto;"));                             
+                                            AND p.id = o.id_proyecto;")); 
+            }
         
             return view('VistaOrdenesDirector')->with('ordenes',$ordenes);
         }catch (Exception $e) { 
@@ -608,14 +656,68 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarOrdenesFinalizadas(){
         try{
+            
             $countorden = DB::table('orden')->where('respuesta_conta', '2')->count();
             Session::put('countOrdenesFinalizadas',$countorden); 
-            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+
+            //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
+            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '2'
+
+                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                AND p.nombre_proyecto = 'NARAMA'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
+
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '2'
+
+                AND p.nombre_proyecto = 'BALDONE'
+                AND p.nombre_proyecto = 'AIRALI'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;"));
+
+            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
+
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '2'
+
+                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;"));
+
+            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE respuesta_conta = '2'
+
+                AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
+
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;"));
+
+            }else{
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                                             FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                                             WHERE respuesta_conta = '2'
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
-                                            AND p.id = o.id_proyecto;"));                             
+                                            AND p.id = o.id_proyecto;")); 
+            }
+                                        
         
             return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
         }catch (Exception $e) { 
@@ -844,7 +946,26 @@ class ControladorVistaPedidos extends Controller{
 
     }
 
+    public function reenviarSolicitudRechazada($id){
+        try{
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = orden::findOrFail($id);
+            $solicitud->respuesta_conta='1';
+            $solicitud->save();
 
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','3')
+                                ->count();
+            Session::put('countOrdenesRechazadas',$solicitudes2);
+            Session::flash('messageOrdenReenviada','Orden Reenviada A Contabilidad Sin Cambios');
+
+            return redirect('/homeCompras');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Aceptar Solicitud Rechazada');
+            return view('ErrorCatch');  
+        }
+    }
 
 
     

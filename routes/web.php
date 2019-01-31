@@ -335,6 +335,9 @@ Route::get('/MostrarSolicitudesRechazadas','ControladorVistaPedidos@mostrarSolic
 Route::get('/SolicitudRechazada/{id}', 'ControladorModuloSolicitudes@verSolicitudRechazada');
 //------------------Aceptar solicitud por Rechazada
 Route::get('/AceptarSolicitudRechazada/{id}', 'ControladorVistaPedidos@aceptarSolicitudRechazada');
+//------------------Reenviar solicitud por Rechazada
+Route::get('/ReenviarSolicitudRechazada/{id}', 'ControladorVistaPedidos@reenviarSolicitudRechazada');
+
 
 /*************************************************************************************************/
 
