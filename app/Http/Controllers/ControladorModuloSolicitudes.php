@@ -343,8 +343,15 @@ class ControladorModuloSolicitudes extends Controller
         $pdf = PDF::loadView('myPDF', $data);
         file_put_contents($path, $pdf->output()); 
 
-        //incrementar correlativo de empresa
+        //GUARDAR CORRELATIVO DE LA ORDEN
         $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        $corr1 = $provv->correlativo;
+        $actualizar = DB::select(DB::raw("UPDATE orden
+                                            SET no_orden = '$corr1'
+                                            WHERE id = $maxid->id;"));
+
+        //incrementar correlativo de empresa
+        
         $corr = $provv->correlativo + 1;
         $updateProveedor = DB::select(DB::raw("UPDATE empresas
                                                     SET correlativo ='$corr'
@@ -352,7 +359,7 @@ class ControladorModuloSolicitudes extends Controller
         $salida = '0';
         return view('guardarPDF')->with('path',$path)
                                 ->with('salida',$salida);
-        //return $pdf->stream($name);
+        return $pdf->stream($name);
         }catch (Exception $e) { 
             Session::flash('catch_error','Crear Orden De Compra ');
             return view('ErrorCatch');  

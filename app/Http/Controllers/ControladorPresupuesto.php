@@ -81,6 +81,8 @@ class ControladorPresupuesto extends Controller
             $val_presupuestos = $request->txt_presupuestos;
             $val_orden_sumada = $request->txt_orden_sumada;
             $val_saldos = $request->txt_saldos;
+            //replace<br> que no se donde lo agrega
+            $val_presupuestos = str_ireplace("<br>","",$val_presupuestos);
 
             $arr_ids = explode(",",$val_ids);
             $arr_presupuestos = explode(",",$val_presupuestos);
@@ -142,15 +144,15 @@ class ControladorPresupuesto extends Controller
     public function desglose($idProyecto,$idPartida){
 
         try{
-        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, o.total, e.nombre_empresa, s.titulo_solicitud
-                                        FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
-                                        WHERE p.id = $idProyecto
-                                        AND o.id_proyecto = $idProyecto
-                                        AND o.enviado = '1'
-                                        AND s.id = o.id_solicitud
-                                        AND pa.id = s.id_partida
-                                        AND pa.id = $idPartida
-                                        AND e.id = o.id_proveedor;"));
+        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
+                                            FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                            WHERE p.id = $idProyecto
+                                            AND o.id_proyecto = $idProyecto
+                                            AND o.enviado = '1'
+                                            AND s.id = o.id_solicitud
+                                            AND pa.id = s.id_partida
+                                            AND pa.id = $idPartida
+                                            AND e.id = o.id_proveedor;"));
 
         $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
                                         FROM proyectos
