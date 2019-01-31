@@ -22,6 +22,13 @@
                     <br>
 
                     <br><br><br> 
+                    <div class="card-body">
+                        @if(Session::has('messageOrdenReenviada'))
+                            <div class="alert alert-success">
+                            <h7><B>{{Session::get('messageOrdenReenviada')}}</B></h7>
+                            </div>
+                        @endif
+                    </div>
 
 <div class="container">
 
