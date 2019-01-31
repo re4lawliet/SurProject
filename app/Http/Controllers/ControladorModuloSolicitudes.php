@@ -224,11 +224,11 @@ class ControladorModuloSolicitudes extends Controller
 
         //Insertar en Orden
         if($val_ordenAbierta==""){
-            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
-                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha','0');"));
         }else{
-            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion)
-                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha');"));
+            $insertarOrden = DB::select(DB::raw("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha','1');"));
         }
         
         

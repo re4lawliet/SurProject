@@ -315,7 +315,7 @@ class ControladorVistaPedidos extends Controller{
         //         ->withInput()
         //         ->withErrors($validator);
         // }
-       
+       /*
         $comentarioAceptada="[Aceptada] ".$request->comentario;
 
         date_default_timezone_set('America/Guatemala');
@@ -350,7 +350,7 @@ class ControladorVistaPedidos extends Controller{
                                                     SET saldo = presupuesto - orden_sumada
                                                     WHERE id_proyecto = $p->id_proyecto
                                                     AND id_partida = $p->id_partida;"));
-        }
+        }*/
 
         //jalo la solicitud y le pondre 3 que es aceptada final
         // $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
@@ -393,34 +393,63 @@ class ControladorVistaPedidos extends Controller{
             $solicitud->comentario_conta=$comentarioAceptada;
             $solicitud->fecha_contador = $fecha;
             $solicitud->save();
-    
-            //ACTUALIZAR PRESUPUESTO
-            $presupuestoViejo = DB::select(DB::raw("SELECT p.id_proyecto, p.id_partida, p.presupuesto, p.orden_sumada, p.saldo
-                                                        FROM presupuesto as p, orden as o, solicitudes as s 
-                                                        WHERE o.id = $id
-                                                        AND p.id_proyecto = o.id_proyecto
-                                                        AND s.id = o.id_solicitud
-                                                        AND s.id_partida = p.id_partida;"));
 
-            foreach($presupuestoViejo as $p){
+            //si el abono != 0 es por que se esta abonando 
+            if($solicitud->abono == '0'){
+                //ACTUALIZAR PRESUPUESTO
+                $presupuestoViejo = DB::select(DB::raw("SELECT p.id_proyecto, p.id_partida, p.presupuesto, p.orden_sumada, p.saldo
+                                    FROM presupuesto as p, orden as o, solicitudes as s 
+                                    WHERE o.id = $id
+                                    AND p.id_proyecto = o.id_proyecto
+                                    AND s.id = o.id_solicitud
+                                    AND s.id_partida = p.id_partida;"));
+
+                foreach($presupuestoViejo as $p){
                 $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
 
                 $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-                        SET orden_sumada = $nuevoTotal
-                        WHERE id_proyecto = $p->id_proyecto
-                        AND id_partida = $p->id_partida;"));
+                SET orden_sumada = $nuevoTotal
+                WHERE id_proyecto = $p->id_proyecto
+                AND id_partida = $p->id_partida;"));
 
                 $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-                        SET saldo = presupuesto - orden_sumada
-                        WHERE id_proyecto = $p->id_proyecto
-                        AND id_partida = $p->id_partida;"));
-            }
+                SET saldo = presupuesto - orden_sumada
+                WHERE id_proyecto = $p->id_proyecto
+                AND id_partida = $p->id_partida;"));
+                }
 
+            }else if($solicitud->abono == '1'){
+                //ACTUALIZAR PRESUPUESTO
+                $presupuestoViejo = DB::select(DB::raw("SELECT p.id_proyecto, p.id_partida, p.presupuesto, p.orden_sumada, p.saldo
+                                    FROM presupuesto as p, orden as o, solicitudes as s 
+                                    WHERE o.id = $id
+                                    AND p.id_proyecto = o.id_proyecto
+                                    AND s.id = o.id_solicitud
+                                    AND s.id_partida = p.id_partida;"));
+
+                foreach($presupuestoViejo as $p){
+                $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
+
+                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                SET orden_sumada = $nuevoTotal
+                WHERE id_proyecto = $p->id_proyecto
+                AND id_partida = $p->id_partida;"));
+
+                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                SET saldo = presupuesto - orden_sumada
+                WHERE id_proyecto = $p->id_proyecto
+                AND id_partida = $p->id_partida;"));
+                }
+
+            }else{//si el abono es == 0 Actualizamos Presupuesto
+
+            }
+            
             //jalo la solicitud y le pondre 3 que es aceptada final
             $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
             $solicitud3->orden_creada='3';
             $solicitud3->save();
-    
+
             $solicitudes2 = DB::table('orden')
                                 ->where('respuesta_conta','1')
                                 ->count();
@@ -446,9 +475,9 @@ class ControladorVistaPedidos extends Controller{
             $solicitud->fecha_contador = $fecha;
             $solicitud->save();
     
-            //jalo la solicitud y le pondre 2 que es rechazada por conta
+            //jalo la solicitud y le pondre 3 que es rechazada por conta
             $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
-            $solicitud3->orden_creada='2';
+            $solicitud3->orden_creada='3';
             $solicitud3->save();
     
             $solicitudes2 = DB::table('orden')
@@ -906,7 +935,7 @@ class ControladorVistaPedidos extends Controller{
     }
 
     public function hacerAbono(Request $request){
-        try{
+        // try{
         //OBTENCION DE DATOS
         $val_id_proveedor = $request->id_emp;
         $val_tipo_pago = $request->tipo_pago;
@@ -987,10 +1016,10 @@ class ControladorVistaPedidos extends Controller{
         $salida = '1';
         return view('guardarPDF')->with('path',$path)
                                     ->with('salida',$salida);
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Hacer Abono');
-            return view('ErrorCatch');  
-        }
+        // }catch (Exception $e) { 
+        //     Session::flash('catch_error','Hacer Abono');
+        //     return view('ErrorCatch');  
+        // }
 
     }
 
