@@ -87,11 +87,11 @@ class ControladorVistaPedidos extends Controller{
     public function mostrarSolicitudesDirector(){
         try{
             
-            $nsolicitudes = solicitude::where('respondido_manager','1')
+            /*$nsolicitudes = solicitude::where('respondido_manager','1')
                                         ->where('aprobado_manager','1')
                                         ->where('respondido_director','0')
                                         ->count();
-            Session::put('countSolicitudesDirector',$nsolicitudes);
+            Session::put('countSolicitudesDirector',$nsolicitudes);*/
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
@@ -101,8 +101,8 @@ class ControladorVistaPedidos extends Controller{
                                                 WHERE s.respondido_manager = '1' 
                                                 AND s.aprobado_manager = '1'
 
-                                                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                                                AND p.nombre_proyecto = 'NARAMA'
+                                                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                                                OR p.nombre_proyecto = 'NARAMA')
 
                                                 AND s.respondido_director = '0'
                                                 AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
@@ -114,8 +114,8 @@ class ControladorVistaPedidos extends Controller{
                                                 WHERE s.respondido_manager = '1' 
                                                 AND s.aprobado_manager = '1'
 
-                                                AND p.nombre_proyecto = 'BALDONE'
-                                                AND p.nombre_proyecto = 'AIRALI'
+                                                AND (p.nombre_proyecto = 'BALDONE'
+                                                OR p.nombre_proyecto = 'AIRALI')
 
                                                 AND s.respondido_director = '0'
                                                 AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
@@ -489,8 +489,8 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '0'
 
-                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                AND p.nombre_proyecto = 'NARAMA'
+                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                OR p.nombre_proyecto = 'NARAMA')
 
                 AND s.id = o.id_solicitud
                 AND e.id = o.id_proveedor
@@ -500,8 +500,8 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '0'
 
-                AND p.nombre_proyecto = 'BALDONE'
-                AND p.nombre_proyecto = 'AIRALI'
+                AND (p.nombre_proyecto = 'BALDONE'
+                OR p.nombre_proyecto = 'AIRALI')
 
                 AND s.id = o.id_solicitud
                 AND e.id = o.id_proveedor
@@ -666,8 +666,8 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '2'
 
-                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                AND p.nombre_proyecto = 'NARAMA'
+                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                OR p.nombre_proyecto = 'NARAMA')
 
                 AND s.id = o.id_solicitud
                 AND e.id = o.id_proveedor
@@ -678,8 +678,8 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '2'
 
-                AND p.nombre_proyecto = 'BALDONE'
-                AND p.nombre_proyecto = 'AIRALI'
+                AND (p.nombre_proyecto = 'BALDONE'
+                OR p.nombre_proyecto = 'AIRALI')
 
                 AND s.id = o.id_solicitud
                 AND e.id = o.id_proveedor

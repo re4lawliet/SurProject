@@ -44,8 +44,8 @@ class ControladorDirector extends Controller
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                         WHERE respuesta_conta = '0'
 
-                        AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                        AND p.nombre_proyecto = 'NARAMA'
+                        AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                        OR p.nombre_proyecto = 'NARAMA')
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
@@ -56,8 +56,8 @@ class ControladorDirector extends Controller
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                         WHERE respuesta_conta = '2'
 
-                        AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                        AND p.nombre_proyecto = 'NARAMA'
+                        AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                        OR p.nombre_proyecto = 'NARAMA')
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
@@ -69,8 +69,8 @@ class ControladorDirector extends Controller
                                 WHERE s.respondido_manager = '1' 
                                 AND s.aprobado_manager = '1'
 
-                                AND p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                                AND p.nombre_proyecto = 'NARAMA'
+                                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                                OR p.nombre_proyecto = 'NARAMA')
 
                                 AND s.respondido_director = '0'
                                 AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
@@ -92,8 +92,8 @@ class ControladorDirector extends Controller
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                         WHERE respuesta_conta = '0'
 
-                        AND p.nombre_proyecto = 'BALDONE'
-                        AND p.nombre_proyecto = 'AIRALI'
+                        AND (p.nombre_proyecto = 'BALDONE'
+                        OR p.nombre_proyecto = 'AIRALI')
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
@@ -104,8 +104,8 @@ class ControladorDirector extends Controller
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                         WHERE respuesta_conta = '2'
 
-                        AND p.nombre_proyecto = 'BALDONE'
-                        AND p.nombre_proyecto = 'AIRALI'
+                        AND (p.nombre_proyecto = 'BALDONE'
+                        OR p.nombre_proyecto = 'AIRALI')
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
@@ -117,8 +117,8 @@ class ControladorDirector extends Controller
                         WHERE s.respondido_manager = '1' 
                         AND s.aprobado_manager = '1'
 
-                        AND p.nombre_proyecto = 'BALDONE'
-                        AND p.nombre_proyecto = 'AIRALI'
+                        AND (p.nombre_proyecto = 'BALDONE'
+                        OR p.nombre_proyecto = 'AIRALI')
 
                         AND s.respondido_director = '0'
                         AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
