@@ -149,6 +149,7 @@ class ControladorPresupuesto extends Controller
                                             WHERE p.id = $idProyecto
                                             AND o.id_proyecto = $idProyecto
                                             AND o.enviado = '1'
+                                            AND o.respuesta_conta = '2'
                                             AND s.id = o.id_solicitud
                                             AND pa.id = s.id_partida
                                             AND pa.id = $idPartida

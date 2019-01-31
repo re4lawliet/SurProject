@@ -311,25 +311,25 @@ class ControladorModuloSolicitudes extends Controller
         
 
         //Actualizar presupuesto
-        $presupuestoViejo = DB::select(DB::raw("SELECT p.orden_sumada, p.id_partida
-                                                FROM presupuesto as p, solicitudes as s, orden as o
-                                                WHERE p.id_proyecto = $val_id_proyecto
-                                                AND o.id = $maxid->id
-                                                AND s.id = o.id_solicitud
-                                                AND p.id_partida = s.id_partida;"));
-        foreach($presupuestoViejo as $p){
-            $nuevoTotal = floatval($p->orden_sumada) + floatval($val_total) * floatval($val_tasa);
+        // $presupuestoViejo = DB::select(DB::raw("SELECT p.orden_sumada, p.id_partida
+        //                                         FROM presupuesto as p, solicitudes as s, orden as o
+        //                                         WHERE p.id_proyecto = $val_id_proyecto
+        //                                         AND o.id = $maxid->id
+        //                                         AND s.id = o.id_solicitud
+        //                                         AND p.id_partida = s.id_partida;"));
+        // foreach($presupuestoViejo as $p){
+        //     $nuevoTotal = floatval($p->orden_sumada) + floatval($val_total) * floatval($val_tasa);
             
 
-            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-                                                    SET orden_sumada = $nuevoTotal
-                                                    WHERE id_proyecto = $val_id_proyecto
-                                                    AND id_partida = $p->id_partida;"));
-            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-                                                    SET saldo = presupuesto - orden_sumada
-                                                    WHERE id_proyecto = $val_id_proyecto
-                                                    AND id_partida = $p->id_partida;"));
-        }
+        //     $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+        //                                             SET orden_sumada = $nuevoTotal
+        //                                             WHERE id_proyecto = $val_id_proyecto
+        //                                             AND id_partida = $p->id_partida;"));
+        //     $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+        //                                             SET saldo = presupuesto - orden_sumada
+        //                                             WHERE id_proyecto = $val_id_proyecto
+        //                                             AND id_partida = $p->id_partida;"));
+        // }
 
         // return view('myPDF')->with('proveedor' , $data_proveedor)
         //                     ->with('tipo_pago' , $str_tipo_pago)

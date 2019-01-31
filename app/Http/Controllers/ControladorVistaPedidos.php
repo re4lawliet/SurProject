@@ -305,42 +305,68 @@ class ControladorVistaPedidos extends Controller{
 
     
     public function aceptarSolicitudContador(Request $request,$id){
-        try{
-        $validator = Validator::make($request->all(), [
-            'comentario' => 'required|max:2000',   
-        ]);
+        // try{
+        // $validator = Validator::make($request->all(), [
+        //     'comentario' => 'required|max:2000',   
+        // ]);
     
-        if ($validator->fails()) {
-            return redirect('MostrarSolicitudesContador')
-                ->withInput()
-                ->withErrors($validator);
-        }
+        // if ($validator->fails()) {
+        //     return redirect('MostrarSolicitudesContador')
+        //         ->withInput()
+        //         ->withErrors($validator);
+        // }
        
         $comentarioAceptada="[Aceptada] ".$request->comentario;
 
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
         $solicitud = orden::findOrFail($id);
-        $solicitud->respuesta_conta='2';
+        //$solicitud->respuesta_conta='2';
         $solicitud->comentario_conta=$comentarioAceptada;
         $solicitud->fecha_contador = $fecha;
         $solicitud->save();
 
-        //jalo la solicitud y le pondre 3 que es aceptada final
-        $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
-        $solicitud3->orden_creada='3';
-        $solicitud3->save();
+        //ACTUALIZAR PRESUPUESTO
+        $presupuestoViejo = DB::select(DB::raw("SELECT p.id_proyecto, p.id_partida, p.presupuesto, p.orden_sumada, p.saldo
+                                                    FROM presupuesto as p, orden as o, solicitudes as s 
+                                                    WHERE o.id = $id
+                                                    AND p.id_proyecto = o.id_proyecto
+                                                    AND s.id = o.id_solicitud
+                                                    AND s.id_partida = p.id_partida;"));
+                                            
+        foreach($presupuestoViejo as $p){
+            $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
+            echo($p->orden_sumada.'<br>');
+            echo($solicitud->total.'<br>');
+            echo($solicitud->tasa_cambio.'<br>');
+            
 
-        $solicitudes2 = DB::table('orden')
-                            ->where('respuesta_conta','1')
-                            ->count();
-        Session::put('countSolicitudesConta',$solicitudes2);
+            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                                                    SET orden_sumada = $nuevoTotal
+                                                    WHERE id_proyecto = $p->id_proyecto
+                                                    AND id_partida = $p->id_partida;"));
 
-        return redirect('MostrarSolicitudesContador');
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Aceptar Solicitud por Contador');
-            return view('ErrorCatch');  
+            $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                                                    SET saldo = presupuesto - orden_sumada
+                                                    WHERE id_proyecto = $p->id_proyecto
+                                                    AND id_partida = $p->id_partida;"));
         }
+
+        //jalo la solicitud y le pondre 3 que es aceptada final
+        // $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+        // $solicitud3->orden_creada='3';
+        // $solicitud3->save();
+
+        // $solicitudes2 = DB::table('orden')
+        //                     ->where('respuesta_conta','1')
+        //                     ->count();
+        // Session::put('countSolicitudesConta',$solicitudes2);
+
+        // return redirect('MostrarSolicitudesContador');
+        // }catch (Exception $e) { 
+        //     Session::flash('catch_error','Aceptar Solicitud por Contador');
+        //     return view('ErrorCatch');  
+        // }
     }
 
     public function rechazarSolicitudContador(Request $request,$id){
@@ -368,6 +394,28 @@ class ControladorVistaPedidos extends Controller{
             $solicitud->fecha_contador = $fecha;
             $solicitud->save();
     
+            //ACTUALIZAR PRESUPUESTO
+            $presupuestoViejo = DB::select(DB::raw("SELECT p.id_proyecto, p.id_partida, p.presupuesto, p.orden_sumada, p.saldo
+                                                        FROM presupuesto as p, orden as o, solicitudes as s 
+                                                        WHERE o.id = $id
+                                                        AND p.id_proyecto = o.id_proyecto
+                                                        AND s.id = o.id_solicitud
+                                                        AND s.id_partida = p.id_partida;"));
+
+            foreach($presupuestoViejo as $p){
+                $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
+
+                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                        SET orden_sumada = $nuevoTotal
+                        WHERE id_proyecto = $p->id_proyecto
+                        AND id_partida = $p->id_partida;"));
+
+                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                        SET saldo = presupuesto - orden_sumada
+                        WHERE id_proyecto = $p->id_proyecto
+                        AND id_partida = $p->id_partida;"));
+            }
+
             //jalo la solicitud y le pondre 3 que es aceptada final
             $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
             $solicitud3->orden_creada='3';
