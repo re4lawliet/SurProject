@@ -930,12 +930,20 @@ class ControladorVistaPedidos extends Controller{
                                                 WHERE p.id = o.id_proyecto
                                                 AND o.id = $id_Orden;"));
 
+        $data_abonoMaximo = DB::select(DB::raw("SELECT o.id_orden, o.no_orden, o.fecha, o.abono, o.debe, o.haber, o.saldo
+                                                    FROM orden_abierta as o
+                                                    WHERE o.id_orden = $id_Orden
+                                                    AND abono = (SELECT MAX(abono) as abono
+                                                                FROM orden_abierta 
+                                                                WHERE id_orden = $id_Orden);"));
+
         return view('homeOrdenAbierta')->with('encabezado',$data_solicitud)
                                         ->with('proveedor',$data_proveedor)
                                         ->with('detalle',$data_detalle)
                                         ->with('orden',$data_orden)
                                         ->with('abonos',$data_abonos)
-                                        ->with('queryProyecto',$data_proyecto);
+                                        ->with('queryProyecto',$data_proyecto)
+                                        ->with('abonoMaximo',$data_abonoMaximo);
         }catch (Exception $e) { 
             Session::flash('catch_error','Mostrar Orden Abierta Especifica');
             return view('ErrorCatch');  
