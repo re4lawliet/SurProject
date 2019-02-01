@@ -1077,6 +1077,7 @@ class ControladorVistaPedidos extends Controller{
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE oa.respuesta_conta = '0'
+                AND oa.abono != '1'
 
                 AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
                 OR p.nombre_proyecto = 'NARAMA')
@@ -1091,6 +1092,7 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
 
                 WHERE oa.respuesta_conta = '0'
+                AND oa.abono != '1'
 
                 AND (p.nombre_proyecto = 'BALDONE'
                 OR p.nombre_proyecto = 'AIRALI')
@@ -1104,6 +1106,7 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
 
                 WHERE oa.respuesta_conta = '0'
+                AND oa.abono != '1'
 
                 AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
 
@@ -1116,6 +1119,7 @@ class ControladorVistaPedidos extends Controller{
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
 
                 WHERE oa.respuesta_conta = '0'
+                AND oa.abono != '1'
 
                 AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
 
@@ -1128,6 +1132,7 @@ class ControladorVistaPedidos extends Controller{
                                             FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
 
                                             WHERE oa.respuesta_conta = '0'
+                                            AND oa.abono != '1'
                                             AND o.id = oa.id_orden
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
