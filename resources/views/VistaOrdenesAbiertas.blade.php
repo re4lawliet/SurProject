@@ -3,8 +3,6 @@
 
 @section('title','Menu de Compras SUR')
 
-@section('title','Menu de Compras')
-
 @section('content')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <center>
