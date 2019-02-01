@@ -1,5 +1,6 @@
 <!-- ENCABEZADO -->
 @extends('layouts.appDirector')
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 @section('content')
     <center>
         <h1> Vista Previa Orden y Cotizacion</h1>
@@ -18,7 +19,7 @@
         </div>
 
 
-
+<br>
         <div class="form-group">
             <a href="#">
                 <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/enviar_correo'">APROBADO Y ENVIADO</button> 

@@ -2,6 +2,7 @@
 
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -44,10 +45,10 @@
             <div class="panel panel-default">
                 
                 <div class="panel-heading">
-                        <h2>Proyecto Seleccionado: "{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}}"</h2>
+                        <!--h2>Proyecto Seleccionado: "{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}}"</h2-->
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped task-table">
+                    <table id="tabla_proyectos" name="tabla_proyectos" class="table table-striped task-table">
                         <thead>
                             <th>Nombre Proyecto</th>
                             <th>Estado Proyecto</th>
@@ -91,3 +92,40 @@
     </div>
 </div>
 @endsection
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var idioma_espanol = {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+        }
+        
+        $(document).ready( function () {
+            $('#lllltabla_proyectos').DataTable({
+                "language": idioma_espanol,
+                "paging": false,
+                "info": false
+            });
+        } );
+    </script>
