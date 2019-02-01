@@ -52,7 +52,7 @@
                                 <!-- Boton VER -->
                                 <td>
                                 <!-- // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_proveedor">Crear Orden</button> -->
-                                @if($orden->respuesta_conta==0)
+                                @if($orden->respuesta_conta<=1)
                                     <button type="submit" class="btn btn-danger" onclick="denegar()">
                                                 <i class="fa fa-btn fa-pencil"></i>Hacer Abono
                                     </button>

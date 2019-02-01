@@ -10,6 +10,7 @@ use SUR\solicitude;
 use SUR\proyecto;
 use SUR\orden;
 use SUR\empresa;
+use SUR\orden_abierta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mail;
@@ -716,11 +717,16 @@ class ControladorVistaPedidos extends Controller{
         }
         //2 rechazada por conta
         //ahora tengo que colocar 3 por que fue enviada
-
         $solicitud = orden::findOrFail($idOrden);
         $solicitud->respuesta_conta='1';
         $solicitud->enviado='1';
         $solicitud->save();
+
+        //Actualizando orden abierta si existe
+        $orden_abierta = DB::select(DB::raw("UPDATE orden_abierta
+                                                SET respuesta_conta = '1', enviado='1'
+                                                WHERE id_orden = $idOrden
+                                                AND abono = '1';"));
 
         Session::flash('messageOrden','Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
 

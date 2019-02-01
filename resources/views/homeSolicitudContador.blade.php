@@ -18,7 +18,7 @@
         
         <h3>Mostrar ORDEN:</h3>
         <div class="col-sm-7">
-            <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Propuesta de Presupuesto</button>
+            <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Orden de Compra</button>
         </div>
         <br>
         <div class="col-sm-7" id="divPresupuesto" style="display:none">
@@ -30,7 +30,7 @@
         <br><br>
         <h3>Mostrar Presupuesto:</h3>
         <div class="col-sm-7">
-            <button id="btn_pr2" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto2()">Ver Propuesta de Presupuesto</button>
+            <button id="btn_pr2" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto2()">Ver Propuesta de Cotizacion</button>
         </div>
         <br>
         <div class="col-sm-7" id="divPresupuesto2" style="display:none">
@@ -74,12 +74,12 @@
             var x = document.getElementById("divPresupuesto");
             if (x.style.display === "none") {
                 y.className = "btn btn-danger";
-                y.innerHTML = "Esconder Propuesta de Presupuesto";
+                y.innerHTML = "Esconder Orden de Compra";
                 x.style.display = "block";
             } else {
                 x.style.display = "none";
                 y.className = "btn btn-info"
-                y.innerHTML = "Ver Propuesta de Presupuesto";
+                y.innerHTML = "Ver Orden de Compra";
             }
         }
 
@@ -88,12 +88,12 @@
             var x = document.getElementById("divPresupuesto2");
             if (x.style.display === "none") {
                 y.className = "btn btn-danger";
-                y.innerHTML = "Esconder Propuesta de Presupuesto";
+                y.innerHTML = "Esconder Propuesta de Cotizacion";
                 x.style.display = "block";
             } else {
                 x.style.display = "none";
                 y.className = "btn btn-info"
-                y.innerHTML = "Ver Propuesta de Presupuesto";
+                y.innerHTML = "Ver Propuesta de Cotizacion";
             }
         }
 </script>
