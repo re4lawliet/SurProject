@@ -284,14 +284,14 @@ class ControladorModuloSolicitudes extends Controller
 
         //insertar Orden_abierta si es Abierta
         if($val_ordenAbierta!=""){
-            $insertarOrden_Abierta = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo)
-                                                VALUES($maxid->id,'$fecha',0,'$val_total','-','$val_total');"));
+            $insertarOrden_Abierta = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo,enviado,respuesta_conta)
+                                                VALUES($maxid->id,'$fecha',0,'$val_total','-','$val_total','1','1');"));
         }
         //insertar primer Pago si es Abierta
         if($val_ordenAbierta!=""){
             $val_saldo = floatval($val_total) - floatval($val_ordenAbierta);
-            $insertarOrden_Abierta_pago = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo)
-                                                VALUES($maxid->id,'$fecha',1,'-','$val_ordenAbierta','$val_saldo');"));
+            $insertarOrden_Abierta_pago = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo,enviado,pdf,respuesta_conta)
+                                                VALUES($maxid->id,'$fecha',1,'-','$val_ordenAbierta','$val_saldo','0','$path','0');"));
         }
 
         //data Orden Abierta
@@ -350,6 +350,12 @@ class ControladorModuloSolicitudes extends Controller
                                             SET no_orden = '$corr1'
                                             WHERE id = $maxid->id;"));
 
+        //guardar no_orden en orden_abierta
+        if($val_ordenAbierta!=""){
+            $updateOrdenAbierta = DB::select(DB::raw("UPDATE orden_abierta
+                                                        SET no_orden = '$corr1'
+                                                        WHERE id_orden = $maxid->id;"));
+        }
         //incrementar correlativo de empresa
         
         $corr = $provv->correlativo + 1;

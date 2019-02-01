@@ -42,14 +42,26 @@
                                 <td class="table-text">{{ $orden->partida }}</td>
                                 <td class="table-text">{{ $orden->nombre_proyecto }}</td>
                                 <td class="table-text">{{ $orden->nombre_empresa }}</td>
-                                <td class="table-text">{{ $orden->total }}</td>
-                                <td class="table-text">{{ $orden->pagado }}</td>
+                                @if($orden->divisa=='USD')
+                                    <td class="table-text">$ {{ $orden->total }}</td>
+                                    <td class="table-text">$ {{ $orden->pagado }}</td>
+                                @else
+                                    <td class="table-text">Q {{ $orden->total }}</td>
+                                    <td class="table-text">Q {{ $orden->pagado }}</td>
+                                @endif
                                 <!-- Boton VER -->
                                 <td>
                                 <!-- // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_proveedor">Crear Orden</button> -->
-                                <button type="submit" class="btn btn-primary" onclick="location.href='/OrdeneAbierta/{{ $orden->id_orden }}'">
-                                        <i class="fa fa-btn fa-pencil"></i>Hacer Abono
+                                @if($orden->respuesta_conta==0)
+                                    <button type="submit" class="btn btn-danger" onclick="denegar()">
+                                                <i class="fa fa-btn fa-pencil"></i>Hacer Abono
                                     </button>
+                                @else
+                                    <button type="submit" class="btn btn-primary" onclick="location.href='/OrdeneAbierta/{{ $orden->id_orden }}'">
+                                            <i class="fa fa-btn fa-pencil"></i>Hacer Abono
+                                    </button>
+                                @endif
+                                
                                     
                                 </td>
                             </tr>
@@ -102,5 +114,10 @@
                 "info": false
             });
         } );
+    </script>
+    <script>
+        function denegar(){
+            alert('No se pueden hacer abonos, la Orden de Compra no ha sido aprobada por Contabilidad');
+        }
     </script>
 @endsection

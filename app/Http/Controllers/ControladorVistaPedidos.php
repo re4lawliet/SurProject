@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use SUR\solicitude;
 use SUR\proyecto;
 use SUR\orden;
+use SUR\empresa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mail;
@@ -868,7 +869,7 @@ class ControladorVistaPedidos extends Controller{
             Session::put('countOrdenesAbiertas',$orden_abierta); 
 
 
-            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado
+            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta
                                             FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
                                             WHERE o.abierta = '1'
                                             AND s.id = o.id_solicitud
@@ -959,13 +960,43 @@ class ControladorVistaPedidos extends Controller{
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
 
+        
+        
+        
+        
+
+        $orden = orden::findOrFail($val_id_orden);
+        $proveedor = empresa::findOrFail($val_id_proveedor);
+        $solicitud = solicitude::findOrFail($val_id_solicitud);
+        $proyecto = proyecto::findOrFail($val_id_proyecto);
+
         //Agregar ABONO
-        $abono_Maximo = DB::select(DB::raw("SELECT id_orden, fecha, abono, debe, haber, saldo
-                                                FROM orden_abierta
-                                                WHERE id_orden = 39
+        $abono_Maximo = DB::select(DB::raw("SELECT o.id_orden, o.no_orden, o.fecha, o.abono, o.debe, o.haber, o.saldo
+                                                FROM orden_abierta as o
+                                                WHERE o.id_orden = $orden->id
+                                                AND o.no_orden = $orden->no_orden
                                                 AND abono = (SELECT MAX(abono) as abono
                                                                 FROM orden_abierta 
-                                                                WHERE id_orden = 39);"));
+                                                                WHERE id_orden = $orden->id);"));
+        //direccion del PDF
+        $name = '.pdf';
+        $path = '.pdf';
+        $data_Orden_Abierta = "";
+        $no_orden = "";
+        foreach($abono_Maximo as $a){
+            $no_orden = $a->no_orden;
+            $nuevoAbono = $a->abono + 1;
+            $nuevoSaldo = $a->saldo - $val_Abono;
+            $name = 'orderfile'.$a->id_orden.'Abono'.$nuevoAbono.'.pdf';
+            $path = 'PDF/'.$name;
+            $Insertar_Abono = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,no_orden,fecha,abono,debe,haber,saldo,pdf,enviado,respuesta_conta)
+                                                    VALUES ($a->id_orden,'$a->no_orden', '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path','0','0')"));
+
+            //data Orden Abierta
+            $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)
+                                                            ->where('no_orden',$a->no_orden)
+                                                            ->get();
+        }
 
         //Datos proveedor
         $data_proveedor = DB::table('empresas')->where('id', $val_id_proveedor)->first();
@@ -973,23 +1004,6 @@ class ControladorVistaPedidos extends Controller{
         $data_factura = DB::table('listados')->where('id_solicitud', $val_id_solicitud)->get();
         //Datos Proyecto
         $data_proyecto = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
-        
-        //direccion del PDF
-        $name = '.pdf';
-        $path = '.pdf';
-        $data_Orden_Abierta = "";
-        foreach($abono_Maximo as $a){
-            $nuevoAbono = $a->abono + 1;
-            $nuevoSaldo = $a->saldo - $val_Abono;
-            $name = 'orderfile'.$a->id_orden.'Abono'.$nuevoAbono.'.pdf';
-            $path = 'PDF/'.$name;
-            $Insertar_Abono = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,fecha,abono,debe,haber,saldo,pdf)
-                                                    VALUES ($a->id_orden, '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path')"));
-
-            //data Orden Abierta
-            $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)->get();
-  
-        }
                
         $data = ['proveedor' => $data_proveedor,
                 'tipo_pago' => $str_tipo_pago,
@@ -998,20 +1012,18 @@ class ControladorVistaPedidos extends Controller{
                 'proyecto' => $data_proyecto,
                 'enviar_a' => $val_enviar_a,
                 'total' => $val_total,
-                'orden_abierta' => $data_Orden_Abierta];
+                'orden_abierta' => $data_Orden_Abierta,
+                'no_orden'=>$no_orden];
 
-        
-        
-        
-
-        $pdf = PDF::loadView('myPDF', $data);
+        $pdf = PDF::loadView('myPDFabierta', $data);
         file_put_contents($path, $pdf->output()); 
-        //incrementar correlativo de empresa
-        $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
-        $corr = $provv->correlativo + 1;
-        $updateProveedor = DB::select(DB::raw("UPDATE empresas
-                                                    SET correlativo ='$corr'
-                                                    WHERE id = $val_id_proveedor;"));
+        // aumentar lo que va pagado de la orden
+        $pagado = floatval($orden->pagado) + floatval($val_Abono);
+        $abonito = floatval($orden->abono) + 1;
+        $orden->pagado = $pagado;
+        $orden->abono = $abonito;
+        $orden->save();
+        
 
         $salida = '1';
         return view('guardarPDF')->with('path',$path)

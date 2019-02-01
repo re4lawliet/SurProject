@@ -65,14 +65,14 @@
                                             <option value="2">Cheque</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <!--div class="form-group">
                                         @if($p->divisa=='USD')
                                             <label for="tasa" class="control-label">Tasa de Cambio</label><br>
                                             <input id="id_txt_tasa" type="text" name="txt_tasa" class="form-control">
                                         @else
                                             <input id="id_txt_tasa" type="hidden" name="txt_tasa" class="form-control" value="1">
                                         @endif
-                                    </div>
+                                    </div-->
                                 </div>  
                             @endforeach
                         @endif  
@@ -148,6 +148,7 @@
                                                 <?php
                                                     }
                                                 ?>
+                                                <input id="id_txt_tasa" type="hidden" name="txt_tasa" class="form-control" value="{{ $o->tasa_cambio }}">
                                             </div>
                                         @endforeach
                                     @endif
