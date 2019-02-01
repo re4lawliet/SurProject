@@ -367,8 +367,13 @@ Route::get('/limpiar_temporal', 'ControladorModuloProductos_Temporal@LimpiarTemp
 
 //------------------Mostrar Ordenes a Director
 Route::get('/MostrarOrdenesDirector','ControladorVistaPedidos@mostrarOrdenesDirector');
+//------------------Mostrar Ordenes Abiertas a Director
+Route::get('/MostrarOrdenesAbiertasDirector','ControladorVistaPedidos@mostrarOrdenesAbiertasDirector');
 //------------------Mostrar PDF a Director
 Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDirector');
+
+//------------------Mostrar PDF a Director
+Route::get('/verOrdenAbiertaDirector/{idOrden}/{abono}','ControladorVistaPedidos@mostrarPDFAbiertaDirector');
 
 
 
@@ -400,6 +405,8 @@ Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
 
 //Enviar Mails
 Route::get('/enviar_correo', 'ControladorVistaPedidos@enviar');
+//Enviar Mails
+Route::get('/enviar_correoA', 'ControladorVistaPedidos@enviarAbierta');
 
 //------------------Mostrar Ordenes Finalizadas
 Route::get('/MostrarOrdenesFinalizadas','ControladorVistaPedidos@mostrarOrdenesFinalizadas');

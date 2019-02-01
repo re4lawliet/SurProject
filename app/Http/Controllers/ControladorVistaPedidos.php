@@ -619,6 +619,7 @@ class ControladorVistaPedidos extends Controller{
             return view('ErrorCatch');  
         }
     }
+    
 
     public function mostrarPDFDirector($idOrden){
         try{
@@ -1057,7 +1058,205 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
+
+    public function mostrarOrdenesAbiertasDirector(){
+        try{
+            /*
+            $countorden = DB::table('orden')->where('respuesta_conta', '0')->count();
+            Session::put('countOrdenesAprobadas',$countorden); */
+
+            //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
+            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+                
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
+                WHERE oa.respuesta_conta = '0'
+
+                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
+                OR p.nombre_proyecto = 'NARAMA')
+
+                AND o.id = oa.id_orden
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;"));
+
+            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali}    
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
+
+                WHERE oa.respuesta_conta = '0'
+
+                AND (p.nombre_proyecto = 'BALDONE'
+                OR p.nombre_proyecto = 'AIRALI')
+
+                AND o.id = oa.id_orden
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
+
+                WHERE oa.respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
+
+                AND o.id = oa.id_orden
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
+
+                WHERE oa.respuesta_conta = '0'
+
+                AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
+
+                AND o.id = oa.id_orden
+                AND s.id = o.id_solicitud
+                AND e.id = o.id_proveedor
+                AND p.id = o.id_proyecto;")); 
+            }else{
+                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                                            FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
+
+                                            WHERE oa.respuesta_conta = '0'
+                                            AND o.id = oa.id_orden
+                                            AND s.id = o.id_solicitud
+                                            AND e.id = o.id_proveedor
+                                            AND p.id = o.id_proyecto;")); 
+            }
+        
+            return view('VistaOrdenesAbiertasDirector')->with('ordenes',$ordenes);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Ordenes Director');
+            return view('ErrorCatch');  
+        }
+    }
+
+    public function mostrarPDFAbiertaDirector($idOrden, $abono){
+        try{
+        $orden = DB::select(DB::raw("SELECT *
+                                    FROM orden
+                                    WHERE id = '$idOrden';"));
+
+        $ordenA = DB::select(DB::raw("SELECT *
+                                    FROM orden_abierta
+                                    WHERE id_orden = '$idOrden'
+                                    AND abono = '$abono';"));
+
+        Session::put('pdf_idOrden',$idOrden);
+
+        foreach ($orden as $or) {
+
+            foreach ($ordenA as $orA) {
+                Session::put('pdf_enviar',$orA->pdf);
+                Session::put('abono',$orA->abono);
+                Storage::disk('local')->put('OrdenCompra.pdf', \File::get($orA->pdf));
+            }
+            
+            Session::put('pdf_correos',$or->correos);
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$or->id_solicitud';"));
+            foreach ($solicitud as $sol) {
+                if($sol->presupuesto!=NULL){
+                    Session::put('pdf_presupuesto',$sol->presupuesto);
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get($sol->presupuesto));
+                }else{
+                    Session::put('pdf_presupuesto','PDF/orderfile1.pdf');
+                    Storage::disk('local')->put('Presupuesto.pdf', \File::get("PDF/orderfile1.pdf"));
+                }          
+            }
+
+
+            $proyecto = DB::select(DB::raw("SELECT *
+                                    FROM proyectos
+                                    WHERE id = '$or->id_proyecto';"));
+            foreach ($proyecto as $proy) {
+                Session::put('pdf_proyecto',$proy->nombre_proyecto);        
+            }
+
+            $provedor = DB::select(DB::raw("SELECT *
+                                    FROM empresas
+                                    WHERE id = '$or->id_proveedor';"));
+            foreach ($provedor as $prov) {
+                Session::put('pdf_provedor',$prov->nombre_encargado);        
+            }
+
+        }
+        
+        //seteamos en el local el archivo de presupuesto
+
+        
+        
+                                    
+        return view('verPDFAbiertaDirector')->with('orden',$ordenA);
+
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar PDF Director');
+            return view('ErrorCatch');  
+        }
+    }
+
+    public function enviarAbierta()
+    {
+        try{
+        $destinos=Session::get('pdf_correos');
+        $idOrden=Session::get('pdf_idOrden');
+        $abono=Session::get('abono');
+        $proyectoNombre=Session::get('pdf_proyecto');
+        $provedorNombre=Session::get('pdf_provedor');
+
+        $valores = $destinos; 
+        $valor = explode(',',$valores); 
+
+        foreach($valor as $llave => $valorsito) 
+        {
+            //PDF/pres27OrdenDePagooopooo.pdf
+            $nombre="OrdenCompra.pdf";
+            $pathToFile= storage_path('app') ."/". $nombre;
+            $nombre2="Presupuesto.pdf";
+            $pathToFile2= storage_path('app') ."/". $nombre2;
+            $containfile=true;
+            $destinatario2="re4lawliet@gmail.com";
+            $asunto="Orden de Compra De: ".$proyectoNombre;
+            $contenido="Orden de Compra De: ".$proyectoNombre;
+
     
+            $data = array('contenido' => $contenido, 'nombre' => $provedorNombre);
+            $r= Mail::send('correo.plantilla_correo', $data, function ($message) use ($asunto,$valorsito,  $containfile,$pathToFile,$pathToFile2, $proyectoNombre) {
+                $titulo="Sur Desarrollos: Orden de Compra: ".$proyectoNombre;
+                $message->from('sur.app.correos@gmail.com', $titulo);
+                $message->to($valorsito)->subject($asunto);
+                if($containfile){
+                $message->attach($pathToFile);
+                $message->attach($pathToFile2);
+                }
+
+            });      
+        }
+        //2 rechazada por conta
+        //ahora tengo que colocar 3 por que fue enviada
+
+        //update ORDEN Abierta
+        $insertarPDF = DB::select(DB::raw("UPDATE orden_abierta
+                                                    SET respuesta_conta ='1'
+                                                    WHERE id_orden = $idOrden
+                                                    AND abono = $abono;"));
+
+        Session::flash('messageOrden','Abono de Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
+
+
+        return redirect('/homeDirector');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Envio de Orden De Compra Error En correos o Datos');
+            return view('ErrorCatch');  
+        }
+    }
 
 }
 
