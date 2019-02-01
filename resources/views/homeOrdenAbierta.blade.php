@@ -232,22 +232,25 @@
                                     </table>
                                     <br>
                                     <div class="form-group">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <?php
-                                                    if($divisa == 'USD'){
-                                                ?>
-                                                    <span id="span_PrimerPago" class="input-group-text">Hacer Abono de: $</span>
-                                                <?php
-                                                    }else{
-                                                ?>
-                                                    <span id="span_PrimerPago" class="input-group-text">Hacer Abono de: Q</span>
-                                                <?php
-                                                    }
-                                                ?>
+                                        @foreach($abonoMaximo as $max)
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <?php
+                                                        if($divisa == 'USD'){
+                                                    ?>
+                                                        <span id="span_PrimerPago" class="input-group-text">Hacer Abono de: $</span>
+                                                    <?php
+                                                        }else{
+                                                    ?>
+                                                        <span id="span_PrimerPago" class="input-group-text">Hacer Abono de: Q</span>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                </div>
+                                                <input type="hidden" id="inputmax" value ="{{ $max->saldo }}" >
+                                                <input id="id_txt_abono" name="txt_abono" type="number" min="0" max="{{ $max->saldo }}" class="form-control" value="">
                                             </div>
-                                            <input id="id_txt_abono" name="txt_abono" type="text" class="form-control" value="">
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -319,6 +322,7 @@
         var txtAbono = document.getElementById("id_txt_abono");
         var textboxEnviara = document.getElementById("id_txt_enviara");
         var divisa="";
+        var txtmax = document.getElementById("inputmax");
         
         if(textdiv.value!==""){//validando que haya seleccionado Proveedor
             if(textdiv.value=="USD"){
@@ -331,8 +335,12 @@
                     document.getElementById("txtTotal_show").value = document.getElementById("txtTotal_show").value.replace(divisa,'');
                     if(textboxEnviara.value!==""){//validando que haya seleccionado ENVIAR A
                         if(txtAbono.value!==""){
-                            if(confirm('Crear Abono?')){
-                                document.forms["hacer_abono_frm"].submit();
+                            if(txtAbono.value<txtmax.value){
+                                if(confirm('Crear Abono?')){
+                                    document.forms["hacer_abono_frm"].submit();
+                                }
+                            }else{
+                                alert('No se puede realizar un abono mayor al saldo');
                             }
                         }
                     }else{
