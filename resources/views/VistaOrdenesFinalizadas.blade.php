@@ -7,7 +7,6 @@
                     (Auth::user()->rol == 'recepcion' ? 'layouts.appRecepcion' : 'layouts.appAdmin'))))
     )
 
-k
 @section('content')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 

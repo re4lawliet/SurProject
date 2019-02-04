@@ -7,6 +7,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                 (Auth::user()->rol == 'recepcion' ? 'layouts.appRecepcion' : 'layouts.appAdmin'))))
 )
 @section('content')
+
     <center>
         <!--TITULO -->
         <div class="panel-title">
@@ -40,12 +41,13 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
         <div class="col-md-12">
             <!-- si el resultado de la consulta es mayor a 0-->
             @if (count($querySolicitudes) > 0)
+            <center>
                 <div class="panel panel-default">
                     <h2>Listado De Solicitudes</h2>
                 </div>
-
+                </center>
                 <div class="panel-body">
-                    <table class="table">
+                    <table id="tabla_solicitudes" class="table">
                         <!-- Encabezado de Tabla -->
                         <thead>
                             <th>Titulo</th>
@@ -205,5 +207,43 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
 
 
     </center>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        var idioma_espanol = {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+        }
+        
+        $(document).ready( function () {
+            $('#tabla_solicitudes').DataTable({
+                "language": idioma_espanol,
+                "paging": false,
+                "info": false
+            });
+        } );
+    </script>
 
 @endsection
+
