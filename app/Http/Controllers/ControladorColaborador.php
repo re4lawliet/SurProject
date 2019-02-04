@@ -38,9 +38,8 @@ class ControladorColaborador extends Controller
 
             //-------------Restringe Colaboradores::::::::::::::::::::::
             
-            if(Auth::user()->email=="s.garcia@sur.gt" || Auth::user()->email=="p.gutierrez@sur.gt" ){//granat
+            if(Auth::user()->email=="g.macario@sur.gt" || Auth::user()->email=="p.gutierrez@sur.gt" ){//granat
                 $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
-                ->orwhere('nombre_proyecto','NARAMA')
                 ->orderBy('id', 'DESC')
                 ->name($name)
                 ->paginate(10);
