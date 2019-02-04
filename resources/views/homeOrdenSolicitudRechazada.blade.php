@@ -11,7 +11,7 @@
         </div>
 
         <div>
-
+: 
             <h6>No. Partida: "{{Session::get('s_id_partida', 'Seleccione Solicitud')}}"</h6>
 
             @if(count($partidas)>0)
@@ -76,7 +76,7 @@
                             <label for="nombre_banco" class="control-label">Nombre del Banco</label>
                             @if(count($queryProveedores)>0)
                                 @foreach($queryProveedores as $prov)
-                                <input type="text" name="nombre_proyecto" class="form-control" value="{{ $prov->nombre_banco }}" readonly="readonly">
+                                <input type="text" name="nombre_proyecto" class="form-control" value="{{ $prov->nombre_banco }}" >
                                 @endforeach
                             @else
                                 <input type="text" name="nombre_proyecto" class="form-control">
@@ -86,7 +86,7 @@
                             <label for="tipo_cuenta" class="control-label">Tipo de la Cuenta</label>
                             @if(count($queryProveedores)>0)
                                 @foreach($queryProveedores as $prov)
-                                <input type="text" name="tipo_cuenta" class="form-control"   value="{{ $prov->tipo_cuenta }}" readonly="readonly">
+                                <input type="text" name="tipo_cuenta" class="form-control"   value="{{ $prov->tipo_cuenta }}" >
                                 @endforeach
                             @else
                                 <input type="text" name="tipo_cuenta" class="form-control">
@@ -96,7 +96,7 @@
                             <label for="no_cuenta" class="control-label">No. de la Cuenta</label>
                             @if(count($queryProveedores)>0)
                                 @foreach($queryProveedores as $prov)
-                                <input type="text" name="no_cuenta" class="form-control"   value="{{ $prov->no_cuenta }}" readonly="readonly">
+                                <input type="text" name="no_cuenta" class="form-control"   value="{{ $prov->no_cuenta }}" >
                                 @endforeach
                             @else
                                 <input type="text" name="no_cuenta" class="form-control">
@@ -219,7 +219,7 @@
                         <label for="total" class="control-label">Factura a:</label><br>
                         @if(count($queryProyecto)>0)
                             @foreach($queryProyecto as $proyecto)
-                            <input id="facturaa" type="text" name="facturaa" class="form-control" readonly="readonly" value="{{ $proyecto->nombre_proyecto }}">
+                            <input id="facturaa" type="text" name="facturaa" class="form-control"  value="{{ $proyecto->nombre_proyecto }}">
                             <input type="hidden" name="id_proyecto" value="{{ $proyecto->id }}">
                             @endforeach
                         @endif
@@ -228,13 +228,13 @@
                         <label for="nit" class="control-label">NIT:</label><br>
                         @if(count($queryProyecto)>0)
                             @foreach($queryProyecto as $proyecto)
-                            <input id="nit" type="text" name="nit" class="form-control" readonly="readonly" value="{{ $proyecto->factura_numero }}">
+                            <input id="nit" type="text" name="nit" class="form-control"  value="{{ $proyecto->factura_numero }}">
                             @endforeach
                         @endif
                     </div>
                     <div class="form-group">
                         <label for="dir_fiscal" class="control-label">Direccion Fiscal:</label><br>
-                        <input id="nit" type="text" name="nit" class="form-control" readonly="readonly" value="Diagonal 6 19-30 Zona 10">
+                        <input id="nit" type="text" name="nit" class="form-control"  value="Diagonal 6 19-30 Zona 10">
                     </div>
                     <div class="form-group">
                         <label for="total" class="control-label">Correos: (Separar por comas ',')</label><br>
