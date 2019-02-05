@@ -871,7 +871,8 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarOrdenesAbiertas(){
         try{
-            $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+            $orden_abierta = DB::table('orden')->where('abierta','1')
+            ->where('total','!=','pagado')->count();
 
             Session::put('countOrdenesAbiertas',$orden_abierta); 
 
@@ -879,6 +880,7 @@ class ControladorVistaPedidos extends Controller{
             $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta
                                             FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
                                             WHERE o.abierta = '1'
+                                            AND o.total!=o.pagado
                                             AND s.id = o.id_solicitud
                                             AND pa.id = s.id_partida
                                             AND pr.id = o.id_proyecto
@@ -1085,6 +1087,7 @@ class ControladorVistaPedidos extends Controller{
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE oa.respuesta_conta = '0'
+                
                 AND oa.abono != '1'
 
                 AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
@@ -1101,6 +1104,7 @@ class ControladorVistaPedidos extends Controller{
 
                 WHERE oa.respuesta_conta = '0'
                 AND oa.abono != '1'
+                AND o.total!=o.pagado
 
                 AND (p.nombre_proyecto = 'BALDONE'
                 OR p.nombre_proyecto = 'AIRALI')
@@ -1115,6 +1119,7 @@ class ControladorVistaPedidos extends Controller{
 
                 WHERE oa.respuesta_conta = '0'
                 AND oa.abono != '1'
+                AND o.total!=o.pagado
 
                 AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
 
@@ -1128,6 +1133,7 @@ class ControladorVistaPedidos extends Controller{
 
                 WHERE oa.respuesta_conta = '0'
                 AND oa.abono != '1'
+                AND o.total!=o.pagado
 
                 AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
 
@@ -1140,6 +1146,7 @@ class ControladorVistaPedidos extends Controller{
                                             FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
 
                                             WHERE oa.respuesta_conta = '0'
+                                            AND o.total!=o.pagado
                                             AND oa.abono != '1'
                                             AND o.id = oa.id_orden
                                             AND s.id = o.id_solicitud
