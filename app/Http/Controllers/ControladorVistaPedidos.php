@@ -871,10 +871,9 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarOrdenesAbiertas(){
         try{
-            $orden_abierta = DB::table('orden')->where('abierta','1')
-            ->where('total','!=','pagado')->count();
+            //$orden_abierta = DB::table('orden')->where('abierta','1')->count();
 
-            Session::put('countOrdenesAbiertas',$orden_abierta); 
+            //Session::put('countOrdenesAbiertas',$orden_abierta); 
 
 
             $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta
@@ -884,7 +883,9 @@ class ControladorVistaPedidos extends Controller{
                                             AND s.id = o.id_solicitud
                                             AND pa.id = s.id_partida
                                             AND pr.id = o.id_proyecto
-                                            AND e.id = o.id_proveedor;"));                             
+                                            AND e.id = o.id_proveedor;")); 
+
+            Session::put('countOrdenesAbiertas',count($ordenesA));                           
         
             return view('VistaOrdenesAbiertas')->with('ordenes',$ordenesA);
         }catch (Exception $e) { 

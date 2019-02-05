@@ -51,9 +51,16 @@ class ControladorCompras extends Controller
 
             Session::put('countOrdenesFinalizadas',$orden); 
 
-            $orden_abierta = DB::table('orden')->where('abierta','1')->count();
+            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta
+                                            FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
+                                            WHERE o.abierta = '1'
+                                            AND o.total!=o.pagado
+                                            AND s.id = o.id_solicitud
+                                            AND pa.id = s.id_partida
+                                            AND pr.id = o.id_proyecto
+                                            AND e.id = o.id_proveedor;")); 
 
-            Session::put('countOrdenesAbiertas',$orden_abierta); 
+            Session::put('countOrdenesAbiertas',count($ordenesA)); 
 
             
 
