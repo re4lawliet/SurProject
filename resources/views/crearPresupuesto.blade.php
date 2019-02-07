@@ -30,7 +30,7 @@
                             <br>
                             @if(count($nuevas)>0)
                                 <div class="panel-body">
-                                    <table id="tabla_de_detalle" name='tabla_de_detalle' class="table table-striped task-table">
+                                    <table id="tabla_de_detalle" name="tabla_de_detalle" class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
                                         <thead>
                                             <th style='text-align:center; display:none;' width="10%">ID Partida</td>
@@ -50,6 +50,13 @@
                                                     <td style='text-align:center' class="table-text"  >Q {{ $nueva->saldo }}</td>                                                    
                                                 </tr>
                                             @endforeach
+                                            <tr>
+                                                <td id="td_Totales" style='text-align:center; display:none;' class="table-text"> TOTALES </td>
+                                                <td id="td_Totales" style='text-align:center' class="table-text"> TOTALES </td>
+                                                <td id="td_Presupuesto" style='text-align:center' class="table-text"> 0 </td>
+                                                <td id="td_Ordenes" style='text-align:center' class="table-text"> 0 </td>
+                                                <td id="td_Saldo" style='text-align:center' class="table-text"> 0 </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                     <input id ="id_txt_ids" name="txt_ids" type="hidden" value="">
@@ -61,7 +68,7 @@
 
                             <br>
                             <div class="form-group">
-                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularSaldos()">Calcular Saldos</button><br><br>
+                                <button id="btn_subtotal" type="submit" form="No_Es_Parte_Del_Form" class="btn btn-primary" onclick="calcularSaldos()">Calcular Saldos y Totales</button><br><br>
 
                                 </div>
                             </div>
@@ -73,7 +80,7 @@
                 <div class="">
                     <button id="btn_subtotal" type="submit" form="crear_presupuesto_frm" class="btn btn-success">Guardar Presupuesto</button>
                     &nbsp;&nbsp;&nbsp;
-                    <button id="btn_subtotal" type="submit" form="no_form" class="btn btn-primary"  onclick="irVista()">Ver Detalle Presupuesto</button><br><br>
+                    <button id="btn_subtotal" type="submit" form="no_form" class="btn btn-primary"  onclick="irVista()">Ver Detalle Presupuesto</button>
                 </div>
             </div>
             
@@ -105,7 +112,10 @@
         var presupuestos="";
         var ordenes_sumadas="";
         var saldos="";
-        for( var i = 1; i < table.rows.length; i++){
+        var sumpresu=0;
+        var sumorden=0;
+        var sumsaldos=0;
+        for( var i = 1; i < table.rows.length-1; i++){
             //calculos
             table.rows[i].cells[4].innerHTML = parseFloat(table.rows[i].cells[2].innerHTML) - parseFloat(table.rows[i].cells[3].innerHTML);    
             //concatenaciones
@@ -113,11 +123,19 @@
             presupuestos = presupuestos + table.rows[i].cells[2].innerHTML + ',';
             ordenes_sumadas = ordenes_sumadas + table.rows[i].cells[3].innerHTML + ',';
             saldos = saldos + table.rows[i].cells[4].innerHTML + ',';
+            //suma totales
+            sumpresu = sumpresu + parseFloat(table.rows[i].cells[2].innerHTML);
+            sumorden = sumorden + parseFloat(table.rows[i].cells[3].innerHTML);
+            sumsaldos = sumsaldos + parseFloat(table.rows[i].cells[4].innerHTML);
 
-            table.rows[i].cells[2].innerHTML = "Q" + table.rows[i].cells[2].innerHTML;   
-            table.rows[i].cells[4].innerHTML = "Q" + table.rows[i].cells[4].innerHTML;   
-            table.rows[i].cells[3].innerHTML = "Q" + table.rows[i].cells[3].innerHTML;   
+            table.rows[i].cells[2].innerHTML = "Q " + table.rows[i].cells[2].innerHTML;   
+            table.rows[i].cells[4].innerHTML = "Q " + table.rows[i].cells[4].innerHTML;   
+            table.rows[i].cells[3].innerHTML = "Q " + table.rows[i].cells[3].innerHTML;   
         }
+        
+        document.getElementById("td_Presupuesto").innerHTML ="Q " + sumpresu;
+        document.getElementById("td_Ordenes").innerHTML ="Q " + sumorden;
+        document.getElementById("td_Saldo").innerHTML ="Q " + sumsaldos;
 
         //limpiando ultima coma
         ids = ids.slice(0,-1);

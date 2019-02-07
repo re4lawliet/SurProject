@@ -131,9 +131,15 @@ class ControladorPresupuesto extends Controller
         $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
                                         FROM proyectos
                                         WHERE id = $idProyecto ;"));
+
+        $sumas = DB::select(DB::raw("SELECT SUM(p.presupuesto) as Sp, SUM(p.orden_sumada) as So, SUM(p.saldo) as Ss
+                                        FROM presupuesto as p, partidas as pa
+                                        WHERE p.id_proyecto = $idProyecto
+                                        AND p.id_partida = pa.id;"));
     
         return view('consultarPresupuesto')->with('partidas',$partidas)
-                                        ->with('proyectos',$proyecto);
+                                        ->with('proyectos',$proyecto)
+                                        ->with('sumas',$sumas);
         }catch (Exception $e) { 
             Session::flash('catch_error','Consultar Presupuesto');
             return view('ErrorCatch');  
