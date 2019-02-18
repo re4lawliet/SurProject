@@ -92,10 +92,10 @@ class ControladorPresupuesto extends Controller
                 
             //insertar en tabla Presupuesto
             for($i =0; $i<sizeof($arr_ids);$i++){
-                $insertarPresupuestos = DB::select(DB::raw("UPDATE presupuesto
+                $insertarPresupuestos = DB::update("UPDATE presupuesto
                                                             SET presupuesto = '$arr_presupuestos[$i]', orden_sumada = '$arr_orden_sumada[$i]', saldo = '$arr_saldos[$i]'
                                                             WHERE id_proyecto = $val_id_proyecto
-                                                            AND id_partida = $arr_ids[$i];"));
+                                                            AND id_partida = $arr_ids[$i];");
             }
 
             return redirect('vistaPresupuesto/'.$val_id_proyecto);

@@ -124,7 +124,7 @@ class ControladorModuloProductos_Temporal extends Controller
     public function LimpiarTemporal_Producto(){
 
         try{
-            $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
+            $solicitudes = DB::delete("DELETE FROM temporal_productos;");
             
             return redirect('/temporal_productos');
 

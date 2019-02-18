@@ -46,10 +46,28 @@
             </div>
             <br><br>
 
+            @foreach ($solicitudes as $sol)
+            @if($sol->presupuesto!=NULL)
+                <div  class="col-sm-7">
+                    <button id="btn_pr" type="submit" form="no-form" class="btn btn-info" onclick="myFunction()">
+                    Ver Cotizacion</button>
+                </div>
+                <br>
+                <div class="col-sm-7" id="myDIV" style="display:none">
+                    <div class="container">
+                        
+                            <embed src="/{{ $sol->presupuesto }}" type="application/pdf" width="100%" height="600px">
+                        
+                    </div>
+                </div>
+            @else
+               <label style="background: #ddd;"> No hay Propuesta de Presupuesto</label>
+            @endif
+        @endforeach
         
             <div class="col-sm-7">
                 <div class="form-group">
-                    <label class="control-label">Agregar Presupuesto</label>
+                    <label class="control-label">Cambiar Cotizacion</label>
                     <input type="file" name="presupuesto" class="form-control" accept=".pdf">
                 </div>
             </div>
@@ -64,5 +82,20 @@
         
         
     </center>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function myFunction() {
+    var y = document.getElementById("btn_pr");
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        y.className = "btn btn-danger";
+        y.innerHTML = "Esconder Cotizacion";
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+        y.className = "btn btn-info"
+        y.innerHTML = "Ver Cotizacion";
+    }
+}
+</script>
 @endsection

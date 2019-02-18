@@ -44,7 +44,7 @@ class ControladorPedidoProyecto extends Controller{
     }
 
     public function AgregarPedido(Request $request){
-        try{
+        //try{
         date_default_timezone_set('America/Guatemala');
         $fecha = date('d/m/y');
         $validator = Validator::make($request->all(), [
@@ -53,19 +53,22 @@ class ControladorPedidoProyecto extends Controller{
             'partida' => 'max:248',            
         ]);
 
-        if ($validator->fails()) {
-            return redirect('/solicitud')
-                ->withInput()
-                ->withErrors($validator);
-        }
+        // if ($validator->fails()) {
+        //     return redirect('/solicitud')
+        //         ->withInput()
+        //         ->withErrors($validator);
+        // }
         $logiado = Session::get('rollogueado');
         $idproyecto = Session::get('proyectoG');
+        
+
         $solicitud = new Solicitude;
         $solicitud->titulo_solicitud = $request->titulo_solicitud;
         $solicitud->proveedor = $request->proveedor;
         $solicitud->id_partida = $request->id_partida;
         $solicitud->email = Auth::user()->email;
         $solicitud->rol = $logiado;
+        
         $solicitud->mostrar = '1';
         if(Auth::user()->rol == 'colaborador'){
             $solicitud->respondido_manager='0';
@@ -99,24 +102,44 @@ class ControladorPedidoProyecto extends Controller{
         $solicitud->fecha_solicitud = $fecha;
         $solicitud->save();
 
-        $id_solicitud = DB::select(DB::raw("SELECT MAX(id) FROM solicitudes"));
+        $id_solicitud = DB::select("SELECT MAX(id) as id FROM solicitudes");
 
-        $cargaSolicitud = DB::select(DB::raw("INSERT INTO listados (descripcion,unidad,cantidad, id_solicitud)
+        //PDF
+        foreach($id_solicitud as $ids){
+            $nombrep = 'pres'.$ids->id;
+            $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+            $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+            $ruta="PDF/".$nombrep.$nombreimg;
+            if(strpos($ruta, '.pdf')){
+                move_uploaded_file($archivo,$ruta);
+            }else{
+                $ruta="";
+            }
+            if ($_FILES['presupuesto']['name'] != null) {
+                $sol = DB::update("UPDATE solicitudes
+                                    SET presupuesto = '$ruta'
+                                    WHERE id = $ids->id");
+            }
+        }
+        
+        
+
+        $cargaSolicitud = DB::insert("INSERT INTO listados (descripcion,unidad,cantidad, id_solicitud)
                                               (SELECT t.descripcion, t.unidad, t.cantidad, s.id 
                                                 FROM temporal_productos as t, solicitudes s
-                                                WHERE s.id=(SELECT max(id) FROM solicitudes))"));
+                                                WHERE s.id=(SELECT max(id) FROM solicitudes))");
 
-        $solicitudes = DB::select(DB::raw("DELETE FROM temporal_productos;"));
+        $solicitudes = DB::delete("DELETE FROM temporal_productos;");
         Session::flash('message','Solicitud Agregada correctamente');
         $solicitudes = solicitude::where('mostrar','1')
                                     ->where('email',Auth::user()->email)
                                     ->count();
         Session::put('countSolicitudesColaborador',$solicitudes);
         return redirect('solicitud');
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Agregar Pedido');
-            return view('ErrorCatch');  
-        }
+        // }catch (Exception $e) { 
+        //     Session::flash('catch_error','Agregar Pedido');
+        //     return view('ErrorCatch');  
+        // }
     }
 
 }

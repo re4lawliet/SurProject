@@ -40,7 +40,7 @@
             @endif
         </div>
 
-        <form action="{{ url('solicitudes') }}" method="POST">
+        <form action="{{ url('solicitudes') }}" method="POST" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 
@@ -112,7 +112,12 @@
                 </div>
             </div>
 
-
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label">Agregar Presupuesto</label>
+                    <input type="file" name="presupuesto" class="form-control" accept=".pdf">
+                </div>
+            </div>
 
             <div class="form-group">
                 
@@ -120,27 +125,7 @@
                     <i class="fa fa-plus"></i> Hacer Solicitud  
                 </button>   
 
-                <!-- 
-                <div class = "modal" id="msgmodal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Solicitud Creada Correctamente</h4>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-
-                @if(Session::has('welcome_msg'))
-                <script>
-                $(function() {
-                $('#msgmodal').modal('show');
-                });
-                </script>
-                    <h7><B>{{Session::get('message')}}</B></h7>
-                    
-                @endif
-                -->
+                
 
 
             </div> 
