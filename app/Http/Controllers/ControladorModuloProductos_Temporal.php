@@ -22,8 +22,10 @@ class ControladorModuloProductos_Temporal extends Controller
 
     public function mostrarTemporal_Productos(){
         try{
-
-            $temporal_productos = temporal_producto::all();
+            $email = Auth::user()->email;
+            $temporal_productos = DB::select("SELECT *
+                                                FROM temporal_productos
+                                                WHERE usuario = '$email'");
             return view('temporal_productos', [ 'temporal_productos' => $temporal_productos ]);
 
         }catch (Exception $e) { 
@@ -65,6 +67,7 @@ class ControladorModuloProductos_Temporal extends Controller
             $temporal_product->descripcion = $request->descripcion;
             $temporal_product->unidad = $request->unidad;
             $temporal_product->cantidad = $request->cantidad;
+            $temporal_product->usuario = Auth::user()->email;
             $temporal_product->save();
         
             return redirect('/temporal_productos');
@@ -124,7 +127,9 @@ class ControladorModuloProductos_Temporal extends Controller
     public function LimpiarTemporal_Producto(){
 
         try{
-            $solicitudes = DB::delete("DELETE FROM temporal_productos;");
+            $email = Auth::user()->email;
+            $solicitudes = DB::delete("DELETE FROM temporal_productos
+                                        WHERE usuario = '$email';");
             
             return redirect('/temporal_productos');
 

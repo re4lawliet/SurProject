@@ -120,22 +120,25 @@
             table.rows[i].cells[4].innerHTML = parseFloat(table.rows[i].cells[2].innerHTML) - parseFloat(table.rows[i].cells[3].innerHTML);    
             //concatenaciones
             ids = ids + table.rows[i].cells[0].innerHTML + ',';
-            presupuestos = presupuestos + table.rows[i].cells[2].innerHTML + ',';
-            ordenes_sumadas = ordenes_sumadas + table.rows[i].cells[3].innerHTML + ',';
-            saldos = saldos + table.rows[i].cells[4].innerHTML + ',';
+            presupuestos = presupuestos + parseFloat(table.rows[i].cells[2].innerHTML).toFixed(2) + ',';
+            ordenes_sumadas = ordenes_sumadas + parseFloat(table.rows[i].cells[3].innerHTML).toFixed(2) + ',';
+            saldos = saldos + parseFloat(table.rows[i].cells[4].innerHTML).toFixed(2) + ',';
             //suma totales
             sumpresu = sumpresu + parseFloat(table.rows[i].cells[2].innerHTML);
             sumorden = sumorden + parseFloat(table.rows[i].cells[3].innerHTML);
             sumsaldos = sumsaldos + parseFloat(table.rows[i].cells[4].innerHTML);
-
-            table.rows[i].cells[2].innerHTML = "Q " + table.rows[i].cells[2].innerHTML;   
-            table.rows[i].cells[4].innerHTML = "Q " + table.rows[i].cells[4].innerHTML;   
-            table.rows[i].cells[3].innerHTML = "Q " + table.rows[i].cells[3].innerHTML;   
+            //formato
+            var x = parseFloat(table.rows[i].cells[2].innerHTML);
+            var y = parseFloat(table.rows[i].cells[3].innerHTML);
+            var z = parseFloat(table.rows[i].cells[4].innerHTML);
+            table.rows[i].cells[2].innerHTML = "Q " + x.toFixed(2);   
+            table.rows[i].cells[3].innerHTML = "Q " + y.toFixed(2);   
+            table.rows[i].cells[4].innerHTML = "Q " + z.toFixed(2);   
         }
         
-        document.getElementById("td_Presupuesto").innerHTML ="Q " + sumpresu;
-        document.getElementById("td_Ordenes").innerHTML ="Q " + sumorden;
-        document.getElementById("td_Saldo").innerHTML ="Q " + sumsaldos;
+        document.getElementById("td_Presupuesto").innerHTML ="Q " + sumpresu.toFixed(2);
+        document.getElementById("td_Ordenes").innerHTML ="Q " + sumorden.toFixed(2);
+        document.getElementById("td_Saldo").innerHTML ="Q " + sumsaldos.toFixed(2);
 
         //limpiando ultima coma
         ids = ids.slice(0,-1);
