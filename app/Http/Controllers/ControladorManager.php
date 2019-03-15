@@ -37,6 +37,16 @@ class ControladorManager extends Controller
                                         ->count();
             Session::put('countSolicitudesMiasManager',$solicitudes2);
 
+            $nsolicitudes3 = solicitude::where('aprobado_manager','1')
+                                        ->where('respondido_manager','1')
+                                        ->count();
+            Session::put('countSolicitudesManagerAprobadas',$nsolicitudes3);
+
+            $nsolicitudes4 = solicitude::where('aprobado_manager','0')
+                                        ->where('respondido_manager','1')
+                                        ->count();
+            Session::put('countSolicitudesManagerRechazadas',$nsolicitudes4);
+
             $name = $request->get('name');
 
             //..............MANAGERS

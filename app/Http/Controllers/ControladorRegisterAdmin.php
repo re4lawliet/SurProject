@@ -15,7 +15,6 @@ class ControladorModuloProyectos extends Controller
     public function __construct(){
 
         $this->middleware('auth');//validacion de que este logeado
-        $this->middleware('admin');//validacion de rol sea admin
 
     }
 
