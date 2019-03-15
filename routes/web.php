@@ -263,8 +263,18 @@ Route::get('/solicitud', 'ControladorPedidoProyecto@solicitud')->name('solicitud
 //------------------redireccion LINK vista pedidos
 Route::get('/dirVistaPedidos', 'ControladorVistaPedidos@Vista')->name('dirVistaPedidos');
 
+
+
 //------------------Mostrar solicitudes a Manager
 Route::get('/MostrarSolicitudesManager','ControladorVistaPedidos@mostrarSolicitudesManager')->name('MostrarSolicitudesManager');
+//------------------Mostrar solicitudes a Manager Aprobadas
+Route::get('/MostrarSolicitudesManagerAprobadas','ControladorVistaPedidos@mostrarSolicitudesManagerAprobadas')->name('MostrarSolicitudesManagerAprobadas');
+//------------------Mostrar solicitudes a Manager Aprobadas
+Route::get('/MostrarSolicitudesManagerRechazadas','ControladorVistaPedidos@mostrarSolicitudesManagerRechazadas')->name('MostrarSolicitudesManagerRechazadas');
+//------------------Mostrar solicitud especifica sin Aprobar o Rechazar
+Route::get('/SolicitudSinBoton/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudSinBoton');
+
+
 //------------------Mostrar solicitud especifica a Manager
 Route::get('/Solicitud/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitud');
 //------------------Responder solicitud por Manager

@@ -1,4 +1,11 @@
-@extends('layouts.appAdmin')
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
+    )
+
+
 
 @section('content')
 
@@ -22,7 +29,7 @@
             <form action="{{ url('empresa') }}/{{ $empresa->id }}" method="POST">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
-
+ 
                 <div class="form-group">
                     <label for="nombre_empresa" class="control-label">Nombre de la Empresa</label>
                     <input type="text" name="nombre_empresa" class="form-control" value="{{ $empresa->nombre_empresa }}">
@@ -78,22 +85,14 @@
                     <input type="text" name="nombre_banco" class="form-control" value="{{ $empresa->nombre_banco }}">
                 </div>
 
-                <div class="form-group row">
-                    <label for="forma_pago" class="col-md-4 col-form-label text-md-right">{{ __('Forma de Pago') }}</label>
+                <div class="form-group">
+                    <label for="no_cuenta" class="control-label">No. Cuenta</label>
+                    <input type="text" name="no_cuenta" class="form-control" value="{{ $empresa->no_cuenta }}">
+                </div>
 
-                    <div class="col-md-6">
-                        <select id="forma_pago" type="text" class="form-control{{ $errors->has('forma_pago') ? ' is-invalid' : '' }}" name="forma_pago" >
-                            <option value="cheque" >Cheque</option>
-                            <option value="deposito" >Deposito</option>
-                            <option value="transferencia" >Transferencia</option>
-                            <option value="otra" >Otra</option>
-                        </select>
-                        @if ($errors->has('forma_pago'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('forma_pago') }}</strong>
-                            </span>
-                        @endif
-                    </div>
+                <div class="form-group">
+                    <label for="tipo_cuenta" class="control-label">Tipo de Cuenta</label>
+                    <input type="text" name="tipo_cuenta" class="form-control" value="{{ $empresa->tipo_cuenta }}">
                 </div>
 
                 <div class="form-group">

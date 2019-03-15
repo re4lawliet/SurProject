@@ -44,7 +44,23 @@
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/homes') }}" class="nav-link">Home Manager</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManager') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesManager')}}</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">
+                                Menu de Solicitudes <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManager') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesManager')}}</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManagerAprobadas') }}" class="nav-link">Solicitudes Aprobadas por Manager: {{Session::get('countSolicitudesManagerAprobadas')}}</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManagerRechazadas') }}" class="nav-link">Solicitudes Rechazadas por Manager: {{Session::get('countSolicitudesManagerRechazadas')}}</a></li>
+                                <!--<li><a href="#" class="nav-link">Acción #2</a></li>
+                                <li><a href="#" class="nav-link">Acción #3</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#" class="nav-link">Acción #4</a></li>-->
+                            </ul>
+                        </li>
+
+
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">

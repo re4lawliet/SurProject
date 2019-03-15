@@ -772,7 +772,28 @@ class ControladorModuloSolicitudes extends Controller
     }
 
 
-   
+    public function verSolicitudSinBoton($id, $npa, $npr){
+        try{
+            $sol = solicitude::findOrFail($id);
+            Session::put('s_id', $id);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            Session::put('s_npartida', $npa);
+            //proyecto
+            Session::put('s_nproyecto', $npr);
+
+            $solicitudes = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id;"));
+            return view('homeSolicitudManagerSinBoton', ['queryListado' => $solicitudes]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud');
+            return view('ErrorCatch');  
+        }
+    }
 
 
 

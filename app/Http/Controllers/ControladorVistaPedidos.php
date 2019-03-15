@@ -1285,6 +1285,49 @@ class ControladorVistaPedidos extends Controller{
         }
     }
 
+    public function mostrarSolicitudesManagerAprobadas(){
+        try{
+            $nsolicitudes = solicitude::where('aprobado_manager','1')
+                                        ->count();
+            Session::put('countSolicitudesManagerAprobadas',$nsolicitudes);
+
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor, s.fecha_solicitud
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' AND s.id_proyecto = p.id AND s.id_partida = pa.id
+                                                AND s.aprobado_manager = '1';"));                             
+        
+            return view('VistaPedidosManagerAprobadas', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Manager');
+            return view('ErrorCatch');  
+        }
+    }
+
+    public function mostrarSolicitudesManagerRechazadas(){
+        try{
+            $nsolicitudes = solicitude::where('aprobado_manager','0')
+                                        ->count();
+            Session::put('countSolicitudesManagerRechazadas',$nsolicitudes);
+
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor, s.fecha_solicitud
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
+                                                WHERE s.respondido_manager = '1' AND s.id_proyecto = p.id AND s.id_partida = pa.id
+                                                AND s.aprobado_manager = '0';"));                             
+        
+            return view('VistaPedidosManagerRechazadas', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Manager');
+            return view('ErrorCatch');  
+        }
+    }
+
+
+
+
 }
+
+
+
+
 
 ?>

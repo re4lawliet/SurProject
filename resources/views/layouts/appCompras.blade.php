@@ -54,6 +54,15 @@
                                     <a class="dropdown-item" href="{{ url('/MostrarOrdenesFinalizadas') }}">Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a>
                                 </div>
                             </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link" data-toggle="dropdown">
+                                    Modulo de Proveedores <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    
+                                    <li><a href="{{ url('/empresas') }}" class="nav-link">Modulo de Proveedores</a></li>       
+                                </ul>
+                            </li>
                         </ul>
                     </ul>
 

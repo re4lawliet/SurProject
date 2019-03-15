@@ -53,7 +53,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/proyectos') }}" class="nav-link">Modulo de Proyectos</a></li>
                                 <li><a href="{{ url('/empresas') }}" class="nav-link">Modulo de Empresas</a></li>
-                                <li><a href="{{ url('/clientes') }}" class="nav-link">Modulo de Clientes</a></li>
+                                
                                 <li><a href="{{ url('/register2') }}" class="nav-link">Registrar Usuarios</a></li>
                             </ul>
                         </li>
