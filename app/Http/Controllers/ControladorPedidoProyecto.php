@@ -32,7 +32,10 @@ class ControladorPedidoProyecto extends Controller{
 
             Session::put('rollogueado', $oldMarker);
 
-            $temporal_productos = temporal_producto::all();
+            $email = Auth::user()->email;
+            $temporal_productos = DB::select("SELECT *
+                                                FROM temporal_productos
+                                                WHERE usuario = '$email'");
             
             $partidas = partida::all();
 
@@ -123,13 +126,16 @@ class ControladorPedidoProyecto extends Controller{
         }
         
         
-
+        $email = Auth::user()->email;
         $cargaSolicitud = DB::insert("INSERT INTO listados (descripcion,unidad,cantidad, id_solicitud)
                                               (SELECT t.descripcion, t.unidad, t.cantidad, s.id 
                                                 FROM temporal_productos as t, solicitudes s
-                                                WHERE s.id=(SELECT max(id) FROM solicitudes))");
+                                                WHERE t.usuario = '$email'
+                                                AND s.id=(SELECT max(id) FROM solicitudes))");
 
-        $solicitudes = DB::delete("DELETE FROM temporal_productos;");
+        $solicitudes = DB::delete("DELETE FROM temporal_productos
+                                    WHERE usuario = '$email';");
+                                    
         Session::flash('message','Solicitud Agregada correctamente');
         $solicitudes = solicitude::where('mostrar','1')
                                     ->where('email',Auth::user()->email)

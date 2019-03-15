@@ -427,3 +427,35 @@ Route::get('/verOrdenFinalizada/{idOrden}','ControladorVistaPedidos@mostrarPDFFi
 Route::put('/user/{id}', 'HomeController@ModificarUser');
 //------------------ Mostrar Edicion User
 Route::get('/users/{id}', 'HomeController@mostrarUsersEditar');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------- ROUTE ANALISIS
+//logear
+Route::get("/loginIT",'Analisis@login');
+//ver productos
+Route::post('/productos','Analisis@logear');
+//ver un producto
+Route::get('/producto/{id}','Analisis@producto');
+//ver carrito
+Route::get("/ver_carrito",'Analisis@ver_carrito');
+//ver factura
+Route::get("/informac_factura",'Analisis@informac_factura');
+//regresar a productos
+Route::get('/productoss','Analisis@comprado');
+
+//ver menu ADMIN
+Route::get("/administrador",'Analisis@administrador');
