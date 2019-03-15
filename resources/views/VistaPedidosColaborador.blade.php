@@ -29,7 +29,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                         <td><div class="alert alert-danger">
                 <h7><B>Solicitud Rechazada</B></h7>
                 </div></td>
-                        <td><div class="alert alert-primary">
+                        <td><div class="alert alert-warning">
                         <h7><B>Solicitud en Orden de Compra</B></h7>
                         </div></td>
                     </tr>
@@ -100,7 +100,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <!-- el director ya la acepto-->
                                             <!-- si se creo la orden en 1 gris-->
                                             @if($solicitud->orden_creada == 1)
-                                                <tr class="alert alert-primary">
+                                                <tr class="alert alert-warning">
                                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>

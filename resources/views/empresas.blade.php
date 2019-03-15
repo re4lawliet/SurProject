@@ -44,7 +44,7 @@
             </div>  
 
             <div class="form-group row">
-                <label for="Partida" class="col-md-4 col-form-label text-md-right">{{ __('Partida') }}</label>
+                <label for="Partida" class="col-md-4 col-form-label text-md-right">{{ __('Divisa') }}</label>
                     <div class="col-md-6">
                         <select name="divisa_empresa" id="divisa_empresa"  class="form-control" >
                             <option value="GTQ" >Quetzales GTQ</option>

@@ -33,7 +33,17 @@
                 <div class="form-group">
                     <label for="nombre_empresa" class="control-label">Nombre de la Empresa</label>
                     <input type="text" name="nombre_empresa" class="form-control" value="{{ $empresa->nombre_empresa }}">
-                </div>  
+                </div>
+                
+                <div class="form-group row">
+                    <label for="Partida" class="col-md-4 col-form-label text-md-right">{{ __('Divisa') }}</label>
+                        <div class="col-md-6">
+                            <select name="divisa_empresa" id="divisa_empresa"  class="form-control" >
+                                <option value="GTQ" >Quetzales GTQ</option>
+                                <option value="USD" >Dolares USD</option>
+                            </select>
+                        </div>
+                </div>
 
                 <div class="form-group">
                     <label for="nit_empresa" class="control-label">Nit de la Empresa</label>
