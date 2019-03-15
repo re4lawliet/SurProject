@@ -409,15 +409,15 @@ class ControladorVistaPedidos extends Controller{
                 foreach($presupuestoViejo as $p){
                 $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
 
-                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                $presupuestoNuevo = DB::update("UPDATE presupuesto
                 SET orden_sumada = $nuevoTotal
                 WHERE id_proyecto = $p->id_proyecto
-                AND id_partida = $p->id_partida;"));
+                AND id_partida = $p->id_partida;");
 
-                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                $presupuestoNuevo = DB::update("UPDATE presupuesto
                 SET saldo = presupuesto - orden_sumada
                 WHERE id_proyecto = $p->id_proyecto
-                AND id_partida = $p->id_partida;"));
+                AND id_partida = $p->id_partida;");
                 }
 
             }else if($solicitud->abono == '1'){
@@ -432,15 +432,15 @@ class ControladorVistaPedidos extends Controller{
                 foreach($presupuestoViejo as $p){
                 $nuevoTotal = floatval($p->orden_sumada) + floatval($solicitud->total) * floatval($solicitud->tasa_cambio);
 
-                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                $presupuestoNuevo = DB::update("UPDATE presupuesto
                 SET orden_sumada = $nuevoTotal
                 WHERE id_proyecto = $p->id_proyecto
-                AND id_partida = $p->id_partida;"));
+                AND id_partida = $p->id_partida;");
 
-                $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
+                $presupuestoNuevo = DB::update("UPDATE presupuesto
                 SET saldo = presupuesto - orden_sumada
                 WHERE id_proyecto = $p->id_proyecto
-                AND id_partida = $p->id_partida;"));
+                AND id_partida = $p->id_partida;");
                 }
 
             }else{//si el abono es == 0 Actualizamos Presupuesto
@@ -723,10 +723,10 @@ class ControladorVistaPedidos extends Controller{
         $solicitud->save();
 
         //Actualizando orden abierta si existe
-        $orden_abierta = DB::select(DB::raw("UPDATE orden_abierta
+        $orden_abierta = DB::update("UPDATE orden_abierta
                                                 SET respuesta_conta = '1', enviado='1'
                                                 WHERE id_orden = $idOrden
-                                                AND abono = '1';"));
+                                                AND abono = '1';");
 
         Session::flash('messageOrden','Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
 
@@ -1007,8 +1007,8 @@ class ControladorVistaPedidos extends Controller{
             $nuevoSaldo = $a->saldo - $val_Abono;
             $name = 'orderfile'.$a->id_orden.'Abono'.$nuevoAbono.'.pdf';
             $path = 'PDF/'.$name;
-            $Insertar_Abono = DB::select(DB::raw("INSERT INTO orden_abierta (id_orden,no_orden,fecha,abono,debe,haber,saldo,pdf,enviado,respuesta_conta)
-                                                    VALUES ($a->id_orden,'$a->no_orden', '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path','0','0')"));
+            $Insertar_Abono = DB::insert("INSERT INTO orden_abierta (id_orden,no_orden,fecha,abono,debe,haber,saldo,pdf,enviado,respuesta_conta)
+                                                    VALUES ($a->id_orden,'$a->no_orden', '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path','0','0')");
 
             //data Orden Abierta
             $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)
@@ -1270,10 +1270,10 @@ class ControladorVistaPedidos extends Controller{
         //ahora tengo que colocar 3 por que fue enviada
 
         //update ORDEN Abierta
-        $insertarPDF = DB::select(DB::raw("UPDATE orden_abierta
+        $insertarPDF = DB::update("UPDATE orden_abierta
                                                     SET respuesta_conta ='1'
                                                     WHERE id_orden = $idOrden
-                                                    AND abono = $abono;"));
+                                                    AND abono = $abono;");
 
         Session::flash('messageOrden','Abono de Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
 

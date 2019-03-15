@@ -10,7 +10,6 @@
         </div>
 
         <div>
-            <h5>Nombre Proveedor: "{{Session::get('c_nproveedor', 'Seleccione Solicitud')}}"</h5>
             <h5>Nombre Proyecto: "{{Session::get('c_nproyecto', 'Seleccione Solicitud')}}"</h5>
            
         </div>
@@ -39,6 +38,18 @@
             
         </div>
 
+        <br>
+        <br>
+        <div class="col-sm-7">
+            <h3>Informacion del Proveedor</h3>
+            @foreach($proveedores as $p)
+                <label>Nombre de Proveedor: {{ $p->nombre_empresa }}</label><br>
+                <label>NIT de Proveedor: {{ $p->nit_empresa }}</label><br>
+                <label>Nombre del Banco: {{ $p->nombre_banco }}</label><br>
+                <label>No. de Cuenta: {{ $p->no_cuenta }}</label><br>
+                <label>Tipo de Cuenta: {{ $p->tipo_cuenta }}</label><br>
+            @endforeach
+        </div>
         <br>
         <br>
         <div>
