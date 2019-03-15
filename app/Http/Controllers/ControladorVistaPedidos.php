@@ -96,7 +96,7 @@ class ControladorVistaPedidos extends Controller{
             Session::put('countSolicitudesDirector',$nsolicitudes);*/
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
-            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
 
                 $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa
@@ -108,6 +108,8 @@ class ControladorVistaPedidos extends Controller{
 
                                                 AND s.respondido_director = '0'
                                                 AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
+
+                
 
             }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
 
@@ -154,7 +156,18 @@ class ControladorVistaPedidos extends Controller{
                                                 AND s.aprobado_manager = '1'
                                                 AND s.respondido_director = '0'
                                                 AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
-            }
+            }*/
+            $iduser = Auth::user()->id;
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
+                                WHERE s.respondido_manager = '1' 
+                                AND s.aprobado_manager = '1'
+
+                                AND up.id_usuario = $iduser
+                                AND p.id = up.id_proyecto
+
+                                AND s.respondido_director = '0'
+                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
 
 
             return view('VistaPedidosDirector', [ 'querySolicitudes' => $solicitudes ]);
@@ -163,6 +176,11 @@ class ControladorVistaPedidos extends Controller{
             return view('ErrorCatch');  
         }
     }
+
+
+
+
+
 
     public function aceptarSolicitudDirector($id){
         try{
@@ -563,7 +581,22 @@ class ControladorVistaPedidos extends Controller{
             Session::put('countOrdenesAprobadas',$countorden); */
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
-            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+            $iduser = Auth::user()->id;
+            $ordenes = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE respuesta_conta = '0'
+
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;"); 
+
+
+
+
+            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '0'
@@ -612,7 +645,7 @@ class ControladorVistaPedidos extends Controller{
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
                                             AND p.id = o.id_proyecto;")); 
-            }
+            }*/
         
             return view('VistaOrdenesDirector')->with('ordenes',$ordenes);
         }catch (Exception $e) { 
@@ -746,7 +779,19 @@ class ControladorVistaPedidos extends Controller{
             Session::put('countOrdenesFinalizadas',$countorden); 
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
-            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+            $iduser = Auth::user()->id;
+            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE respuesta_conta = '2'
+
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;"));
+
+            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                 FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                 WHERE respuesta_conta = '2'
@@ -801,7 +846,7 @@ class ControladorVistaPedidos extends Controller{
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
                                             AND p.id = o.id_proyecto;")); 
-            }
+            }*/
                                         
         
             return view('VistaOrdenesFinalizadas')->with('ordenes',$ordenes);
@@ -1083,7 +1128,23 @@ class ControladorVistaPedidos extends Controller{
             Session::put('countOrdenesAprobadas',$countorden); */
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
-            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+            $iduser = Auth::user()->id;
+            $orden3 = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                        FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE oa.respuesta_conta = '0'
+                        AND oa.abono != '1'
+
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND o.id = oa.id_orden
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;"));
+
+
+
+            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
                 
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
                 FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p
@@ -1153,7 +1214,7 @@ class ControladorVistaPedidos extends Controller{
                                             AND s.id = o.id_solicitud
                                             AND e.id = o.id_proveedor
                                             AND p.id = o.id_proyecto;")); 
-            }
+            }*/
         
             return view('VistaOrdenesAbiertasDirector')->with('ordenes',$ordenes);
         }catch (Exception $e) { 

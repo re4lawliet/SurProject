@@ -27,7 +27,7 @@ class ControladorDirector extends Controller
 
     public function indexDirector(Request $request)
     {
-        try{
+        //try{
      
             $solicitudes2 = solicitude::where('mostrar','1')
                                         ->where('email',Auth::user()->email)
@@ -36,11 +36,77 @@ class ControladorDirector extends Controller
 
             $name = $request->get('name');
             
-            //..............MANAGERS 
-            
-            if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+                //..............MANAGERS 
+                $iduser = Auth::user()->id;
+        
+                //---------ORDENES
+                $orden = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE respuesta_conta = '0'
 
-                $orden = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;");    
+                Session::put('countOrdenesAprobadas',count($orden)); 
+
+                $orden2 = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE respuesta_conta = '2'
+
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;"));
+                Session::put('countOrdenesFinalizadas',count($orden2));
+
+
+                $orden3 = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
+                        FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+                        WHERE oa.respuesta_conta = '0'
+                        AND oa.abono != '1'
+
+                        AND up.id_usuario = $iduser
+                        AND p.id = up.id_proyecto
+
+                        AND o.id = oa.id_orden
+                        AND s.id = o.id_solicitud
+                        AND e.id = o.id_proveedor
+                        AND p.id = o.id_proyecto;"));
+
+                Session::put('countOrdenesAbiertas',count($orden3)); 
+
+                $nsolicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
+                                WHERE s.respondido_manager = '1' 
+                                AND s.aprobado_manager = '1'
+
+                                AND up.id_usuario = $iduser
+                                AND p.id = up.id_proyecto
+
+                                AND s.respondido_director = '0'
+                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
+                                
+                Session::put('countSolicitudesDirector',count($nsolicitudes));
+
+                //----------PROYECTOS----------//
+                $proyectos = DB::select("SELECT *
+                                        FROM proyectos as p, usuario_proyecto as up 
+                                        WHERE up.id_usuario = $iduser
+                                        AND p.id = up.id_proyecto;");
+
+
+
+
+
+            
+            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
+
+                $orden = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p
                         WHERE respuesta_conta = '0'
 
@@ -49,7 +115,7 @@ class ControladorDirector extends Controller
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
-                        AND p.id = o.id_proyecto;"));    
+                        AND p.id = o.id_proyecto;");    
                 Session::put('countOrdenesAprobadas',count($orden)); 
 
                 $orden2 = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
@@ -92,14 +158,6 @@ class ControladorDirector extends Controller
 
                 Session::put('countSolicitudesDirector',count($nsolicitudes));
 
-
-                //----------PROYECTOS----------//
-
-                $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
-                ->orwhere('nombre_proyecto','NARAMA')
-                ->orderBy('id', 'DESC')
-                ->name($name)
-                ->paginate(10);
 
             }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
 
@@ -161,6 +219,9 @@ class ControladorDirector extends Controller
                 ->orderBy('id', 'DESC')
                 ->name($name)
                 ->paginate(10);
+
+
+
             }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
 
                 $orden = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
@@ -216,6 +277,8 @@ class ControladorDirector extends Controller
                 ->orderBy('id', 'DESC')
                 ->name($name)
                 ->paginate(10);
+
+
             }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
 
                 $orden = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
@@ -302,15 +365,15 @@ class ControladorDirector extends Controller
                 $proyectos = proyecto::orderBy('id', 'DESC')
                 ->name($name)
                 ->paginate(10);
-            }
+            }*/
             
             //..............MANAGERS
             
             return view('homeDirector', compact('proyectos'));
 
-        } catch (Exception $e) { 
+        /*} catch (Exception $e) { 
             Session::flash('catch_error','Carga Home Director');
             return view('ErrorCatch');  
-        }
+        }*/
     }
 }

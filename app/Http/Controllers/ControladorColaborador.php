@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use SUR\proyecto;
 use SUR\solicitude;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 Use Exception;
 
@@ -37,7 +38,23 @@ class ControladorColaborador extends Controller
             $name = $request->get('name');
 
             //-------------Restringe Colaboradores::::::::::::::::::::::
-            
+            $iduser = Auth::user()->id;
+            $proyectos = DB::select("SELECT *
+                                        FROM proyectos as p, usuario_proyecto as up 
+                                        WHERE up.id_usuario = $iduser
+                                        AND p.id = up.id_proyecto;");
+
+
+
+            /*$proyectos = DB::table('proyectos')
+                                    ->join('usuario_proyecto','id_usuario','=',$iduser)
+                                    ->join('usuario_proyecto','proyectos.id','=','id_proyecto')
+                                    ->select('proyectos.id','proyectos.nombre_proyecto','proyectos.zona_proyecto','proyectos.logo_proyectos','proyectos.estado_proyecto','proyectos.factura_a','proyectos.factura_numero')
+                                    ->name($name)
+                                    ->paginate(10);*/
+
+
+            /*
             if(Auth::user()->email=="g.macario@sur.gt" || Auth::user()->email=="p.gutierrez@sur.gt" ){//granat
                 $proyectos = proyecto::where('nombre_proyecto','GRANAT, Cantón Exposición')
                 ->orderBy('id', 'DESC')
@@ -66,6 +83,7 @@ class ControladorColaborador extends Controller
                 ->name($name)
                 ->paginate(10);
             }
+            */
             //-------------Restringe Colaboradores::::::::::::::::::::::
             
             return view('homeColaborador', compact('proyectos'));

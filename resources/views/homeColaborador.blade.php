@@ -76,7 +76,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $proyectos->render() }}
+                    
                 </div>
             </div>
         </div>
