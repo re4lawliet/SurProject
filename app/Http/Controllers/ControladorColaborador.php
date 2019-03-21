@@ -33,7 +33,7 @@ class ControladorColaborador extends Controller
             $solicitudes = solicitude::where('mostrar','1')
                                         ->where('email',Auth::user()->email)
                                         ->count();
-            Session::put('countSolicitudesColaborador',$solicitudes);
+            Session::put('countSolicitudesColaborador2',$solicitudes);
 
             $name = $request->get('name');
 
