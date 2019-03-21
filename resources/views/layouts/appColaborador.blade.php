@@ -43,7 +43,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes: {{Session::get('countSolicitudesColaborador')}}</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador2') }}" class="nav-link">Mis Solicitudes: {{Session::get('countSolicitudesColaborador2')}}</a></li>
                             <li class="nav-item"><a href="{{ url('/homeColaborador') }}" class="nav-link">Home Colaborador</a></li>
                         </ul>
                         <!--
