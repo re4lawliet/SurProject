@@ -177,8 +177,58 @@ class ControladorVistaPedidos extends Controller{
         }
     }
 
+    public function mostrarSolicitudesAprobadasDirector(){
+        try{
+
+            $iduser = Auth::user()->id;
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
+                                WHERE s.respondido_manager = '1' 
+                                AND s.aprobado_manager = '1'
+                                AND s.respondido_director = '1'
+                                AND s.aprobado_director = '1'
+
+                                AND up.id_usuario = $iduser
+                                AND p.id = up.id_proyecto
+
+                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
 
 
+            return view('VistaPedidosAprobadosDirector', [ 'querySolicitudes' => $solicitudes ]);
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Director');
+            return view('ErrorCatch');  
+        }
+
+    }
+
+
+    public function mostrarSolicitudesRechazadasDirector(){
+        try{
+
+            $iduser = Auth::user()->id;
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
+                                WHERE s.respondido_manager = '1' 
+                                AND s.aprobado_manager = '1'
+                                AND s.respondido_director = '1'
+                                AND s.aprobado_director = '0'
+
+                                AND up.id_usuario = $iduser
+                                AND p.id = up.id_proyecto
+
+                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
+
+
+            return view('VistaPedidosRechazadosDirector', [ 'querySolicitudes' => $solicitudes ]);
+
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes Director');
+            return view('ErrorCatch');  
+        }
+
+    }
 
 
 

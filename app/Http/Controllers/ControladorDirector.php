@@ -29,16 +29,56 @@ class ControladorDirector extends Controller
     {
         //try{
      
-            $solicitudes2 = solicitude::where('mostrar','1')
-                                        ->where('email',Auth::user()->email)
-                                        ->count();
-            Session::put('countSolicitudesMiasDirector',$solicitudes2);
+            
 
             $name = $request->get('name');
             
                 //..............MANAGERS 
                 $iduser = Auth::user()->id;
-        
+
+                //--------------SOLICITUDES
+                //-solicitudes pendientes
+                $solicitudsPendientes = DB::select("SELECT COUNT(*) as numero
+                                                        FROM solicitudes as s, usuario_proyecto as up
+                                                        WHERE s.id_proyecto = up.id_proyecto
+                                                        AND up.id_usuario = $iduser
+                                                        AND s.respondido_manager = '1'
+                                                        AND s.aprobado_manager = '1'
+                                                        AND s.respondido_director = '0';");
+
+                foreach($solicitudsPendientes as $sp){
+                        Session::put('countSolicitudesMiasDirector',$sp->numero);
+                }
+                //-solicitudes aprobadas
+                $solicitudsAprobadas = DB::select("SELECT COUNT(*) as numero
+                                                        FROM solicitudes as s, usuario_proyecto as up
+                                                        WHERE s.id_proyecto = up.id_proyecto
+                                                        AND up.id_usuario = $iduser
+                                                        AND s.respondido_manager = '1'
+                                                        AND s.aprobado_manager = '1'
+                                                        AND s.respondido_director = '1'
+                                                        AND s.aprobado_director = '1';");
+
+                foreach($solicitudsAprobadas as $sa){
+                        Session::put('countSolicitudesDirectorAprobadas',$sa->numero);
+                }
+                //-solicitudes rechazadas
+                $solicitudsRechazadas = DB::select("SELECT COUNT(*) as numero
+                                                        FROM solicitudes as s, usuario_proyecto as up
+                                                        WHERE s.id_proyecto = up.id_proyecto
+                                                        AND up.id_usuario = $iduser
+                                                        AND s.respondido_manager = '1'
+                                                        AND s.aprobado_manager = '1'
+                                                        AND s.respondido_director = '1'
+                                                        AND s.aprobado_director = '0';");
+
+                foreach($solicitudsRechazadas as $sr){
+                        Session::put('countSolicitudesDirectorRechazadas',$sr->numero);
+                }
+
+
+
+                
                 //---------ORDENES
                 $orden = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up

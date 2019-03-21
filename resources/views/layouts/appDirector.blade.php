@@ -44,8 +44,18 @@
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
                         <li class="nav-item"><a href="{{ url('/homeDirector') }}" class="nav-link">Home Director</a></li>
-                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesDirector')}}</a></li>
-                        </ul>
+                        
+                        <li class="dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">
+                                Menú Solicitudes del Director<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                            <li class="nav-item"><a href="{{ url('/MostrarSolicitudesDirector') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesMiasDirector')}}</a></li>
+                            <li class="nav-item"><a href="{{ url('/MostrarSolicitudesAprobadasDirector') }}" class="nav-link">Solicitudes Aprobadas: {{Session::get('countSolicitudesDirectorAprobadas')}}</a></li>
+                            <li class="nav-item"><a href="{{ url('/MostrarSolicitudesRechazadasDirector') }}" class="nav-link">Solicitudes Rechazadas: {{Session::get('countSolicitudesDirectorRechazadas')}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                         
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">

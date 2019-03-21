@@ -283,8 +283,14 @@ Route::post('/ResponderSolicitudManager', 'ControladorVistaPedidos@responderSoli
 
 //------------------Mostrar solicitudes a Director
 Route::get('/MostrarSolicitudesDirector','ControladorVistaPedidos@mostrarSolicitudesDirector')->name('MostrarSolicitudesDirector');
+//------------------Mostrar solicitudes APROBADAS a Director
+Route::get('/MostrarSolicitudesAprobadasDirector','ControladorVistaPedidos@mostrarSolicitudesAprobadasDirector');
+//------------------Mostrar solicitudes RECHAZADAS a Director
+Route::get('/MostrarSolicitudesRechazadasDirector','ControladorVistaPedidos@mostrarSolicitudesRechazadasDirector');
 //------------------Mostrar solicitud especifica a Director
 Route::get('/SolicitudDirector/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudDirector');
+//------------------Mostrar solicitud especifica a Director
+Route::get('/RespuestaSolicitudDirector/{id}/{npa}/{npr}', 'ControladorModuloSolicitudes@verSolicitudDirectorSB');
 
 Route::post('/presFile', 'ControladorModuloSolicitudes@verPresupuesto');
 //------------------Aceptar solicitud por Director

@@ -75,6 +75,35 @@ class ControladorModuloSolicitudes extends Controller
         }
     }
 
+    public function verSolicitudDirectorSB($id, $npa, $npr){
+        try{
+            $sol = solicitude::findOrFail($id);
+            Session::put('s_id', $id);
+            Session::put('s_titulo', $sol->titulo_solicitud);
+            Session::put('s_id_partida', $sol->id_partida);
+            Session::put('s_solicitante', $sol->rol);
+            Session::put('s_proveedor', $sol->proveedor);
+            //nombre partida
+            Session::put('s_npartida', $npa);
+            //proyecto
+            Session::put('s_nproyecto', $npr);
+
+            $listad = DB::select(DB::raw("SELECT *
+                                                FROM listados
+                                                WHERE id_solicitud = $id;"));
+
+            $solicitud = DB::select(DB::raw("SELECT *
+                                                FROM solicitudes
+                                                WHERE id = $id;"));
+            return view('homeSolicitudDirectorSinBoton')
+                                                ->with('queryListado', $listad)
+                                                ->with('querySolicitud',$solicitud);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Director');
+            return view('ErrorCatch');  
+        }
+    }
+
     public function verPresupuesto(Request $request){
         $pdf = $request->txt_pdf;
         return view('/presupuestoDirector')->with('pdf',$pdf);
