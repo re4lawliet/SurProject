@@ -415,6 +415,12 @@ Route::get('/homeRecepcion', 'ControladorRecepcion@indexRecepcion')->name('homeR
 
 //----------------- Registro Administrador
 Route::get('/register2', 'ControladorAdmin@register2')->name('register2');
+//VISTA DE USUARIO-PROYECTO
+Route::get('/asignacion', 'ControladorAdmin@asignacion');
+//HACER ASIGNACION
+Route::post('/asignar', 'ControladorAdmin@asignar');
+//QUITAR ASIGNACION
+Route::get('/desasignar/{idu}/{idp}', 'ControladorAdmin@desasignar');
 
 
 //comentario alan
