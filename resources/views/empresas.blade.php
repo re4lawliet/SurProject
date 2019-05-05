@@ -5,9 +5,6 @@
                 (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
     )
 
-
-
-
 @section('content')
 
     <!-- Inicio del Contenido de Pagina -->

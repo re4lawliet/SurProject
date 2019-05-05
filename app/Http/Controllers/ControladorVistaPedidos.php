@@ -850,7 +850,7 @@ class ControladorVistaPedidos extends Controller{
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             $iduser = Auth::user()->id;
-            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
+            $ordenes = DB::select(DB::raw("SELECT DISTINCT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
                         FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
                         WHERE respuesta_conta = '2'
 

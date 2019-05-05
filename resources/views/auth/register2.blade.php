@@ -1,11 +1,4 @@
-@extends(
-    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
-        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
-            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
-                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
-    )
-
-
+@extends('layouts.appAdmin')
 
 @section('content')
 <div class="container">

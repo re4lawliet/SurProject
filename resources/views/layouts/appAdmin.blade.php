@@ -32,8 +32,8 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/surlogo.png">
-                    <img src="images/logologo.png">
+                    <img src="\images\surlogo.png">
+                    <img src="\images\logologo.png">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="/homes" class="nav-link">Home Admin</a></li>
+                            <li class="nav-item"><a href="{{ url('/homes') }}" class="nav-link">Home Admin</a></li>
                             <!--<li class="nav-item"><a href="#" class="nav-link"></a></li>-->
                         </ul>
                         <li class="dropdown">
@@ -53,7 +53,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('/proyectos') }}" class="nav-link">Modulo de Proyectos</a></li>
                                 <li><a href="{{ url('/empresas') }}" class="nav-link">Modulo de Empresas</a></li>
-                                
+                                <li><a href="{{ url('/clientes') }}" class="nav-link">Modulo de Clientes</a></li>
                                 <li><a href="{{ url('/register2') }}" class="nav-link">Registrar Usuarios</a></li>
                             </ul>
                         </li>

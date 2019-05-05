@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=big5">
     <!-- Metas Antiguos -->
-    <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Metas Desconocido -->
@@ -53,10 +53,10 @@
                                 <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManager') }}" class="nav-link">Solicitudes Pendientes de Aprobar: {{Session::get('countSolicitudesManager')}}</a></li>
                                 <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManagerAprobadas') }}" class="nav-link">Solicitudes Aprobadas por Manager: {{Session::get('countSolicitudesManagerAprobadas')}}</a></li>
                                 <li class="nav-item"><a href="{{ url('/MostrarSolicitudesManagerRechazadas') }}" class="nav-link">Solicitudes Rechazadas por Manager: {{Session::get('countSolicitudesManagerRechazadas')}}</a></li>
-                                <!--<li><a href="#" class="nav-link">Acci籀n #2</a></li>
-                                <li><a href="#" class="nav-link">Acci籀n #3</a></li>
+                                <!--<li><a href="#" class="nav-link">Acci車n #2</a></li>
+                                <li><a href="#" class="nav-link">Acci車n #3</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acci籀n #4</a></li>-->
+                                <li><a href="#" class="nav-link">Acci車n #4</a></li>-->
                             </ul>
                         </li>
 
@@ -64,14 +64,14 @@
                         </ul>
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
-                                Men繳 Manager <b class="caret"></b>
+                                Menu Manager <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
                                     <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes Realizadas: {{Session::get('countSolicitudesMiasManager')}}</a></li>
-                                <!--<li><a href="#" class="nav-link">Acci籀n #2</a></li>
-                                <li><a href="#" class="nav-link">Acci籀n #3</a></li>
+                                <!--<li><a href="#" class="nav-link">Acci車n #2</a></li>
+                                <li><a href="#" class="nav-link">Acci車n #3</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#" class="nav-link">Acci籀n #4</a></li>-->
+                                <li><a href="#" class="nav-link">Acci車n #4</a></li>-->
                             </ul>
                         </li>
                     </ul>

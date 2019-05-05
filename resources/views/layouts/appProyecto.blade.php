@@ -24,8 +24,8 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/surlogo.png">
-                    <img src="images/logologo.png">
+                    <img src="\images\surlogo.png">
+                    <img src="\images\logologo.png">
                     
                     <!--<img src="{{Session::get('proyectoGlogo_proyecto', 'Seleccione Proyecto')}}">-->
                 </a>

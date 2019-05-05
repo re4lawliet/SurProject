@@ -15,6 +15,7 @@ class ControladorModuloEmpresas extends Controller
     public function __construct(){
 
         $this->middleware('auth');
+        //$this->middleware('admin');
 
     }
 
@@ -117,7 +118,7 @@ class ControladorModuloEmpresas extends Controller
         }
     }
 
-    public function ModificarEmpresa(Request $request, $id){
+   public function ModificarEmpresa(Request $request, $id){
         try{
             $validator = Validator::make($request->all(), [
                 'nombre_empresa' => 'required|max:255',

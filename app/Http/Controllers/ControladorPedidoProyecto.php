@@ -135,7 +135,8 @@ class ControladorPedidoProyecto extends Controller{
 
         $solicitudes = DB::delete("DELETE FROM temporal_productos
                                     WHERE usuario = '$email';");
-                                    
+        
+        
         Session::flash('message','Solicitud Agregada correctamente');
         $solicitudes = solicitude::where('mostrar','1')
                                     ->where('email',Auth::user()->email)

@@ -36,7 +36,7 @@ class ControladorManager extends Controller
                                         ->where('email',Auth::user()->email)
                                         ->count();
             Session::put('countSolicitudesMiasManager',$solicitudes2);
-
+            
             $nsolicitudes3 = solicitude::where('aprobado_manager','1')
                                         ->where('respondido_manager','1')
                                         ->count();
