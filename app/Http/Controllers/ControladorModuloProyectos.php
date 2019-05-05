@@ -45,7 +45,7 @@ class ControladorModuloProyectos extends Controller
 
     public function AgregarProyecto(Request $request){
         //|email
-        try{
+        //try{
             $validator = Validator::make($request->all(), [
                 'nombre_proyecto' => 'required|max:255',
                 'zona_proyecto' => 'max:255',
@@ -83,13 +83,14 @@ class ControladorModuloProyectos extends Controller
             $proyect->estado_proyecto = $request->estado_proyecto;
             $proyect->factura_a = $request->factura_a;
             $proyect->factura_numero = $request->factura_numero;
+            $proyect->correlativo = "1000";
             $proyect->save();
         
             return redirect('/proyectos');
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Agregar Proyecto');
-            return view('ErrorCatch');  
-        }
+        // }catch (Exception $e) { 
+        //     Session::flash('catch_error','Agregar Proyecto');
+        //     return view('ErrorCatch');  
+        // }
     
     }
 

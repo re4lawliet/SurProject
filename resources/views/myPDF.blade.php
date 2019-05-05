@@ -222,7 +222,7 @@
         </div>
 
         <div id="third">
-            <div><span style="font-weight:bold">OC No. </span>{{ $proveedor->correlativo }}</div>
+            <div><span style="font-weight:bold">OC No. </span>{{ $proyecto->correlativo }}</div>
             <div><span style="font-weight:bold">FECHA </span>{{ $fecha }}</div>
         </div>
     </div>

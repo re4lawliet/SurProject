@@ -27,7 +27,7 @@
             </div>
         @endif
 
-        <form action="{{ url('proyecto') }}" method="POST">
+        <form action="{{ url('proyecto') }}" method="POST" enctype= multipart/form-data>
 
             {{ csrf_field() }}
 
@@ -43,7 +43,7 @@
 
             <div class="form-group">
                 <label for="logo_proyecto" class="control-label">Logo del Proyecto</label>
-                <input type="file" name="logo_proyecto" class="form-control">
+                <input type="file" id="logo_proyecto" name="logo_proyecto" class="form-control">
             </div>
             
             <div class="form-group row">

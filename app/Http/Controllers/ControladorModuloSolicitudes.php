@@ -378,24 +378,29 @@ class ControladorModuloSolicitudes extends Controller
         file_put_contents($path, $pdf->output()); 
 
         //GUARDAR CORRELATIVO DE LA ORDEN
-        $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
-        $corr1 = $provv->correlativo;
+        $proy = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
+        $correlativo = $proy->correlativo;
         $actualizar = DB::update("UPDATE orden
-                                            SET no_orden = '$corr1'
-                                            WHERE id = $maxid->id;");
+                                             SET no_orden = '$correlativo'
+                                             WHERE id = $maxid->id;");
+        // $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+        // $corr1 = $provv->correlativo;
+        // $actualizar = DB::update("UPDATE orden
+        //                                     SET no_orden = '$corr1'
+        //                                     WHERE id = $maxid->id;");
 
         //guardar no_orden en orden_abierta
         if($val_ordenAbierta!=""){
             $updateOrdenAbierta = DB::update("UPDATE orden_abierta
-                                                        SET no_orden = '$corr1'
+                                                        SET no_orden = '$correlativo'
                                                         WHERE id_orden = $maxid->id;");
         }
         //incrementar correlativo de empresa
         
-        $corr = $provv->correlativo + 1;
-        $updateProveedor = DB::update("UPDATE empresas
+        $corr = $proy->correlativo + 1;
+        $updateProyecto = DB::update("UPDATE proyectos
                                                     SET correlativo ='$corr'
-                                                    WHERE id = $val_id_proveedor;");
+                                                    WHERE id = $val_id_proyecto ;");
         $salida = '0';
         return view('guardarPDF')->with('path',$path)
                                 ->with('salida',$salida);
