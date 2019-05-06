@@ -347,12 +347,12 @@
                                 @if($orden->debe=='-')
                                     <td></td>
                                 @else
-                                    <td>$ {{ $orden->debe }}</td>
+                                    <td>Q {{ $orden->debe }}</td>
                                 @endif
                                 @if($orden->haber=='-')
                                     <td></td>
                                 @else
-                                <td>$ {{ $orden->haber }}</td>
+                                <td>Q {{ $orden->haber }}</td>
                                 @endif
                                 <td>Q {{ $orden->saldo }}</td>
                             @endif
