@@ -791,5 +791,45 @@ class ControladorModuloSolicitudes extends Controller
     }
 
 
+    public function verSolicitudContadorFinalizada($id){
+        try{
+        $sol = orden::findOrFail($id);
+
+        Session::put('c_id', $id);
+        Session::put('c_idpro', $sol->id_proveedor);
+        Session::put('c_idsol', $sol->id_solicitud);
+        Session::put('c_idproy', $sol->id_proyecto);
+
+        $solicitud = solicitude::findOrFail($sol->id_solicitud);
+        $prove = empresa::findOrFail($sol->id_proveedor);
+        $proyecto = proyecto::findOrFail($sol->id_proyecto);
+
+        //nombre provedor
+        Session::put('c_nproveedor', $prove->nombre_empresa);
+        //solicitud
+        Session::put('c_nsolicitud', $solicitud->titulo_solicitud);
+        //proyecto
+        Session::put('c_nproyecto', $proyecto->nombre_proyecto);
+        //pdf orden
+        Session::put('c_npdf', $sol->pdf);
+        //pdf presupuesto
+        $solicitudd = DB::select(DB::raw("SELECT *
+                                    FROM solicitudes
+                                    WHERE id = '$sol->id_solicitud';"));
+        foreach ($solicitudd as $soli) {
+            if($soli->presupuesto!=NULL){
+                Session::put('c_npdfpresupuesto',$soli->presupuesto);
+            }else{
+                Session::put('c_npdfpresupuesto','PDF/orderfile1.pdf');
+            }          
+        }
+        $provee = DB::select("SELECT * FROM empresas WHERE id = $sol->id_proveedor");
+        return view('/homeSolicitudContadorFinalizada')->with('proveedores',$provee);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Ver Solicitud Contador Finalizada');
+            return view('ErrorCatch');  
+        }
+    }
+
     
 }

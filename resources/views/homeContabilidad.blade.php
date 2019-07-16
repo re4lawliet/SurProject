@@ -26,6 +26,18 @@
                         
 
                     <br><br><br>
+
+                    <h3><center>Ordenes Aprobadas: {{Session::get('countSolicitudesContaFinalizadas')}}</center></h3>
+                    <br>
+                    <br>
+                    <center>
+                    <button type="submit" class="btn btn-primary" onclick="location.href='/MostrarSolicitudesContadorFinalizadas'">
+                        <i class="fa fa-btn fa-pencil"></i>Ir a Revision de Ordenes de Compra Finalizadas
+                    </button>
+                    </center>
+                        
+
+                    <br><br><br>
                     
                 </div>
             </div>

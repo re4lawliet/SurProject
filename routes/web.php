@@ -340,8 +340,10 @@ Route::get('/SolicitudContador/{id}', 'ControladorModuloSolicitudes@verSolicitud
 Route::put('/AceptarSolicitudContador/{id}', 'ControladorVistaPedidos@aceptarSolicitudContador');
 //------------------Rechazar solicitud por Contador
 Route::put('/RechazarSolicitudContador/{id}', 'ControladorVistaPedidos@rechazarSolicitudContador');
-
-
+//------------------Mostrar solicitudes a Contador
+Route::get('/MostrarSolicitudesContadorFinalizadas','ControladorVistaPedidos@mostrarSolicitudesContadorFinalizadas')->name('MostrarSolicitudesContadorFinalizadas');
+//------------------Mostrar solicitud especifica a Contador Finalizada
+Route::get('/SolicitudContadorFinalizada/{id}', 'ControladorModuloSolicitudes@verSolicitudContadorFinalizada');
 
 
 

@@ -1453,7 +1453,27 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
+    public function mostrarSolicitudesContadorFinalizadas(){
+        try{
+            $solicitudes2 = DB::table('orden')
+                                ->where('respuesta_conta','2')
+                                ->count();
+            Session::put('countSolicitudesContaFinalizadas',$solicitudes2);
 
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
+                                                WHERE ord.id_solicitud = s.id 
+                                                AND ord.id_proveedor = pro.id 
+                                                AND ord.id_proyecto = p.id 
+                                                AND ord.respuesta_conta = '2';
+                                                "));                             
+        
+            return view('VistaPedidosContadorFinalizadas', [ 'querySolicitudes' => $solicitudes ]);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Solicitudes al Contador Finalizadas');
+            return view('ErrorCatch');  
+        }
+    }
 
 }
 

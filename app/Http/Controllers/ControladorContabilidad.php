@@ -39,6 +39,11 @@ class ControladorContabilidad extends Controller
                                 ->count();
             Session::put('countSolicitudesConta',$solicitudes);
 
+            $solicitudesFinalizadas = DB::table('orden')
+                                ->where('respuesta_conta','2')
+                                ->count();
+            Session::put('countSolicitudesContaFinalizadas',$solicitudesFinalizadas);
+
             $name = $request->get('name');
             
             $proyectos = proyecto::orderBy('id', 'DESC')
