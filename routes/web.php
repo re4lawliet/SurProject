@@ -403,6 +403,7 @@ Route::get('/vistaPresupuesto/{idProyecto}','ControladorPresupuesto@consultaPres
 Route::get('/desglose/{idProyecto}/{idPartida}','ControladorPresupuesto@desglose');
 
 
+
 //------------------ Loguin
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

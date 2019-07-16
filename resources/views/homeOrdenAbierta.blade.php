@@ -335,7 +335,9 @@
                     document.getElementById("txtTotal_show").value = document.getElementById("txtTotal_show").value.replace(divisa,'');
                     if(textboxEnviara.value!==""){//validando que haya seleccionado ENVIAR A
                         if(txtAbono.value!==""){
-                            if(txtAbono.value<txtmax.value){
+                            var valAbono = parseFloat(txtAbono.value);
+                            var valMax = parseFloat(txtmax.value);
+                            if(valAbono<valMax){
                                 if(confirm('Crear Abono?')){
                                     document.forms["hacer_abono_frm"].submit();
                                 }
