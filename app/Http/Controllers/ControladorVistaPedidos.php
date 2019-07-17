@@ -785,13 +785,17 @@ class ControladorVistaPedidos extends Controller{
     public function enviar()
     {
         try{
-        $destinos=Session::get('pdf_correos');
-        $idOrden=Session::get('pdf_idOrden');
-        $proyectoNombre=Session::get('pdf_proyecto');
-        $provedorNombre=Session::get('pdf_provedor');
-
-        $valores = $destinos; 
-        $valor = explode(',',$valores); 
+            $destinos=Session::get('pdf_correos');
+            $idOrden=Session::get('pdf_idOrden');
+            $proyectoNombre=Session::get('pdf_proyecto');
+            $provedorNombre=Session::get('pdf_provedor');
+            
+            $valoresR1=str_replace(' ', '', $destinos);
+            $valoresR2=str_replace('\n', '', $valoresR1);
+            $valoresR3=str_replace('\r', '', $valoresR2);
+    
+            $valores = $valoresR3; 
+            $valor = explode(',',$valores); 
 
         foreach($valor as $llave => $valorsito) 
         {
@@ -1363,14 +1367,18 @@ class ControladorVistaPedidos extends Controller{
     public function enviarAbierta()
     {
         try{
-        $destinos=Session::get('pdf_correos');
-        $idOrden=Session::get('pdf_idOrden');
-        $abono=Session::get('abono');
-        $proyectoNombre=Session::get('pdf_proyecto');
-        $provedorNombre=Session::get('pdf_provedor');
-
-        $valores = $destinos; 
-        $valor = explode(',',$valores); 
+            $destinos=Session::get('pdf_correos');
+            $idOrden=Session::get('pdf_idOrden');
+            $abono=Session::get('abono');
+            $proyectoNombre=Session::get('pdf_proyecto');
+            $provedorNombre=Session::get('pdf_provedor');
+    
+            $valoresR1=str_replace(' ', '', $destinos);
+            $valoresR2=str_replace('\n', '', $valoresR1);
+            $valoresR3=str_replace('\r', '', $valoresR2);
+    
+            $valores = $valoresR3; 
+            $valor = explode(',',$valores);
 
         foreach($valor as $llave => $valorsito) 
         {
