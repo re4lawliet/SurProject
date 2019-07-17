@@ -811,7 +811,17 @@ class ControladorModuloSolicitudes extends Controller
         //proyecto
         Session::put('c_nproyecto', $proyecto->nombre_proyecto);
         //pdf orden
-        Session::put('c_npdf', $sol->pdf);
+        $pdfOrden = DB::select("SELECT pdf 
+                                FROM orden_abierta
+                                WHERE id_orden = $id
+                                AND abono = (SELECT max(abono)
+                                            FROM orden_abierta
+                                            WHERE id_orden = $id
+                                            )");
+        foreach($pdfOrden as $pdf){
+            Session::put('c_npdf', $pdf->pdf);
+        }
+        
         //pdf presupuesto
         $solicitudd = DB::select(DB::raw("SELECT *
                                     FROM solicitudes

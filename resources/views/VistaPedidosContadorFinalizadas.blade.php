@@ -7,7 +7,7 @@
     <center>
         <!--TITULO -->
         <div class="panel-title">
-            <h1><center>VISTA DE ORDENES GENERADAS POR DIRECTOR</center></h1>
+            <h1><center>VISTA DE ORDENES APROBADAS</center></h1>
         </div>
 
         @if ($errors->any())
@@ -25,7 +25,7 @@
             <!-- si el resultado de la consulta es mayor a 0-->
             @if (count($querySolicitudes) > 0)
                 <div class="panel panel-default">
-                    <h2>Listado De ORDENES</h2>
+                    <h2>Listado De Ordenes</h2>
                 </div>
 
                 <div class="panel-body">
