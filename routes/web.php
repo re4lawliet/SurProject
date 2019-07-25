@@ -304,6 +304,9 @@ Route::get('/MostrarSolicitudesColaborador','ControladorVistaPedidos@mostrarSoli
 Route::get('/MostrarSolicitudesColaborador2','ControladorVistaPedidos@mostrarSolicitudesColaborador2')->name('MostrarSolicitudesColaborador2');
 //------------------Eliminar solicitud por Colaborador
 Route::get('/DejarSolicitud/{id}', 'ControladorVistaPedidos@dejarSolicitud');
+//------------------Modificar solicitud por Colaborador
+Route::get('/ModificarSolicitud/{id}', 'ControladorVistaPedidos@modificarSolicitud');
+Route::post('/ModificarCotizacion', 'ControladorVistaPedidos@modificarCotizacion');
 
 
 

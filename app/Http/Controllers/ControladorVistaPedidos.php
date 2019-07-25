@@ -344,6 +344,74 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+    public function modificarSolicitud($id){
+        try{
+            $solicitudes = solicitude::where('mostrar','1')
+                                        ->where('email',Auth::user()->email)
+                                        ->count();
+            Session::put('countSolicitudesColaborador',$solicitudes);
+
+            $solicitud = DB::select("SELECT s.id, s.titulo_solicitud, s.id_partida, s.id_proyecto, s.proveedor, s.presupuesto, p.nombre, pr.nombre_proyecto
+                                        FROM solicitudes as s, partidas as p, proyectos as pr
+                                        WHERE s.id = $id
+                                        AND p.id = s.id_partida
+                                        AND pr.id = s.id_proyecto;");
+
+            $listado = DB::select("SELECT cantidad, unidad, descripcion
+                                    FROM listados
+                                    WHERE id_solicitud = $id");
+
+            return view('ModificarSolicitud')->with('querySolicitud',$solicitud)
+                                                ->with('queryListado',$listado);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Dejar Solicitud');
+            return view('ErrorCatch');  
+        }
+    }
+
+
+
+
+
+    public function modificarCotizacion(){
+        $id = $_POST['id_solicitud'];
+        $ruta_vieja = $_POST['pdf_viejo'];
+        //----PDF
+        $nombrep = 'pres'.$id;
+        $nombreimg =$_FILES['presupuesto']['name'];//nombre relativo
+        $archivo =$_FILES['presupuesto']['tmp_name'];//archivo binario
+        if($nombreimg==""){
+            $ruta = $ruta_vieja;
+        }else{
+            $ruta="PDF/".$nombrep.$nombreimg;
+            move_uploaded_file($archivo,$ruta);
+        }
+        $solicitud = solicitude::findOrFail($id);
+        if ($_FILES['presupuesto']['name'] != null) {
+            $solicitud->presupuesto=$ruta;
+        }
+        $solicitud->save();
+
+        $solicitudes = solicitude::where('mostrar','1')
+                                        ->where('email',Auth::user()->email)
+                                        ->count();
+            Session::put('countSolicitudesColaborador2',$solicitudes);
+
+            $iduser = Auth::user()->id;
+
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
+                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto AS up
+                                                WHERE s.mostrar = '1' 
+                                                AND s.id_proyecto=up.id_proyecto
+                                                AND up.id_usuario=$iduser
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+        
+            return view('VistaPedidosColaborador2', [ 'querySolicitudes' => $solicitudes ]);
+    }
+
+
+
+
 
 
     public function mostrarSolicitudesCompras(){
