@@ -1073,7 +1073,7 @@ class ControladorVistaPedidos extends Controller{
     }
 
     public function hacerAbono(Request $request){
-        // try{
+        try{
         //OBTENCION DE DATOS
         $val_id_proveedor = $request->id_emp;
         $val_tipo_pago = $request->tipo_pago;
@@ -1129,8 +1129,6 @@ class ControladorVistaPedidos extends Controller{
             $Insertar_Abono = DB::insert("INSERT INTO orden_abierta (id_orden,no_orden,fecha,abono,debe,haber,saldo,pdf,enviado,respuesta_conta)
                                                     VALUES ($a->id_orden,'$a->no_orden', '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path','0','0')");
 
-            
-
             //data Orden Abierta
             $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)
                                                             ->where('no_orden',$a->no_orden)
@@ -1161,16 +1159,19 @@ class ControladorVistaPedidos extends Controller{
         $abonito = floatval($orden->abono) + 1;
         $orden->pagado = $pagado;
         $orden->abono = $abonito;
+        $orden->respuesta_conta = '-1';
         $orden->save();
+
+        //DEBO BLOQUEAR BOTON DE HACER ABONOS
         
 
         $salida = '1';
         return view('guardarPDF')->with('path',$path)
                                     ->with('salida',$salida);
-        // }catch (Exception $e) { 
-        //     Session::flash('catch_error','Hacer Abono');
-        //     return view('ErrorCatch');  
-        // }
+         }catch (Exception $e) { 
+             Session::flash('catch_error','Hacer Abono');
+             return view('ErrorCatch');  
+         }
 
     }
 
@@ -1415,6 +1416,19 @@ class ControladorVistaPedidos extends Controller{
                                                     SET respuesta_conta ='1'
                                                     WHERE id_orden = $idOrden
                                                     AND abono = $abono;");
+
+         //Luego de Agregar Abono Actualizamos el PDF de la orden y cambiamos a respuesta conta 1
+        $insertarPDF2 = DB::update("UPDATE orden
+        SET respuesta_conta ='1'
+        WHERE id = $idOrden;");
+
+        $ord = DB::select(DB::raw("SELECT pdf FROM orden_abierta WHERE id_orden = $idOrden AND abono = $abono;"));   
+
+        foreach ($ord as $or) {
+            $insertarPDF3 = DB::update("UPDATE orden
+            SET pdf = '$or->pdf'
+            WHERE id = $idOrden;");
+        }
 
         Session::flash('messageOrden','Abono de Orden de Compra Aprobada Se Enviaron Los Correos a Proveedor y a Contabilidad');
 
