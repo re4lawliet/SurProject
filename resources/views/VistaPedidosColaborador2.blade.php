@@ -55,8 +55,9 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                             <th>Nombre Partida</th>
                             <th>Proyecto</th>
                             <th>Proveedor sugerido</th>
-                            <th>Dejar de Seguir</th>
                             <th>Estado Transaccion</th>
+                            <th>Dejar de Seguir</th>
+                            <th>Modificar Cotizacion</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
@@ -69,13 +70,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                     <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                     <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                    <td class="table-text"><div>Falta Aprobacion Manager</div></td>
                                     <!-- Boton DEJAR -->
                                     <td>
                                         <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                             <i class="fa fa-btn fa-pencil"></i>Eliminar
                                         </button>
                                     </td>
-                                    <td class="table-text"><div>Falta Aprobacion Manager</div></td>
+                                    <!-- Boton MODIFICAR -->
+                                    <td>
+                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                            <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                        </button>
+                                    </td>
                                 </tr>
                             @elseif($solicitud->respondido_manager == 1)
                                 <!-- el manager ya la vio -->
@@ -89,13 +96,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                             <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                             <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                            <td class="table-text"><div>Aceptada Por Manager, Falta Aprobacion Director</div></td>
                                             <!-- Boton DEJAR -->
                                             <td>
                                                 <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                     <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                 </button>
                                             </td>
-                                            <td class="table-text"><div>Aceptada Por Manager, Falta Aprobacion Director</div></td>
+                                            <!-- Boton MODIFICAR -->
+                                            <td>
+                                                <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                    <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                </button>
+                                            </td>
                                         </tr>
                                     @elseif($solicitud->respondido_director == 1)
                                         <!-- el director ya la vio -->
@@ -109,13 +122,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <td class="table-text"><div>Aceptada Por Manager, Aceptada Director, Orden Creada en Compras(Falta Envio De Director y Aprobacion de Contabilidad)</div></td>
                                                     <!-- Boton DEJAR -->
                                                     <td>
                                                         <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                             <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                         </button>
                                                     </td>
-                                                    <td class="table-text"><div>Aceptada Por Manager, Aceptada Director, Orden Creada en Compras(Falta Envio De Director y Aprobacion de Contabilidad)</div></td>
+                                                    <!-- Boton MODIFICAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <!-- si se creo la orden en 0 gris-->
                                             @elseif($solicitud->orden_creada == 0)
@@ -125,13 +144,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Enviada a Compras</div></td>
                                                     <!-- Boton DEJAR -->
                                                     <td>
                                                         <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                             <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                         </button>
                                                     </td>
-                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Enviada a Compras</div></td>
+                                                    <!-- Boton MODIFICAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <!-- si se creo la orden en 2 rechazada por conta-->
                                             @elseif($solicitud->orden_creada == 2)
@@ -141,13 +166,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Creada en Compras, Rechazada por Conta</div></td>
                                                     <!-- Boton DEJAR -->
                                                     <td>
                                                         <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                             <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                         </button>
                                                     </td>
-                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Creada en Compras, Rechazada por Conta</div></td>
+                                                    <!-- Boton MODIFICAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <!-- si se creo la orden en 3 aprobada enviada-->
                                             @elseif($solicitud->orden_creada == 3)
@@ -157,13 +188,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Creada en Compras, Aprobada y Enviada</div></td>
                                                     <!-- Boton DEJAR -->
                                                     <td>
                                                         <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                             <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                         </button>
                                                     </td>
-                                                    <td class="table-text"><div>Aceptada Por Manager,Aceptada Director, Orden Creada en Compras, Aprobada y Enviada</div></td>
+                                                    <!-- Boton MODIFICAR -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             @endif
 
@@ -175,13 +212,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                                <td class="table-text"><div>Aceptada Por Manager,Rechazada por Director</div></td>
                                                 <!-- Boton DEJAR -->
                                                 <td>
                                                     <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                         <i class="fa fa-btn fa-pencil"></i>Eliminar
                                                     </button>
                                                 </td>
-                                                <td class="table-text"><div>Aceptada Por Manager,Rechazada por Director</div></td>
+                                                <!-- Boton MODIFICAR -->
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                        <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endif
@@ -193,13 +236,19 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                         <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                         <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                         <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
+                                        <td class="table-text"><div>Rechazada por Director</div></td>
                                         <!-- Boton DEJAR -->
                                         <td>
                                             <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
                                                 <i class="fa fa-btn fa-pencil"></i>Eliminar
                                             </button>
                                         </td>
-                                        <td class="table-text"><div>Rechazada por Director</div></td>
+                                        <!-- Boton MODIFICAR -->
+                                        <td>
+                                            <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endif
                             @endif
