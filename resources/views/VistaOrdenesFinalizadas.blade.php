@@ -18,7 +18,7 @@
 
 
         <!-- Tabla  -->
-        <div class="col-md-11">
+        <div class="col-sm-10">
             <!-- si el resultado de la consulta es mayor a 0-->
             @if (count($ordenes) > 0)
                 <div class="panel panel-default">
@@ -26,7 +26,7 @@
                 </div>
                 <br>
                 <div class="panel-body">
-                    <table id="tabla_ordenes" class="table table-striped task-table">
+                    <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
                             <th>Fecha de Creacion por Compras</th>
@@ -92,7 +92,7 @@
         }
         
         $(document).ready( function () {
-            $('#tabla_ordenes').DataTable({
+            $('#tabla_pedidos').DataTable({
                 "language": idioma_espanol,
                 "paging": false,
                 "info": false
