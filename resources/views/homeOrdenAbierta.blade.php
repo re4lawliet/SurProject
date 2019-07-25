@@ -337,11 +337,15 @@
                         if(txtAbono.value!==""){
                             var valAbono = parseFloat(txtAbono.value);
                             var valMax = parseFloat(txtmax.value);
-                            if(valAbono<valMax){
+                            if(valAbono<<valMax){
                                 if(confirm('Crear Abono?')){
                                     document.forms["hacer_abono_frm"].submit();
                                 }
-                            }else{
+                            }else if(valAbono==valMax){
+                                if(confirm('Crear Abono?')){
+                                    document.forms["hacer_abono_frm"].submit();
+                                }
+                            }else{ 
                                 alert('No se puede realizar un abono mayor al saldo');
                             }
                         }

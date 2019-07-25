@@ -793,6 +793,7 @@ class ControladorModuloSolicitudes extends Controller
 
     public function verSolicitudContadorFinalizada($id){
         try{
+            
         $sol = orden::findOrFail($id);
 
         Session::put('c_id', $id);
@@ -811,17 +812,7 @@ class ControladorModuloSolicitudes extends Controller
         //proyecto
         Session::put('c_nproyecto', $proyecto->nombre_proyecto);
         //pdf orden
-        $pdfOrden = DB::select("SELECT pdf 
-                                FROM orden_abierta
-                                WHERE id_orden = $id
-                                AND abono = (SELECT max(abono)
-                                            FROM orden_abierta
-                                            WHERE id_orden = $id
-                                            )");
-        foreach($pdfOrden as $pdf){
-            Session::put('c_npdf', $pdf->pdf);
-        }
-        
+        Session::put('c_npdf', $sol->pdf);
         //pdf presupuesto
         $solicitudd = DB::select(DB::raw("SELECT *
                                     FROM solicitudes

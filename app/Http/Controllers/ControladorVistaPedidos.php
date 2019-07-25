@@ -567,7 +567,7 @@ class ControladorVistaPedidos extends Controller{
     
             //jalo la solicitud y le pondre 3 que es rechazada por conta
             $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
-            $solicitud3->orden_creada='3';
+            $solicitud3->orden_creada='2';
             $solicitud3->save();
     
             $solicitudes2 = DB::table('orden')
@@ -1128,6 +1128,8 @@ class ControladorVistaPedidos extends Controller{
             $path = 'PDF/'.$name;
             $Insertar_Abono = DB::insert("INSERT INTO orden_abierta (id_orden,no_orden,fecha,abono,debe,haber,saldo,pdf,enviado,respuesta_conta)
                                                     VALUES ($a->id_orden,'$a->no_orden', '$fecha',$nuevoAbono,'-','$val_Abono','$nuevoSaldo','$path','0','0')");
+
+            
 
             //data Orden Abierta
             $data_Orden_Abierta = DB::table('orden_abierta')->where('id_orden', $a->id_orden)
