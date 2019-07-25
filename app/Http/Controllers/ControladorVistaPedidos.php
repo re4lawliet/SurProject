@@ -1483,7 +1483,74 @@ class ControladorVistaPedidos extends Controller{
         }
     }
 
+
+    public function ingresoFactura(){
+
+        //mostrar todos los proveedores
+        $prove = DB::select(DB::raw("SELECT * 
+                                            FROM empresas
+                                            WHERE id = 'inexistente';"));
+
+        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+
+        return view('ingresoFactura')->with('queryEmpresas' , $emp)
+                                        ->with('queryProveedores',$prove);
+    
+    }
+
+    public function ingresoFacturaProv($idp){
+
+        //mostrar todos los proveedores
+        $prove = DB::select(DB::raw("SELECT * 
+                                            FROM empresas
+                                            WHERE id = $idp;"));
+
+        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+
+        return view('ingresoFactura')->with('queryEmpresas' , $emp)
+                                        ->with('queryProveedores',$prove);
+    
+    }
+
+
+    public function AgregarFactura(Request $request){
+        $id_prov = $request->id_emp;
+        $n_fact = $request->n_fact;
+
+        $busqueda = DB::select("SELECT *
+                                FROM log_factura
+                                WHERE id_proveedor = $id_prov
+                                AND no_factura = $n_fact");
+
+        $existe = false;
+        foreach($busqueda as $encontrada){
+            if($encontrada->id_proveedor = $id_prov && $encontrada->no_factura = $n_fact){
+                $existe=true;
+            }
+        }
+
+        if($existe == false){
+            DB::insert("INSERT INTO log_factura(id_proveedor,no_factura) 
+                        VALUES($id_prov,$n_fact)");
+            Session::flash('facturaAgregada','La factura ha sido agregada al sistema');
+            return redirect('ingresoFactura');
+        }else{
+            Session::flash('catch_error','Esta factura ya ha sido ingresada');
+            return view('ErrorCatch');  
+        }
+        
+    }
+
+
+
+
+
+
+
+
+
 }
+
 
 
 

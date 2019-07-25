@@ -17,15 +17,21 @@
 
                     <h3><center>Ordenes Finalizadas: {{Session::get('countSolicitudesConta')}}</center></h3>
                     <br>
-                    <br>
                     <center>
                     <button type="submit" class="btn btn-primary" onclick="location.href='/MostrarOrdenesFinalizadas'">
                         <i class="fa fa-btn fa-pencil"></i>Ir a Revision de Ordenes de Compra
                     </button>
                     </center>
-                        
 
                     <br><br><br>
+
+                    <h3><center>Ingreso de Facturas</center></h3>
+                    <br>
+                    <center>
+                    <button type="submit" class="btn btn-primary" onclick="location.href='/ingresoFactura'">
+                        <i class="fa fa-btn fa-pencil"></i>Ir a Ingreso de Facturas
+                    </button>
+                    </center>
                     
                 </div>
             </div>
