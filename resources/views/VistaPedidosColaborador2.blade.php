@@ -105,7 +105,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             </td>
                                             <!-- Boton MODIFICAR -->
                                             <td>
-                                                <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                     <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                 </button>
                                             </td>
@@ -131,7 +131,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     </td>
                                                     <!-- Boton MODIFICAR -->
                                                     <td>
-                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                        <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
@@ -153,7 +153,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     </td>
                                                     <!-- Boton MODIFICAR -->
                                                     <td>
-                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                        <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
@@ -175,7 +175,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     </td>
                                                     <!-- Boton MODIFICAR -->
                                                     <td>
-                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                        <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
@@ -197,7 +197,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     </td>
                                                     <!-- Boton MODIFICAR -->
                                                     <td>
-                                                        <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                        <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
@@ -221,7 +221,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                 </td>
                                                 <!-- Boton MODIFICAR -->
                                                 <td>
-                                                    <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                                    <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                         <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                     </button>
                                                 </td>
@@ -245,7 +245,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                         </td>
                                         <!-- Boton MODIFICAR -->
                                         <td>
-                                            <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
+                                            <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                 <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                             </button>
                                         </td>
