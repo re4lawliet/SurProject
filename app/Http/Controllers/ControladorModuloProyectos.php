@@ -5,6 +5,7 @@ namespace SUR\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use SUR\proyecto;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -85,6 +86,77 @@ class ControladorModuloProyectos extends Controller
             $proyect->factura_numero = $request->factura_numero;
             $proyect->correlativo = "1000";
             $proyect->save();
+
+            $I1 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15000', '0','0','0')");
+            $I2 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15010', '0','0','0')");
+            $I3 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15020', '0','0','0')");
+            $I4 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15030', '0','0','0')");
+            $I5 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15040', '0','0','0')");
+            $I6 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15050', '0','0','0')");
+            $I7 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15060', '0','0','0')");
+            $I8 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15070', '0','0','0')");
+            $I9 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15080', '0','0','0')");
+            $I10 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15090', '0','0','0')");
+            $I11 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15100', '0','0','0')");
+            $I12 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15110', '0','0','0')");
+            $I13 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15120', '0','0','0')");
+            $I14 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15130', '0','0','0')");
+            $I15 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15140', '0','0','0')");
+            $I16 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15150', '0','0','0')");
+            $I17 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15160', '0','0','0')");
+            $I18 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15170', '0','0','0')");
+            $I19 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15180', '0','0','0')");
+            $I20 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15190', '0','0','0')");
+            $I21 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15200', '0','0','0')");
+            $I22 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15210', '0','0','0')");
+            $I23 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15220', '0','0','0')");
+            $I24 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15230', '0','0','0')");
+            $I25 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15240', '0','0','0')");
+            $I26 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15250', '0','0','0')");
+            $I27 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15260', '0','0','0')");
+            $I28 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15270', '0','0','0')");
+            $I29 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15280', '0','0','0')");
+            $I30 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15290', '0','0','0')");
+            $I31 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15300', '0','0','0')");
+            $I32 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15310', '0','0','0')");
+            $I33 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15320', '0','0','0')");
+            $I34 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15330', '0','0','0')");
+            $I35 = DB::insert("INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
+            VALUES ((SELECT MAX(id) FROM proyectos),'15340', '0','0','0')");
         
             return redirect('/proyectos');
         // }catch (Exception $e) { 

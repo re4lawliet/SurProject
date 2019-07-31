@@ -193,3 +193,7 @@ INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo)
 INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15320,'0','0','0');
 INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15330,'0','0','0');
 INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15340,'0','0','0');
+
+
+
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES ((SELECT MAX(id) FROM proyectos),18000,'0','0','0')
