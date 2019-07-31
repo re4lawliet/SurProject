@@ -157,3 +157,39 @@ created_at TIMESTAMP NULL,
 updated_at TIMESTAMP NULL,
 PRIMARY KEY(id_proyecto,id_partida,divisa)
 );
+
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15000,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15010,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15020,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15030,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15040,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15050,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15060,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15070,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15080,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15090,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15100,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15110,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15120,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15130,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15140,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15150,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15160,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15170,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15180,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15190,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15200,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15210,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15220,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15230,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15240,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15250,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15260,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15270,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15280,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15290,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15300,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15310,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15320,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15330,'0','0','0');
+INSERT INTO presupuesto (id_proyecto, id_partida,presupuesto,orden_sumada,saldo) VALUES (32,15340,'0','0','0');
