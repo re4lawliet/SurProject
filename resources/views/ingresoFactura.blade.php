@@ -72,14 +72,25 @@
                     @endif
                     <form id="agregar" action="{{ url('AgregarFactura') }}" method="post">
                         {{ csrf_field() }}
-                    
+                        <div>
+                            <label for="orden" class="control-label">Serie</label>
+                            <input id="serie"name="serie" type="text" class="form-control">
+                        </div>
                         <div>
                             <label for="orden" class="control-label">No. Factura</label>
                             <input id="n_fact"name="n_fact" type="text" class="form-control">
                         </div>
                         <div>
+                            <label for="orden" class="control-label">Fecha</label>
+                            <input id="fecha"name="fecha" type="text" class="form-control">
+                        </div>
+                        <div>
                             <label for="orden" class="control-label">Monto</label>
                             <input id="monto"name="monto" type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label for="orden" class="control-label">Descrpcion</label>
+                            <input id="descripcion"name="descripcion" type="text" class="form-control">
                         </div>
                         <br>
                         <div>
@@ -93,15 +104,21 @@
                                 <br>
                                 <table class="table table-striped task-table" >
                                     <thead>
+                                        <th >Serie</th>
                                         <th >No. Factura</th>
+                                        <th >Fecha</th>
                                         <th >Monto</th>
+                                        <th >Descripcion</th>
                                     </thead>
                                     <tbody>
                                         @if(count($queryFacturas)>0)
                                             @foreach($queryFacturas as $fact)
                                                 <tr>
+                                                    <td >{{ $fact->serie }}</td>
                                                     <td >{{ $fact->no_factura }}</td>
+                                                    <td >{{ $fact->fecha }}</td>
                                                     <td >{{ $fact->monto }}</td>
+                                                    <td >{{ $fact->descripcion }}</td>
                                                 </tr>
                                             @endforeach
                                         @endif
