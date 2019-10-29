@@ -61,7 +61,7 @@
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
 
-                    <button type="submit" class="btn btn-primary" onclick="location.href=''">
+                    <button type="submit" class="btn btn-primary" onclick="location.href='crearPresupuesto/{{ Session::get('proyectoG') }}'">
                         <i class="fa fa-btn fa-pencil"></i>Presupuesto          
                     </button>
                 @endif
