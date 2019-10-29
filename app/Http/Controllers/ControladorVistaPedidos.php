@@ -1607,11 +1607,8 @@ class ControladorVistaPedidos extends Controller{
 
 
     public function AgregarFactura(Request $request){
-        $serie = $request->serie;
-        $n_fact = $request->n_fact;
-        $fecha = $request->fecha;
         $monto = $request->monto;
-        $descripcion = $request->descripcion;
+        $n_fact = $request->n_fact;
         $id_orden = $request->id_orden;
         $id_proveedor = $request->id_proveedor;
 
@@ -1629,8 +1626,8 @@ class ControladorVistaPedidos extends Controller{
         }
 
         if($existe == false){
-            DB::insert("INSERT INTO log_factura(id_proveedor,orden,serie,no_factura,fecha,monto,descripcion) 
-                        VALUES($id_proveedor,$id_orden,'$serie','$n_fact','$fecha','$monto','$descripcion')");
+            DB::insert("INSERT INTO log_factura(id_proveedor,no_factura,orden,monto) 
+                        VALUES($id_proveedor,$n_fact,$id_orden,'$monto')");
             Session::flash('facturaAgregada','La factura ha sido agregada al sistema');
             return redirect('ingresoFactura/'.$id_orden);
         }else{
