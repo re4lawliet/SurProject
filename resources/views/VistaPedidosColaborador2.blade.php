@@ -50,6 +50,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                     <table id="tabla_solicitudes" class="table">
                         <!-- Encabezado de Tabla -->
                         <thead>
+                            <th>Fecha</th>
                             <th>Titulo</th>
                             <th>No. Partida</th>
                             <th>Nombre Partida</th>
@@ -65,6 +66,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                             @if($solicitud->respondido_manager == 0)
                                 <!-- ni el manager la ha visto PENDIENTE-->
                                 <tr class="alert alert-dark">
+                                    <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -91,6 +93,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                     @if($solicitud->respondido_director == 0)
                                         <!-- pero el director no la ha visto AZUL-->
                                         <tr class="alert alert-dark">
+                                            <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                             <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                             <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                             <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -117,6 +120,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <!-- si se creo la orden en 1 gris-->
                                             @if($solicitud->orden_creada == 1)
                                                 <tr class="alert alert-warning">
+                                                    <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -139,6 +143,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <!-- si se creo la orden en 0 gris-->
                                             @elseif($solicitud->orden_creada == 0)
                                                 <tr class="alert alert-dark">
+                                                    <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -161,6 +166,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <!-- si se creo la orden en 2 rechazada por conta-->
                                             @elseif($solicitud->orden_creada == 2)
                                                 <tr class="alert alert-danger">
+                                                    <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -183,6 +189,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                             <!-- si se creo la orden en 3 aprobada enviada-->
                                             @elseif($solicitud->orden_creada == 3)
                                                 <tr class="alert alert-success">
+                                                    <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                     <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -207,6 +214,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                         @elseif($solicitud->aprobado_director == 0)
                                             <!-- el director ya la rechazo ROJO -->
                                             <tr class="alert alert-danger">
+                                                <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
@@ -231,6 +239,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                 @elseif($solicitud->aprobado_manager == 0)
                                     <!-- el manager la rechazo ROJO-->
                                     <tr class="alert alert-danger">
+                                        <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                         <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                         <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                         <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>

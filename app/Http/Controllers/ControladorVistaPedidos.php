@@ -313,12 +313,13 @@ class ControladorVistaPedidos extends Controller{
 
             $iduser = Auth::user()->id;
 
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
+            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, s.fecha_solicitud, pa.nombre, p.nombre_proyecto, s.proveedor, s.respondido_manager, s.aprobado_manager, s.respondido_director, s.aprobado_director, s.orden_creada
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto AS up
                                                 WHERE s.mostrar = '1' 
                                                 AND s.id_proyecto=up.id_proyecto
                                                 AND up.id_usuario=$iduser
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
+                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id
+                                                ORDER BY s.fecha_solicitud DESC;"));                             
         
             return view('VistaPedidosColaborador2', [ 'querySolicitudes' => $solicitudes ]);
 
