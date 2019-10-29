@@ -794,7 +794,7 @@ class ControladorVistaPedidos extends Controller{
     
 
     public function mostrarPDFDirector($idOrden){
-        try{
+        //try{
         $orden = DB::select(DB::raw("SELECT *
                                     FROM orden
                                     WHERE id = '$idOrden';"));
@@ -844,10 +844,10 @@ class ControladorVistaPedidos extends Controller{
         
                                     
         return view('verPDFDirector')->with('orden',$orden);
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Mostrar PDF Director');
-            return view('ErrorCatch');  
-        }
+        //}catch (Exception $e) { 
+          //  Session::flash('catch_error','Mostrar PDF Director');
+            //return view('ErrorCatch');  
+        //}
     }
 
     public function enviar()
@@ -1568,56 +1568,71 @@ class ControladorVistaPedidos extends Controller{
     }
 
 
-    public function ingresoFactura(){
+
+    public function ingresoFacturaOrdenes(){
 
         //mostrar todos los proveedores
-        $prove = DB::select(DB::raw("SELECT * 
-                                            FROM empresas
-                                            WHERE id = 'inexistente';"));
+        $ordenes = DB::select("SELECT o.id, o.id_proveedor, o.id_proyecto, o.no_orden, o.pdf, e.nombre_empresa, o.fecha_creacion, s.titulo_solicitud, p.nombre_proyecto
+                                FROM orden o, empresas e, solicitudes s, proyectos p
+                                WHERE e.id = o.id_proveedor
+                                AND o.id_solicitud = s.id
+                                AND o.id_proyecto = p.id;");
 
-        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
-
-        return view('ingresoFactura')->with('queryEmpresas' , $emp)
-                                        ->with('queryProveedores',$prove);
+        return view('ingresoFacturaOrden')->with('querySolicitudes' , $ordenes);
     
     }
 
-    public function ingresoFacturaProv($idp){
 
+
+
+
+    public function ingresoFactura($ido){
+        $ordenes = DB::select("SELECT o.id, o.id_proveedor, o.id_proyecto, o.no_orden, o.pdf, e.nombre_empresa, o.fecha_creacion, s.titulo_solicitud, p.nombre_proyecto
+                                FROM orden o, empresas e, solicitudes s, proyectos p
+                                WHERE o.id = $ido
+                                AND e.id = o.id_proveedor
+                                AND o.id_solicitud = s.id
+                                AND o.id_proyecto = p.id;");
         //mostrar todos los proveedores
-        $prove = DB::select(DB::raw("SELECT * 
-                                            FROM empresas
-                                            WHERE id = $idp;"));
 
-        $emp = DB::select(DB::raw("SELECT * FROM empresas;"));
+        //historial facturas
+        $facturas = DB::select("SELECT *
+                                FROM log_factura
+                                WHERE orden = $ido;");
 
-        return view('ingresoFactura')->with('queryEmpresas' , $emp)
-                                        ->with('queryProveedores',$prove);
+        return view('ingresoFactura')->with('queryOrden', $ordenes)
+                                        ->with('queryFacturas',$facturas);
     
     }
 
 
     public function AgregarFactura(Request $request){
-        $id_prov = $request->id_emp;
+        $serie = $request->serie;
         $n_fact = $request->n_fact;
+        $fecha = $request->fecha;
+        $monto = $request->monto;
+        $descripcion = $request->descripcion;
+        $id_orden = $request->id_orden;
+        $id_proveedor = $request->id_proveedor;
+
 
         $busqueda = DB::select("SELECT *
                                 FROM log_factura
-                                WHERE id_proveedor = $id_prov
-                                AND no_factura = $n_fact");
+                                WHERE orden = $id_orden
+                                AND no_factura = $n_fact;");
 
         $existe = false;
         foreach($busqueda as $encontrada){
-            if($encontrada->id_proveedor = $id_prov && $encontrada->no_factura = $n_fact){
+            if($encontrada->orden = $id_orden && $encontrada->no_factura = $n_fact){
                 $existe=true;
             }
         }
 
         if($existe == false){
-            DB::insert("INSERT INTO log_factura(id_proveedor,no_factura) 
-                        VALUES($id_prov,$n_fact)");
+            DB::insert("INSERT INTO log_factura(id_proveedor,orden,serie,no_factura,fecha,monto,descripcion) 
+                        VALUES($id_proveedor,$id_orden,'$serie','$n_fact','$fecha','$monto','$descripcion')");
             Session::flash('facturaAgregada','La factura ha sido agregada al sistema');
-            return redirect('ingresoFactura');
+            return redirect('ingresoFactura/'.$id_orden);
         }else{
             Session::flash('catch_error','Esta factura ya ha sido ingresada');
             return view('ErrorCatch');  

@@ -28,7 +28,7 @@
                     <h3><center>Ingreso de Facturas</center></h3>
                     <br>
                     <center>
-                    <button type="submit" class="btn btn-primary" onclick="location.href='/ingresoFactura'">
+                    <button type="submit" class="btn btn-primary" onclick="location.href='/ingresoFacturaOrdenes'">
                         <i class="fa fa-btn fa-pencil"></i>Ir a Ingreso de Facturas
                     </button>
                     </center>

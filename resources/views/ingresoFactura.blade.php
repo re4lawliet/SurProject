@@ -2,11 +2,55 @@
 
 
 @section('content')
+
+@if(count($queryOrden)>0)
+    @foreach($queryOrden as $orden)
+        <!--TITULO -->
+        <div class="panel-title">
+            <h1><center>{{$orden->titulo_solicitud}}</center></h1>
+            <input id="id_orden"name="id_orden" type="hidden" form="agregar" value="{{ $orden->id }}">
+            <input id="id_proveedor"name="id_proveedor" type="hidden" form="agregar" value="{{ $orden->id_proveedor }}">
+        </div>
+        <center>
+        <div>
+            <h5>No. Orden: {{ $orden->no_orden }}</h5>
+            <h5>Proveedor: {{$orden->nombre_empresa}}</h5>
+            <h5>Proyecto: {{$orden->nombre_proyecto}}</h5>
+        </div>
+        </center>
+    @endforeach
+@endif
+<br><br>
+<center>
+<div class="container">
+
+            @foreach ($queryOrden as $orden)
+                    @if($orden->pdf!=NULL)
+                        <div  class="col-sm-7">
+                            <button id="btn_pr" type="submit" form="no-form" class="btn btn-info" onclick="myFunction()">
+                            Ver Orden</button>
+                        </div>
+                        <br>
+                        <div class="col-sm-11" id="myDIV" style="display:none">
+                            <div class="container">
+                                
+                                    <embed src="/{{ $orden->pdf }}" type="application/pdf" width="100%" height="600px">
+                                
+                            </div>
+                        </div>
+                    @else
+                    <label style="background: #ddd;"> No hay Propuesta de Presupuesto</label>
+                    @endif
+            @endforeach
+
+</div>
+</center>
+<br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Menu de Recepcion</div>
+                <div class="card-header">FACTURAS</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -20,7 +64,7 @@
                         <div class="alert alert-success">
                             <h7><B>{{Session::get('facturaAgregada')}}</B></h7>
                             <br>
-                            <button type="submit" class="btn btn-success" onclick="location.href='homeRecepcion'">
+                            <button class="btn btn-success" onclick="location.href='/ingresoFacturaOrdenes'">
                                 <i class="fa fa-btn fa-pencil"></i>OK
                             </button>
                         </div>
@@ -28,39 +72,61 @@
                     @endif
                     <form id="agregar" action="{{ url('AgregarFactura') }}" method="post">
                         {{ csrf_field() }}
-                    <label for="Proveedor" class="control-label">Proveedor</label>
-                    <div class="input-group">
-                        @if(count($queryProveedores)>0)
-                            @foreach($queryProveedores as $prov)
-                            <input type="text" class="form-control" id="selected" list="browsers" name="browser" value="{{ $prov->nombre_empresa }}" onclick="document.execCommand('selectAll',false,null)">
-                            <input  name="id_emp" id="id_emp" type="hidden" value="{{ $prov->id }}">
-                            @endforeach
-                        @else
-                            <input type="text" class="form-control" id="selected" list="browsers" name="browser" onclick="document.execCommand('selectAll',false,null)" >
-                        @endif
-                        
-                        <datalist id="browsers">
-                            @foreach($queryEmpresas as $empresa)
-                            <option data-value="{{ $empresa->id }}" value="{{ $empresa->nombre_empresa }}"></option>
-                            @endforeach
-                        </datalist>
-                    
-                        <div class="input-group-append">
-                            <button id="botoncito" form="No_Es_Parte_Del_Form" class="btn btn-primary">Seleccionar</button> 
+                        <div>
+                            <label for="orden" class="control-label">Serie</label>
+                            <input id="serie"name="serie" type="text" class="form-control">
                         </div>
-                    </div>
-                    <br>
-                    <div>
-                        <label for="orden" class="control-label">No. Factura</label>
-                        <input id="n_fact"name="n_fact" type="text" class="form-control">
-                    </div>
-                    <br>
-                    <div>
-                        <button id="agregar" form="agregarr" onclick="validacion()" class="btn btn-success">Agregar Factura</button>
-                    </div>
+                        <div>
+                            <label for="orden" class="control-label">No. Factura</label>
+                            <input id="n_fact"name="n_fact" type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label for="orden" class="control-label">Fecha</label>
+                            <input id="fecha"name="fecha" type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label for="orden" class="control-label">Monto</label>
+                            <input id="monto"name="monto" type="text" class="form-control">
+                        </div>
+                        <div>
+                            <label for="orden" class="control-label">Descrpcion</label>
+                            <input id="descripcion"name="descripcion" type="text" class="form-control">
+                        </div>
+                        <br>
+                        <div>
+                            <button id="agregar" form="agregarr" onclick="validacion()" class="btn btn-success">Agregar Factura</button>
+                        </div>
 
-
-                    
+                        <br>
+                        <DIV>
+                            <center><h3>Historial Facturas</h3></center>
+                            <center>
+                                <br>
+                                <table class="table table-striped task-table" >
+                                    <thead>
+                                        <th >Serie</th>
+                                        <th >No. Factura</th>
+                                        <th >Fecha</th>
+                                        <th >Monto</th>
+                                        <th >Descripcion</th>
+                                    </thead>
+                                    <tbody>
+                                        @if(count($queryFacturas)>0)
+                                            @foreach($queryFacturas as $fact)
+                                                <tr>
+                                                    <td >{{ $fact->serie }}</td>
+                                                    <td >{{ $fact->no_factura }}</td>
+                                                    <td >{{ $fact->fecha }}</td>
+                                                    <td >{{ $fact->monto }}</td>
+                                                    <td >{{ $fact->descripcion }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </center>
+                        </DIV>
+                        <br><br><br>
                     </form>
 
 
@@ -79,41 +145,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-            var data = {}; 
-            $("#browsers option").each(function(i,el) {  
-            data[$(el).data("value")] = $(el).val();
-        });
-
-        // `data` : object of `data-value` : `value`
-        console.log(data, $("#browsers option").val());
-
-        $('#botoncito').click(function(){
-            var value = $('#selected').val();
-            var val_id_proveedor = $('#browsers [value="' + value + '"]').data('value');
-            var val_id_proyecto = $('#id_proyecto').val();
-            var val_id_partida = $('#id_partida').val();
-
-            if(typeof val_id_proveedor === 'undefined'){
-                alert('No ha seleccionado ningun Proveedor');
-            }else{
-                location.href='/ingresoFactura/'+val_id_proveedor;
-            }
-        });
-    });
-
     function validacion(){
-        var ide = document.getElementById("id_emp");
+        var ide = document.getElementById("monto");
         var nfa = document.getElementById("n_fact");
-        if(ide!==null){
+        if(ide.value!==""){
             if(nfa.value!==""){
                 document.forms["agregar"].submit();
             }else{
                 alert('No ingreso numero de factura');
             }
         }else{
-            alert('No selecciono proveedor');
+            alert('No ingreso monto');
         }
         
+    }
+</script>
+<script>
+    function myFunction() {
+        var y = document.getElementById("btn_pr");
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+            y.className = "btn btn-danger";
+            y.innerHTML = "Esconder Cotizacion";
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+            y.className = "btn btn-info"
+            y.innerHTML = "Ver Cotizacion";
+        }
     }
 </script>

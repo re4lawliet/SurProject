@@ -1,57 +1,57 @@
-<!-- ENCABEZADO -->
-@extends(
-    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
-        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
-            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
-                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' :
-                    (Auth::user()->rol == 'recepcion' ? 'layouts.appRecepcion' : 'layouts.appAdmin'))))
-    )
+@extends('layouts.appRecepcion')
+
 
 @section('content')
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-
     <center>
         <!--TITULO -->
         <div class="panel-title">
-            <h1><center>HISTORIAL de Ordenes Finalizadas</center></h1>
+            <h1><center>VISTA DE ORDENES APROBADAS</center></h1>
         </div>
 
+        @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
         <!-- Tabla  -->
-        <div class="col-sm-10">
+        <div class="col-md-12">
             <!-- si el resultado de la consulta es mayor a 0-->
-            @if (count($ordenes) > 0)
+            @if (count($querySolicitudes) > 0)
                 <div class="panel panel-default">
-                    <h2>Listado De Ordenes Finalizadas</h2>
+                    <h2>Listado De Ordenes</h2>
                 </div>
-                <br>
+
                 <div class="panel-body">
-                    <table id="tabla_pedidos" class="table table-striped task-table">
+                    <table id="solicitudes_conta" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>Fecha de Creacion por Compras</th>
-                            <!--<th>Fecha aprobacion contabilidad</th>-->
-                            <th>Titulo de Solicitud</th>
+                            <th>Fecha de Creacion</th>
+                            <th>No. Orden</th>
+                            <th>Titulo Orden</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
-                            <th>Ver Orden</th>
+                            <th>Agregar Factura</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
-                        @foreach ($ordenes as $orden)
+                        @foreach ($querySolicitudes as $solicitud)
                             <tr>
-                                <td class="table-text"><div>{{ $orden->fecha_creacion }}</div></td>
-                                <!--<td class="table-text"><div>{{ $orden->fecha_contador }}</div></td> -->
-                                <td class="table-text"><div>{{ $orden->titulo_solicitud }}</div></td>
-                                <td class="table-text"><div>{{ $orden->nombre_empresa }}</div></td>
-                                <td class="table-text"><div>{{ $orden->nombre_proyecto }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->fecha_creacion }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->no_orden }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->nombre_empresa }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                 <!-- Boton VER -->
                                 <td>
-                                <!-- // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_proveedor">Crear Orden</button> -->
-                                <button type="submit" class="btn btn-primary" onclick="location.href='verOrdenFinalizada/{{ $orden->id }}'">
-                                        <i class="fa fa-btn fa-pencil"></i>Ver Orden
+                                    <button type="submit" class="btn btn-primary" onclick="location.href='/ingresoFactura/{{$solicitud->id}}'">
+                                        <i class="fa fa-btn fa-pencil"></i>Agregar
                                     </button>
-                                    
                                 </td>
                             </tr>
                         @endforeach
@@ -60,6 +60,11 @@
                 </div>
             @endif
         </div>
+
+
+        
+
+
 
     </center>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -92,7 +97,7 @@
         }
         
         $(document).ready( function () {
-            $('#tabla_pedidos').DataTable({
+            $('#solicitudes_conta').DataTable({
                 "language": idioma_espanol,
                 "paging": false,
                 "info": false
