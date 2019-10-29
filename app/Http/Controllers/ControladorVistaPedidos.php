@@ -446,12 +446,14 @@ class ControladorVistaPedidos extends Controller{
                                 ->count();
             Session::put('countSolicitudesConta',$solicitudes2);
 
-            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.no_orden, pa.nombre, s.id_partida   
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
                                                 WHERE ord.id_solicitud = s.id 
                                                 AND ord.id_proveedor = pro.id 
                                                 AND ord.id_proyecto = p.id 
-                                                AND ord.respuesta_conta = '1';
+                                                AND ord.respuesta_conta = '1'
+                                                AND pa.id=s.id_partida
+                                                ;
                                                 "));                             
         
             return view('VistaPedidosContador', [ 'querySolicitudes' => $solicitudes ]);
@@ -922,8 +924,8 @@ class ControladorVistaPedidos extends Controller{
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             $iduser = Auth::user()->id;
-            $ordenes = DB::select(DB::raw("SELECT DISTINCT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+            $ordenes = DB::select(DB::raw("SELECT DISTINCT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, o.no_orden, s.id_partida, par.nombre 
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up, partidas as par
                         WHERE respuesta_conta = '2'
 
                         AND up.id_usuario = $iduser
@@ -931,7 +933,10 @@ class ControladorVistaPedidos extends Controller{
 
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
-                        AND p.id = o.id_proyecto;"));
+                        AND p.id = o.id_proyecto
+                        AND s.id_partida = par.id
+
+                        ;"));
 
             /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
                 $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
@@ -1063,7 +1068,7 @@ class ControladorVistaPedidos extends Controller{
             //Session::put('countOrdenesAbiertas',$orden_abierta); 
 
 
-            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta
+            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta, o.no_orden
                                             FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
                                             WHERE o.abierta = '1'
                                             AND o.total!=o.pagado
@@ -1552,12 +1557,14 @@ class ControladorVistaPedidos extends Controller{
                                 ->count();
             Session::put('countSolicitudesContaFinalizadas',$solicitudes2);
 
-            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto 
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.no_orden, s.id_partida, pa.nombre 
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
                                                 WHERE ord.id_solicitud = s.id 
                                                 AND ord.id_proveedor = pro.id 
                                                 AND ord.id_proyecto = p.id 
-                                                AND ord.respuesta_conta = '2';
+                                                AND ord.respuesta_conta = '2'
+                                                AND pa.id=s.id_partida
+                                                ;
                                                 "));                             
         
             return view('VistaPedidosContadorFinalizadas', [ 'querySolicitudes' => $solicitudes ]);
@@ -1639,7 +1646,28 @@ class ControladorVistaPedidos extends Controller{
 
 
 
+    public function rechazarSolicitudCompras($id){
+        try{
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = solicitude::findOrFail($id);
+            $solicitud->respondido_director='1';
+            $solicitud->aprobado_director='0';
+            $solicitud->fecha_director = $fecha;
+            $solicitud->save();
 
+            //$nsolicitudes = solicitude::where('respondido_manager','1')
+            //                            ->where('aprobado_manager','1')
+            //                            ->where('respondido_director','0')
+            //                            ->count();
+            //Session::put('countSolicitudesDirector',$nsolicitudes);
+
+            return redirect('MostrarSolicitudesCompras');
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Rechazar Solicitud Compras');
+            return view('ErrorCatch');  
+        }
+    }
 
 
 

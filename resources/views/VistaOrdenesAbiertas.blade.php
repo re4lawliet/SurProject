@@ -24,6 +24,7 @@
                     <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
+                            <th>ID Orden</th>
                             <th>Titulo</th>
                             <th>Nombre Partida</th>
                             <th>Proyecto</th>
@@ -36,6 +37,7 @@
                         <tbody>
                         @foreach ($ordenes as $orden)
                             <tr>
+                                <td class="table-text">{{ $orden->no_orden }}</td>
                                 <td class="table-text">{{ $orden->titulo_solicitud }}</td>
                                 <td class="table-text">{{ $orden->partida }}</td>
                                 <td class="table-text">{{ $orden->nombre_proyecto }}</td>

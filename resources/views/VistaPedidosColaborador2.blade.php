@@ -212,7 +212,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                                 <td class="table-text"><div>{{ $solicitud->proveedor }}</div></td>
-                                                <td class="table-text"><div>Aceptada Por Manager,Rechazada por Director</div></td>
+                                                <td class="table-text"><div>Aceptada Por Manager,Rechazada por Director o Compras</div></td>
                                                 <!-- Boton DEJAR -->
                                                 <td>
                                                     <button type="submit" class="btn btn-primary" onclick="location.href='DejarSolicitud/{{ $solicitud->id }}'">
