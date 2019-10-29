@@ -924,8 +924,8 @@ class ControladorVistaPedidos extends Controller{
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             $iduser = Auth::user()->id;
-            $ordenes = DB::select(DB::raw("SELECT DISTINCT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, o.no_orden, s.id_partida, par.nombre 
-                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up, partidas as par
+            $ordenes = DB::select(DB::raw("SELECT DISTINCT o.id, o.fecha_creacion, o.fecha_contador, o.no_orden, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, pa.id as idpar, pa.nombre as nombrepar
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up, partidas as pa
                         WHERE respuesta_conta = '2'
 
                         AND up.id_usuario = $iduser
@@ -934,47 +934,8 @@ class ControladorVistaPedidos extends Controller{
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
                         AND p.id = o.id_proyecto
-                        AND s.id_partida = par.id
-
-                        ;"));
-
-            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
-                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                WHERE respuesta_conta = '2'
-
-                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                OR p.nombre_proyecto = 'NARAMA')
-
-                AND s.id = o.id_solicitud
-                AND e.id = o.id_proveedor
-                AND p.id = o.id_proyecto;")); 
-            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
-
-                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                WHERE respuesta_conta = '2'
-
-                AND (p.nombre_proyecto = 'BALDONE'
-                OR p.nombre_proyecto = 'AIRALI')
-
-                AND s.id = o.id_solicitud
-                AND e.id = o.id_proveedor
-                AND p.id = o.id_proyecto;"));
-
-            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
-
-                $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                FROM orden as o, solicitudes as s, empresas as e, proyectos as p
-                WHERE respuesta_conta = '2'
-
-                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
-
-                AND s.id = o.id_solicitud
-                AND e.id = o.id_proveedor
-                AND p.id = o.id_proyecto;"));
-
-            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
+                        
+                        AND s.id_partida = pa.id;"));
 
             
                                         

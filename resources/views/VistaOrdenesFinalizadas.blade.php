@@ -29,7 +29,6 @@
                     <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>No. Orden</th>
                             <th>Fecha de Creacion por Compras</th>
                             <th>No. Orden</th>
                             <th>No. Parida</th>
@@ -37,15 +36,12 @@
                             <th>Titulo de Solicitud</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
-                            <th>Id Partida</th>
-                            <th>Nombre Partida</th>
                             <th>Ver Orden</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
                         @foreach ($ordenes as $orden)
                             <tr>
-                                <td class="table-text"><div>{{ $orden->no_orden }}</div></td>
                                 <td class="table-text"><div>{{ $orden->fecha_creacion }}</div></td>
                                 <td class="table-text"><div>{{ $orden->no_orden }}</div></td>
                                 <td class="table-text"><div>{{ $orden->idpar }}</div></td>
@@ -53,8 +49,6 @@
                                 <td class="table-text"><div>{{ $orden->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $orden->nombre_empresa }}</div></td>
                                 <td class="table-text"><div>{{ $orden->nombre_proyecto }}</div></td>
-                                <td class="table-text"><div>{{ $orden->id_partida }}</div></td>
-                                <td class="table-text"><div>{{ $orden->nombre }}</div></td>
                                 <!-- Boton VER -->
                                 <td>
                                 <!-- // <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_proveedor">Crear Orden</button> -->
