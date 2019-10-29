@@ -661,7 +661,7 @@ class ControladorVistaPedidos extends Controller{
                                 ->count();
             Session::put('countOrdenesRechazadas',$solicitudes2);
 
-            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador, ord.no_orden
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
                                                 WHERE ord.id_solicitud = s.id 
                                                 AND ord.id_proveedor = pro.id 
@@ -1614,6 +1614,46 @@ class ControladorVistaPedidos extends Controller{
             Session::flash('catch_error','Rechazar Solicitud Compras');
             return view('ErrorCatch');  
         }
+    }
+
+    
+    public function rechazarOrdenDirector(Request $request,$id){
+
+        
+        
+
+            $validator = Validator::make($request->all(), [
+                'comentario' => 'required|max:2000',   
+            ]);
+        
+            if ($validator->fails()) {
+                return redirect('MostrarOrdenesDirector')
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+            
+            date_default_timezone_set('America/Guatemala');
+            $fecha = date('d/m/y');
+            $solicitud = orden::findOrFail($id);
+            $solicitud->respuesta_conta='3';
+            $solicitud->comentario_conta=$request->comentario;
+            $solicitud->fecha_contador = $fecha;
+            $solicitud->save();
+    
+            //jalo la solicitud y le pondre 3 que es rechazada por conta
+            $solicitud3 = solicitude::findOrFail($solicitud->id_solicitud);
+            $solicitud3->orden_creada='2';
+            $solicitud3->save();
+    
+            //$solicitudes2 = DB::table('orden')
+            //                    ->where('respuesta_conta','1')
+            //                    ->count();
+            //Session::put('countSolicitudesConta',$solicitudes2);
+    
+        
+
+        return redirect('MostrarOrdenesDirector');
+        
     }
 
 

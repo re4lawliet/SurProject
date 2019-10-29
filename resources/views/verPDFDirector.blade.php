@@ -24,6 +24,24 @@
             <a href="#">
                 <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/enviar_correo'">APROBADO Y ENVIADO</button> 
             </a>
+
+            @foreach($orden as $o)
+            <form action="{{ url('RechazarOrdenDirector') }}/{{ $o->id }}" method="POST">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+
+            <div class="col-sm-7">
+            <label for="comentario" class="control-label">Agregue Comentario si Rechaza la Solicitud</label>
+            <input type="text" name="comentario" class="form-control" value="">
+            </div>  
+            <br>
+            <!-- Boton Rechazar -->
+            <button type="submit" class="btn btn-danger" name="rechazar_orden">
+                <i class="fa fa-btn fa-pencil"></i> Rechazar Orden de Compra
+            </button>      
+            </form> 
+            @endforeach
+            
         </div>
 
     </center>

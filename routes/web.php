@@ -397,7 +397,7 @@ Route::get('/verOrdenDirector/{idOrden}','ControladorVistaPedidos@mostrarPDFDire
 
 //------------------Mostrar PDF a Director
 Route::get('/verOrdenAbiertaDirector/{idOrden}/{abono}','ControladorVistaPedidos@mostrarPDFAbiertaDirector');
-
+Route::put('/RechazarOrdenDirector/{id}', 'ControladorVistaPedidos@rechazarOrdenDirector');
 
 
 
