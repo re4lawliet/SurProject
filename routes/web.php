@@ -329,6 +329,7 @@ Route::get('/OrdenSolicitudRechazada/{id_solicitud}/{id_partida}/{id_proyecto}/{
 
 Route::post('/OrdenCreadaRechazada', 'ControladorModuloSolicitudes@crearOrdenRechazada');
 
+Route::get('/RechazarSolicitudCompras/{id}', 'ControladorVistaPedidos@rechazarSolicitudCompras');
 
 
 

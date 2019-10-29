@@ -37,6 +37,7 @@
                             <th>Proyecto</th>
                             <th>Proveedor sugerido</th>
                             <th>Crear Orden</th>
+                            <th>Rechazar Orden</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
@@ -55,6 +56,12 @@
                                         <i class="fa fa-btn fa-pencil"></i>Crear Orden
                                     </button>
                                     
+                                </td>
+                                <td>
+                                    <!-- Boton Rechazar -->
+                                    <button type="submit" class="btn btn-danger" onclick="location.href='/RechazarSolicitudCompras/{{ $solicitud->id }}'">
+                                        <i class="fa fa-btn fa-pencil"></i>Rechazar Solicitud
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
