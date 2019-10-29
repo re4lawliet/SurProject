@@ -794,7 +794,7 @@ class ControladorVistaPedidos extends Controller{
     
 
     public function mostrarPDFDirector($idOrden){
-        try{
+        //try{
         $orden = DB::select(DB::raw("SELECT *
                                     FROM orden
                                     WHERE id = '$idOrden';"));
@@ -844,10 +844,10 @@ class ControladorVistaPedidos extends Controller{
         
                                     
         return view('verPDFDirector')->with('orden',$orden);
-        }catch (Exception $e) { 
-            Session::flash('catch_error','Mostrar PDF Director');
-            return view('ErrorCatch');  
-        }
+        //}catch (Exception $e) { 
+          //  Session::flash('catch_error','Mostrar PDF Director');
+            //return view('ErrorCatch');  
+        //}
     }
 
     public function enviar()
