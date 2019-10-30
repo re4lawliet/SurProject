@@ -383,19 +383,14 @@ class ControladorModuloSolicitudes extends Controller
         $actualizar = DB::update("UPDATE orden
                                              SET no_orden = '$correlativo'
                                              WHERE id = $maxid->id;");
-        // $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
-        // $corr1 = $provv->correlativo;
-        // $actualizar = DB::update("UPDATE orden
-        //                                     SET no_orden = '$corr1'
-        //                                     WHERE id = $maxid->id;");
-
+        
         //guardar no_orden en orden_abierta
         if($val_ordenAbierta!=""){
             $updateOrdenAbierta = DB::update("UPDATE orden_abierta
                                                         SET no_orden = '$correlativo'
                                                         WHERE id_orden = $maxid->id;");
         }
-        //incrementar correlativo de empresa
+        //incrementar correlativo del proyecto
         
         $corr = $proy->correlativo + 1;
         $updateProyecto = DB::update("UPDATE proyectos
@@ -754,14 +749,34 @@ class ControladorModuloSolicitudes extends Controller
             $pdf = PDF::loadView('myPDF', $data);
             file_put_contents($path, $pdf->output()); 
     
+
             //GUARDAR CORRELATIVO DE LA ORDEN
-            $provv = DB::table('empresas')->where('id', $val_id_proveedor)->first();
+            $proy = DB::table('proyectos')->where('id', $val_id_proyecto)->first();
+            $correlativo = $proy->correlativo;
+            $actualizar = DB::update("UPDATE orden
+                                                SET no_orden = '$correlativo'
+                                                WHERE id = $maxid->id;");
+            
+            //guardar no_orden en orden_abierta
+            if($val_ordenAbierta!=""){
+                $updateOrdenAbierta = DB::update("UPDATE orden_abierta
+                                                            SET no_orden = '$correlativo'
+                                                            WHERE id_orden = $maxid->id;");
+            }
+            //incrementar correlativo del proyecto
+            
+            $corr = $proy->correlativo + 1;
+            $updateProyecto = DB::update("UPDATE proyectos
+                                                        SET correlativo ='$corr'
+                                                        WHERE id = $val_id_proyecto ;");
+            $salida = '0';
+            /*
+            //GUARDAR CORRELATIVO DE LA ORDEN
+            $provv = DB::table('proyecto')->where('id', $val_id_proveedor)->first();
             $corr1 = $provv->correlativo;
             $actualizar = DB::update("UPDATE orden
                                                 SET no_orden = '$corr1'
                                                 WHERE id = $maxid->id;");
-
-
 
             //guardar no_orden en orden_abierta
             if($val_ordenAbierta!=""){
@@ -770,14 +785,18 @@ class ControladorModuloSolicitudes extends Controller
                                                             WHERE id_orden = $maxid->id;");
             }
 
-
             //incrementar correlativo de empresa
             $corr = $provv->correlativo + 1;
-            $updateProveedor = DB::update("UPDATE empresas
+            $updateProveedor = DB::update("UPDATE proyecto
                                                         SET correlativo ='$corr'
                                                         WHERE id = $val_id_proveedor;");
 
             $salida = '0';
+
+            */
+
+
+
             return view('guardarPDF')->with('path',$path)
                                     ->with('salida',$salida);
             return $pdf->stream($name);
