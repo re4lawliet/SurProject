@@ -40,18 +40,18 @@
             @endif
         </div>
 
-        <form action="{{ url('solicitudes') }}" method="POST" enctype="multipart/form-data">
+        <form id="crear_soli" action="{{ url('solicitudes') }}" method="POST" enctype="multipart/form-data">
 
             {{ csrf_field() }}
 
             <div class="form-group">
                 <label for="titulo_solicitud" class="control-label">Titulo de Solicitud</label>
-                <input type="text" name="titulo_solicitud" class="form-control">
+                <input id="txt_titulo" type="text" name="titulo_solicitud" class="form-control">
             </div>  
 
             <div class="form-group">
                 <label for="proveedor" class="control-label">Proveedor (Sugerencia)</label>
-                <input type="text" name="proveedor" class="form-control">
+                <input id="txt_proveedor" type="text" name="proveedor" class="form-control">
             </div>  
             
 
@@ -115,29 +115,56 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="control-label">Agregar Presupuesto</label>
-                    <input type="file" name="presupuesto" class="form-control" accept=".pdf">
+                    <input id="txt_presupuesto" type="file"  name="presupuesto" class="form-control" accept=".pdf">
                 </div>
             </div>
 
-            <div class="form-group">
-                
-                <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="fa fa-plus"></i> Hacer Solicitud  
-                </button>   
-
-                
-
-
-            </div> 
-
-            
         </form>   
-        
+        <div class="form-group">
+            <button name="btn_Orden" id="btn_Orden" type="submit" class="btn btn-primary btn-lg" onclick="validacion()">
+                <i class="fa fa-plus"></i> Hacer Solicitud  
+            </button>   
+        </div> 
+
     </div>
 </div>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function validacion(){
+    var btnEnv=document.getElementById("btn_Orden");
+    btnEnv.disabled=true;
+    
+    var texttitulo = document.getElementById("txt_titulo");
+    var textproveedor = document.getElementById("txt_proveedor");
+    var textpresupuesto = document.getElementById("txt_presupuesto");
 
+    //if(textpresupuesto.value!==""){
+        if(textproveedor.value!==""){
+            if(textproveedor.value!==""){
+                if(confirm('Desea Crear la Solicitud?')){
+                    document.forms["crear_soli"].submit();
+                }else{
+                    btnEnv.disabled=false;
+                }
+            }else{
+                alert('No se Agrego Titulo a La Solicitud');
+                btnEnv.disabled=false;
+            }
+        }else{
+            alert('No Se Agrego Proveedor Sugerido');
+            btnEnv.disabled=false;
+        }
+    
+    //}else{
+    //    alert('No se Agrego el Documento de Cotizacion');
+    //    btnEnv.disabled=false;
+    //}
+    
+}
+
+</script>
 
 
 

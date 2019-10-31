@@ -420,10 +420,14 @@
                         if(txtOrdenAbierta.value!==""){
                             if(confirm('Crear Orden de Pago Abierta?')){
                                 document.forms["crear_orden_frm"].submit();
+                            }else{
+                                btnEnv.disabled=false;
                             }
                         }else{
                             if(confirm('Crear Orden de Pago?')){
                                 document.forms["crear_orden_frm"].submit();
+                            }else{
+                                btnEnv.disabled=false;
                             }
                         }
                     }else{
