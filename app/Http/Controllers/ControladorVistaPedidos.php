@@ -1022,7 +1022,8 @@ class ControladorVistaPedidos extends Controller{
                                             AND pr.id = o.id_proyecto
                                             AND e.id = o.id_proveedor;")); 
 
-            Session::put('countOrdenesAbiertas',count($ordenesA));                           
+            Session::put('countOrdenesAbiertas',count($ordenesA));   
+
         
             return view('VistaOrdenesAbiertas')->with('ordenes',$ordenesA);
         }catch (Exception $e) { 
@@ -1655,6 +1656,110 @@ class ControladorVistaPedidos extends Controller{
 
         return redirect('MostrarOrdenesDirector');
         
+    }
+
+    public function mostrarOrdenAbiertaRehacer($id_Orden){
+        try{
+
+        $idOrden=Session::get('r_id');
+        $sol = orden::findOrFail($idOrden);
+        
+        //restar el ultimo Abono Realizado en Orden Normal
+        $numeroAbonos=(int)$sol->abono;
+        $numeroAbonosRestantes=$numeroAbonos - 1;
+
+        //Obteniendo Penultimo Abono
+        $data_PenultimoAbono = DB::select(DB::raw("SELECT *
+                                                FROM orden_abierta
+                                                WHERE id_orden=$idOrden AND abono=$numeroAbonosRestantes;"));
+        //Obteniendo Ultimo Abono
+        $data_UltimoAbono = DB::select(DB::raw("SELECT *
+                                                FROM orden_abierta
+                                                WHERE id_orden=$idOrden AND abono=$numeroAbonos;"));
+        
+
+        //Restarle a lo Pagado de Orden Normal lo del Ultimo Abono
+        $pagadoAnterior=(float)$sol->pagado;
+        $restaAPagado=0;
+        foreach ($data_UltimoAbono as $dultimo) {
+            $restaAPagado=(float)$dultimo->haber;
+        }
+        //se resta lo pagado total - el ultimo abono
+        $pagadoNuevo=$pagadoAnterior - $restaAPagado;
+
+        //ahora Jalamos el PDF del Penultimo Abono
+        $pdfPenultimoAbono="pdfPenultimo";
+        foreach ($data_UltimoAbono as $dultimo) {
+            $pdfPenultimoAbono=$dultimo->pdf;
+        }
+
+        //Actualizamos los datos de la Tabla de Orden Normal
+        // campos: pagado,pdf,abono eliminando el ultimo Abono
+
+        $ActualizandoPagado = DB::update("UPDATE orden
+                                                    SET pagado = '$pagadoNuevo',
+                                                    pdf = '$pdfPenultimoAbono',
+                                                    abono = '$numeroAbonosRestantes'
+                                                    WHERE id = $idOrden;");
+
+        //eliminar el Ultimo Abono
+        $deleteUltimoAbono = DB::delete("DELETE FROM orden_abierta WHERE id_orden=$idOrden AND abono=$numeroAbonos;");
+
+        //obteniendo datos de solicitud para titulo
+        $data_solicitud = DB::select(DB::raw("SELECT s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.id as id_proyecto, p.nombre_proyecto
+                                                FROM solicitudes as s, orden as o, proyectos as p, partidas as pa
+                                                WHERE o.id = $id_Orden
+                                                AND s.id = o.id_solicitud
+                                                AND p.id = o.id_proyecto
+                                                AND pa.id = s.id_partida;"));
+
+        //data de Proveedor
+        $data_proveedor = DB::select(DB::raw("SELECT e.id as id_proveedor , e.nombre_empresa, e.nit_empresa, e.direccion_empresa, e.nombre_banco, e.tipo_cuenta,e.no_cuenta, e.divisa
+                                                FROM orden as o, empresas as e
+                                                WHERE o.id = $id_Orden
+                                                AND e.id = o.id_proveedor;"));
+
+        //data detalle
+        $data_detalle = DB::select(DB::raw("SELECT l.id, l.descripcion, l.unidad, l.cantidad, l.precio_unitario, l.subtotal, l.id_solicitud
+                                                FROM orden as o, solicitudes as s, listados as l
+                                                WHERE o.id = $id_Orden
+                                                AND s.id = o.id_solicitud
+                                                AND l.id_solicitud = s.id"));
+
+        //data orden
+        $data_orden = DB::select(DB::raw("SELECT *
+                                            FROM orden 
+                                            WHERE id = $id_Orden;"));
+
+        //data abonos
+        $data_abonos = DB::select(DB::raw("SELECT *
+                                            FROM orden_abierta
+                                            WHERE id_orden = $id_Orden;"));
+
+        //data proyecto
+        $data_proyecto = DB::select(DB::raw("SELECT p.id, p.nombre_proyecto, p.zona_proyecto, p.logo_proyecto, p.estado_proyecto, p.factura_a, p.factura_numero
+                                                FROM proyectos as p, orden as o
+                                                WHERE p.id = o.id_proyecto
+                                                AND o.id = $id_Orden;"));
+
+        $data_abonoMaximo = DB::select(DB::raw("SELECT o.id_orden, o.no_orden, o.fecha, o.abono, o.debe, o.haber, o.saldo
+                                                    FROM orden_abierta as o
+                                                    WHERE o.id_orden = $id_Orden
+                                                    AND abono = (SELECT MAX(abono) as abono
+                                                                FROM orden_abierta 
+                                                                WHERE id_orden = $id_Orden);"));
+
+        return view('homeOrdenAbiertaRehacer')->with('encabezado',$data_solicitud)
+                                        ->with('proveedor',$data_proveedor)
+                                        ->with('detalle',$data_detalle)
+                                        ->with('orden',$data_orden)
+                                        ->with('abonos',$data_abonos)
+                                        ->with('queryProyecto',$data_proyecto)
+                                        ->with('abonoMaximo',$data_abonoMaximo);
+        }catch (Exception $e) { 
+            Session::flash('catch_error','Mostrar Orden Abierta Especifica Rehacer ultimo');
+            return view('ErrorCatch');  
+        }
     }
 
 

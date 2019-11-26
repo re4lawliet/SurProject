@@ -23,7 +23,7 @@
         <br><br>
         
         <div class="col-sm-7">
-            <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Propuesta de Presupuesto</button>
+            <button id="btn_pr" form="noForm" type="submit" class="btn btn-info" onclick="mostrarPresupuesto()">Ver Orden de Compra</button>
         </div>
         <br>
         <div class="col-sm-7" id="divPresupuesto" style="display:none">
@@ -46,12 +46,20 @@
             </button>             
             
             <button type="submit" class="btn btn-primary" onclick="location.href='/OrdenSolicitudRechazada/{{Session::get('r_idsol')}}/{{Session::get('r_idpart')}}/{{Session::get('r_idproy')}}'">
-                <i class="fa fa-btn fa-pencil" ></i> Rehacer Orden de Compra
+                <i class="fa fa-btn fa-pencil" ></i> Rehacer Toda la Orden de Compra
             </button>
             
             <button type="submit" class="btn btn-dark" onclick="location.href='/ReenviarSolicitudRechazada/{{Session::get('r_id')}}'">
                 <i class="fa fa-btn fa-pencil" ></i> Reenviar Solicitud Sin Cambios
             </button>   
+
+            @foreach ($querySolicitud as $soli)
+                @if($soli->abierta==1)
+                <button type="submit" class="btn btn-warning" onclick="location.href='/OrdeneAbiertaRehacer/{{ Session::get('r_id') }}'">
+                    <i class="fa fa-btn fa-pencil" ></i> Rehacer Ultimo Abono
+                </button>
+                @endif
+            @endforeach
 
         </div>
         

@@ -321,6 +321,7 @@ Route::post('/OrdenCreada', 'ControladorModuloSolicitudes@crearOrden');
 
 Route::get('/MostrarOrdenesAbiertas','ControladorVistaPedidos@mostrarOrdenesAbiertas');
 Route::get('/OrdeneAbierta/{id_Orden}','ControladorVistaPedidos@mostrarOrdenAbierta');
+Route::get('/OrdeneAbiertaRehacer/{id_Orden}','ControladorVistaPedidos@mostrarOrdenAbiertaRehacer');
 Route::post('/CrearAbono','ControladorVistaPedidos@hacerAbono');
 
 Route::get('/OrdenSolicitudRechazada/{id_solicitud}/{id_partida}/{id_proyecto}', 'ControladorModuloSolicitudes@verSolicitudComprasRechazada');

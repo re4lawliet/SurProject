@@ -482,9 +482,15 @@ class ControladorModuloSolicitudes extends Controller
         Session::put('r_fecharechazo', $sol->fecha_contador);
         //comentario
         Session::put('r_comentario', $sol->comentario_conta);
+        
+        //Si es ORden Abierta O No
+        Session::put('r_abierta', $sol->abierta);
+        $solic = DB::select(DB::raw("SELECT * 
+                                        FROM orden
+                                        WHERE id = $id;"));
 
-
-        return view('/homeSolicitudRechazada');
+        return view('/homeSolicitudRechazada')
+                ->with('querySolicitud',$solic);
 
         }catch (Exception $e) { 
             Session::flash('catch_error','Ver Solicitud Rechazada');
@@ -610,15 +616,19 @@ class ControladorModuloSolicitudes extends Controller
 
 
     public function crearOrdenRechazada(Request $request){
+
         $idOrden=Session::get('r_id');
         $sol = orden::findOrFail($idOrden);
 
         if($sol->abierta=='1'){
-            $insertarOrden2 = DB::delete("DELETE FROM orden_abierta WHERE id_orden=$idOrden AND abono=1;");
-            $insertarOrden2 = DB::delete("DELETE FROM orden_abierta WHERE id_orden=$idOrden AND abono=0;");
+            $numeroAbonos=(int)$sol->abono;
+            for($i =0; $i<$numeroAbonos;$i++){
+                $insertarOrden2 = DB::delete("DELETE FROM orden_abierta WHERE id_orden=$idOrden AND abono=$i;");
+            }
         }
 
         orden::findOrFail($idOrden)->delete();
+
 
         try{
             $validator = Validator::make($request->all(), [
