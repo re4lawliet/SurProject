@@ -381,7 +381,8 @@
         }
         //calculando subtotales
         for( var i = 1; i < table.rows.length; i++){
-            table.rows[i].cells[5].innerHTML = parseFloat(table.rows[i].cells[1].innerHTML) * parseFloat(table.rows[i].cells[4].innerHTML);
+            var resultado = parseFloat(table.rows[i].cells[1].innerHTML) * parseFloat(table.rows[i].cells[4].innerHTML);
+            table.rows[i].cells[5].innerHTML = parseFloat(resultado).toFixed(2);
             str_ids = str_ids + table.rows[i].cells[0].innerHTML + ',';
             str_precios_unitarios = str_precios_unitarios + table.rows[i].cells[4].innerHTML + ',';
             str_subtotales = str_subtotales + table.rows[i].cells[5].innerHTML + ',';
@@ -395,10 +396,10 @@
         document.getElementById("id_txt_ids").value = str_ids;
         document.getElementById("id_txt_precios_unitarios").value = str_precios_unitarios;
         document.getElementById("id_txt_subtotales").value = str_subtotales;
-        document.getElementById("txtTotal").value = total;
-        document.getElementById("txtTotal_show").value = divisa + total;
+        document.getElementById("txtTotal").value = total.toFixed(2);
+        document.getElementById("txtTotal_show").value = divisa + total.toFixed(2);
         var mult = parseFloat(document.getElementById("txtTotal").value) * parseFloat(document.getElementById("id_txt_tasa").value);
-        document.getElementById("mul").value = mult;
+        document.getElementById("mul").value = mult.toFixed(2);
     }
 
     function validacion(){
