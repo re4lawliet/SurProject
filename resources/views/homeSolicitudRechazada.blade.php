@@ -54,7 +54,7 @@
             </button>   
 
             @foreach ($querySolicitud as $soli)
-                @if($soli->abierta==1)
+                @if($soli->abierta==1 && $soli->abono>1)
                 <button type="submit" class="btn btn-warning" onclick="location.href='/OrdeneAbiertaRehacer/{{ Session::get('r_id') }}'">
                     <i class="fa fa-btn fa-pencil" ></i> Rehacer Ultimo Abono
                 </button>
