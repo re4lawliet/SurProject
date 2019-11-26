@@ -167,6 +167,14 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span id="span_ajuste" class="input-group-text">Ajuste</span>
+                                        </div>
+                                        <input id="id_txt_ajuste" name="txt_ajuste" type="text" class="form-control" value="0.0">
+                                    </div>
+                                    <br>
                                     <input id ="id_txt_ids" name="txt_ids" type="hidden" value="">
                                     <input id ="id_txt_precios_unitarios" name="txt_precios_unitarios" type="hidden" value="">
                                     <input id="id_txt_subtotales" name="txt_subtotales" type="hidden" value="">
@@ -390,6 +398,7 @@
             table.rows[i].cells[5].innerHTML = divisa + table.rows[i].cells[5].innerHTML;  
             table.rows[i].cells[4].innerHTML = divisa + table.rows[i].cells[4].innerHTML;         
         }
+        total = total + parseFloat(document.getElementById("id_txt_ajuste").value);
         str_ids = str_ids.slice(0,-1);
         str_precios_unitarios = str_precios_unitarios.slice(0,-1);
         str_subtotales = str_subtotales.slice(0,-1);

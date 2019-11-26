@@ -228,7 +228,7 @@ class ControladorModuloSolicitudes extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-
+        $val_ajuste = $request->txt_ajuste;
         $val_id_proveedor = $request->id_emp;
         $val_tipo_pago = $request->tipo_pago;
         $str_tipo_pago="NaN";
@@ -258,11 +258,11 @@ class ControladorModuloSolicitudes extends Controller
 
         //Insertar en Orden
         if($val_ordenAbierta==""){
-            $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
-                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha','0');");
+            $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,ajuste,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ajuste','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha','0');");
         }else{
-            $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
-                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha','1');");
+            $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,ajuste,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ajuste','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha','1');");
         }
         
         
@@ -340,40 +340,10 @@ class ControladorModuloSolicitudes extends Controller
                 'proyecto' => $data_proyecto,
                 'enviar_a' => $val_enviar_a,
                 'total' => $val_total,
-                'orden_abierta' => $data_Orden_Abierta];
+                'orden_abierta' => $data_Orden_Abierta,
+                'ajuste' => $val_ajuste];
                 
-        
-
-        //Actualizar presupuesto
-        // $presupuestoViejo = DB::select(DB::raw("SELECT p.orden_sumada, p.id_partida
-        //                                         FROM presupuesto as p, solicitudes as s, orden as o
-        //                                         WHERE p.id_proyecto = $val_id_proyecto
-        //                                         AND o.id = $maxid->id
-        //                                         AND s.id = o.id_solicitud
-        //                                         AND p.id_partida = s.id_partida;"));
-        // foreach($presupuestoViejo as $p){
-        //     $nuevoTotal = floatval($p->orden_sumada) + floatval($val_total) * floatval($val_tasa);
-            
-
-        //     $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-        //                                             SET orden_sumada = $nuevoTotal
-        //                                             WHERE id_proyecto = $val_id_proyecto
-        //                                             AND id_partida = $p->id_partida;"));
-        //     $presupuestoNuevo = DB::select(DB::raw("UPDATE presupuesto
-        //                                             SET saldo = presupuesto - orden_sumada
-        //                                             WHERE id_proyecto = $val_id_proyecto
-        //                                             AND id_partida = $p->id_partida;"));
-        // }
-
-        // return view('myPDF')->with('proveedor' , $data_proveedor)
-        //                     ->with('tipo_pago' , $str_tipo_pago)
-        //                     ->with('fecha' , $fecha)
-        //                     ->with('solicitud' , $data_solicitud)
-        //                     ->with('detalle' , $data_factura)
-        //                     ->with('proyecto',$data_proyecto)
-        //                     ->with('enviar_a',$val_enviar_a)
-        //                     ->with('total',$val_total)
-        //                     ->with('orden_abierta', $data_Orden_Abierta);
+       
         $pdf = PDF::loadView('myPDF', $data);
         file_put_contents($path, $pdf->output()); 
 
@@ -649,7 +619,7 @@ class ControladorModuloSolicitudes extends Controller
                     ->withInput()
                     ->withErrors($validator);
             }
-
+            $val_ajuste = $request->txt_ajuste;
             $val_id_proveedor = $request->id_emp;
             $val_tipo_pago = $request->tipo_pago;
             $str_tipo_pago="NaN";
@@ -674,11 +644,11 @@ class ControladorModuloSolicitudes extends Controller
 
             //Insertar en Orden
             if($val_ordenAbierta==""){
-                $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
-                                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha','0');");
+                $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,ajuste,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ajuste','$val_total','0',$val_id_proyecto,'$val_correos','0','0','','$fecha','0');");
             }else{
-                $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
-                                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha','1');");
+                $insertarOrden = DB::insert("INSERT INTO orden (id_proveedor,tipo_pago,id_solicitud,tasa_cambio,total,ajuste,pagado,abierta,id_proyecto,correos,enviado,respuesta_conta,comentario_conta,fecha_creacion, abono)
+                                                    VALUES($val_id_proveedor,$val_tipo_pago,$val_id_solicitud,'$val_tasa','$val_total','$val_ajuste','$val_ordenAbierta','1',$val_id_proyecto,'$val_correos','0','0','','$fecha','1');");
             }
 
 
@@ -754,7 +724,8 @@ class ControladorModuloSolicitudes extends Controller
                     'proyecto' => $data_proyecto,
                     'enviar_a' => $val_enviar_a,
                     'total' => $val_total,
-                    'orden_abierta' => $data_Orden_Abierta];
+                    'orden_abierta' => $data_Orden_Abierta,
+                    'ajuste' => $val_ajuste];
 
             $pdf = PDF::loadView('myPDF', $data);
             file_put_contents($path, $pdf->output()); 

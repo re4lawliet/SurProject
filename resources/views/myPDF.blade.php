@@ -290,6 +290,15 @@
                 </tr>
             @endforeach
             <tr>
+                <td colspan="4" class="total">Ajuste</td>
+                @if($proveedor->divisa=='USD')
+                    <td class="total">$ {{ $ajuste }}</td>
+                @else if($proveedor->divisa=='GTQ')
+                    <td class="total">Q {{ $ajuste }}</td>
+                @endif
+                
+            </tr>
+            <tr>
                 <td colspan="4" class="grand total">TOTAL</td>
                 @if($proveedor->divisa=='USD')
                     <td class="grand total">$ {{ $total }}</td>
