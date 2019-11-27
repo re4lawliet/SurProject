@@ -126,6 +126,29 @@
                                                     ?>
                                                 </tr>
                                             @endforeach
+                                            @if(count($orden)>0)
+                                                @foreach($orden as $o)
+                                                        @if($o->ajuste > 0)
+                                                        <td style='display:none' class="table-text"></td>
+                                                        <td style='text-align:center' class="table-text"></td>
+                                                        <td style='text-align:center' class="table-text"></td>
+                                                        <td style='text-align:center' class="table-text">Ajuste</td>
+                                                        <?php
+                                                            if($divisa == 'USD'){
+                                                        ?>
+                                                            <td style='text-align:center' class="table-text" ></td>
+                                                            <td style='text-align:center' class="table-text">$ {{ $o->ajuste }}</td>
+                                                        <?php
+                                                            }else{
+                                                        ?>
+                                                            <td style='text-align:center' class="table-text" ></td>
+                                                            <td style='text-align:center' class="table-text">Q {{ $o->ajuste }}</td>
+                                                        <?php
+                                                            }
+                                                        ?>
+                                                        @endif
+                                                @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                     <br>
