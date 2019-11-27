@@ -7,7 +7,7 @@
     <center>
         <!--TITULO -->
         <div class="panel-title">
-            <h1><center>VISTA DE SOLICITUDES Rechazadas</center></h1>
+            <h1><center>VISTA DE SOLICITUDES RECHAZADAS</center></h1>
         </div>
 
 
@@ -23,8 +23,8 @@
                     <table id="solicitudes_manager" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>Titulo</th>
                             <th>Fecha Solicitud</th>
+                            <th>Titulo</th>
                             <th>No. Partida</th>
                             <th>Nombre Partida</th>
                             <th>Solicitante</th>
@@ -36,8 +36,8 @@
                         <tbody>
                         @foreach ($querySolicitudes as $solicitud)
                             <tr>
-                                <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->rol }}</div></td>

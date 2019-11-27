@@ -7,7 +7,7 @@
     <center>
         <!--TITULO -->
         <div class="panel-title">
-            <h1><center>VISTA DE SOLICITUDES</center></h1>
+            <h1><center>VISTA DE SOLICITUDES APROBADAS</center></h1>
         </div>
 
 
@@ -23,6 +23,7 @@
                     <table id="solicitudes_director" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
+                            <th>Fecha</th>
                             <th>Titulo</th>
                             <th>No. Partida</th>
                             <th>Nombre Partida</th>
@@ -35,6 +36,7 @@
                         <tbody>
                         @foreach ($querySolicitudes as $solicitud)
                             <tr>
+                                <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>

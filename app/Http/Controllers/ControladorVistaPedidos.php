@@ -31,7 +31,7 @@ class ControladorVistaPedidos extends Controller{
                                         ->count();
             Session::put('countSolicitudesManager',$nsolicitudes);
 
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+            $solicitudes = DB::select(DB::raw("SELECT s.fecha_solicitud, s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa
                                                 WHERE s.respondido_manager = '0' AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));                             
         
@@ -88,77 +88,8 @@ class ControladorVistaPedidos extends Controller{
 
     public function mostrarSolicitudesDirector(){
         try{
-            
-            /*$nsolicitudes = solicitude::where('respondido_manager','1')
-                                        ->where('aprobado_manager','1')
-                                        ->where('respondido_director','0')
-                                        ->count();
-            Session::put('countSolicitudesDirector',$nsolicitudes);*/
-
-            //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
-            /*if(Auth::user()->email=="r.diaz@sur.gt"){//granat narama
-
-                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                                WHERE s.respondido_manager = '1' 
-                                                AND s.aprobado_manager = '1'
-
-                                                AND (p.nombre_proyecto = 'GRANAT, Cantón Exposición'
-                                                OR p.nombre_proyecto = 'NARAMA')
-
-                                                AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
-
-                
-
-            }else if(Auth::user()->email=="j.gonzalez@sur.gt"){//Baldone, Airali
-
-                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                                WHERE s.respondido_manager = '1' 
-                                                AND s.aprobado_manager = '1'
-
-                                                AND (p.nombre_proyecto = 'BALDONE'
-                                                OR p.nombre_proyecto = 'AIRALI')
-
-                                                AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
-
-            }else if(Auth::user()->email=="mj.morales@sur.gt"){//Sur Properties
-
-                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                                WHERE s.respondido_manager = '1' 
-                                                AND s.aprobado_manager = '1'
-
-                                                AND p.nombre_proyecto = 'SUR PROPERTIES, S.A.'
-
-                                                AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
-
-
-            }else if(Auth::user()->email=="d.perez@sur.gt"){//Roque
-
-                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                                WHERE s.respondido_manager = '1' 
-                                                AND s.aprobado_manager = '1'
-
-                                                AND p.nombre_proyecto = 'ROQUE, Ciudad Nueva'
-
-                                                AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;"));
-
-            }else{ 
-                $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
-                                                FROM solicitudes AS s, proyectos AS p, partidas AS pa
-                                                WHERE s.respondido_manager = '1' 
-                                                AND s.aprobado_manager = '1'
-                                                AND s.respondido_director = '0'
-                                                AND s.id_proyecto = p.id AND s.id_partida = pa.id;")); 
-            }*/
             $iduser = Auth::user()->id;
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+            $solicitudes = DB::select(DB::raw("SELECT s.fecha_solicitud, s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
                                 WHERE s.respondido_manager = '1' 
                                 AND s.aprobado_manager = '1'
@@ -181,7 +112,7 @@ class ControladorVistaPedidos extends Controller{
         try{
 
             $iduser = Auth::user()->id;
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+            $solicitudes = DB::select(DB::raw("SELECT s.fecha_solicitud, s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
                                 WHERE s.respondido_manager = '1' 
                                 AND s.aprobado_manager = '1'
@@ -208,7 +139,7 @@ class ControladorVistaPedidos extends Controller{
         try{
 
             $iduser = Auth::user()->id;
-            $solicitudes = DB::select(DB::raw("SELECT s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
+            $solicitudes = DB::select(DB::raw("SELECT s.fecha_solicitud, s.id, s.titulo_solicitud, s.id_partida, pa.nombre, s.rol, p.nombre_proyecto, s.proveedor
                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, usuario_proyecto as up
                                 WHERE s.respondido_manager = '1' 
                                 AND s.aprobado_manager = '1'
@@ -425,7 +356,7 @@ class ControladorVistaPedidos extends Controller{
 
             $email = Auth::user()->email;
 
-            $solicitudes = DB::select(DB::raw("SELECT s.id as id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor, p.id as id_proyecto, pa.id as id_partida
+            $solicitudes = DB::select(DB::raw("SELECT s.fecha_solicitud, s.id as id, s.titulo_solicitud, s.id_partida, s.rol, pa.nombre, p.nombre_proyecto, s.proveedor, p.id as id_proyecto, pa.id as id_partida
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa
                                                 WHERE aprobado_manager = '1' 
                                                 AND aprobado_director = '1'

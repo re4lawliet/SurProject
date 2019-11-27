@@ -19,7 +19,7 @@
 
 
         <!-- Tabla  -->
-        <div class="col-sm-10">
+        <div class="col-sm-12">
             <!-- si el resultado de la consulta es mayor a 0-->
             @if (count($querySolicitudes) > 0)
                 <div class="panel panel-default">
@@ -30,6 +30,7 @@
                     <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
+                            <th>Fecha</th>
                             <th>Titulo</th>
                             <th>No. Partida</th>
                             <th>Nombre Partida</th>
@@ -43,6 +44,7 @@
                         <tbody>
                         @foreach ($querySolicitudes as $solicitud)
                             <tr>
+                                <td class="table-text"><div>{{ $solicitud->fecha_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->id_partida }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre }}</div></td>
