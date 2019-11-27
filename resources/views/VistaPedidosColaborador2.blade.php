@@ -59,6 +59,7 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                             <th>Estado Transaccion</th>
                             <th>Dejar de Seguir</th>
                             <th>Modificar Cotizacion</th>
+                            <th>Ver Solicitud</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
@@ -83,6 +84,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                     <td>
                                         <button type="submit" class="btn btn-primary" onclick="location.href='ModificarSolicitud/{{ $solicitud->id }}'">
                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                        </button>
+                                    </td>
+                                    <!-- Boton Ver -->
+                                    <td>
+                                        <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                            <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
                                         </button>
                                     </td>
                                 </tr>
@@ -112,6 +119,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                 </button>
                                             </td>
+                                            <!-- Boton Ver -->
+                                            <td>
+                                                <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                    <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
+                                                </button>
+                                            </td>
                                         </tr>
                                     @elseif($solicitud->respondido_director == 1)
                                         <!-- el director ya la vio -->
@@ -139,6 +152,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
+                                                    <!-- Boton Ver -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <!-- si se creo la orden en 0 gris-->
                                             @elseif($solicitud->orden_creada == 0)
@@ -160,6 +179,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td>
                                                         <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
+                                                    <!-- Boton Ver -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -185,6 +210,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                         </button>
                                                     </td>
+                                                    <!-- Boton Ver -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <!-- si se creo la orden en 3 aprobada enviada-->
                                             @elseif($solicitud->orden_creada == 3)
@@ -206,6 +237,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                     <td>
                                                         <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                             <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                                        </button>
+                                                    </td>
+                                                    <!-- Boton Ver -->
+                                                    <td>
+                                                        <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                            <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -233,6 +270,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                                         <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
                                                     </button>
                                                 </td>
+                                                <!-- Boton Ver -->
+                                                <td>
+                                                    <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                        <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endif
@@ -256,6 +299,12 @@ Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
                                         <td>
                                             <button type="submit" class="btn btn-danger" onclick="location.href=''">
                                                 <i class="fa fa-btn fa-pencil"></i>Cambiar Cotizacion
+                                            </button>
+                                        </td>
+                                        <!-- Boton Ver -->
+                                        <td>
+                                            <button type="submit" class="btn btn-primary" onclick="location.href='VerSolicitud/{{ $solicitud->id }}'">
+                                                <i class="fa fa-btn fa-pencil"></i>Ver Solicitud
                                             </button>
                                         </td>
                                     </tr>
