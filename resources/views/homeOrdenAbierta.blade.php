@@ -339,6 +339,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     function validacion(){
+        var btnEnv=document.getElementById("btn_Orden");
+        btnEnv.disabled=true;
+
         var textdiv = document.getElementById("txt_divisa");
         var texttasa = document.getElementById("id_txt_tasa");
         var textboxTotal = document.getElementById("txtTotal_show");
@@ -363,26 +366,35 @@
                             if(valAbono<valMax){
                                 if(confirm('Crear Abono?')){
                                     document.forms["hacer_abono_frm"].submit();
+                                }else{
+                                    btnEnv.disabled=false;
                                 }
                             }else  if(valAbono==valMax){
                                 if(confirm('Crear Abono?')){
                                     document.forms["hacer_abono_frm"].submit();
+                                }else{
+                                    btnEnv.disabled=false;
                                 }
                             }else{
                                 alert('No se puede realizar un abono mayor al saldo');
+                                btnEnv.disabled=false;
                             }
                         }
                     }else{
                         alert('No se ha designado direccion de envio');
+                        btnEnv.disabled=false;
                     }
                 }else{
                     alert('No se han calculado los detalles de subtotales y totales.');
+                    btnEnv.disabled=false;
                 }
             }else{
                 alert('El proveedor es una cuenta en dolares y no ha designado la Tasa de Cambio.');
+                btnEnv.disabled=false;
             }
         }else{
             alert('No ha seleccionado ningun proveedor.');
+            btnEnv.disabled=false;
         }
         
     }
