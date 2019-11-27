@@ -65,7 +65,7 @@
                                 <li class="nav-item"><a href="{{ url('/MostrarOrdenesDirector') }}" class="nav-link">Ordenes pendientes de Enviar: {{Session::get('countOrdenesAprobadas')}}</a></li>
                                 <li class="nav-item"><a href="{{ url('/MostrarOrdenesAbiertasDirector') }}" class="nav-link">Ordenes Abiertas Pendientes de Enviar: {{Session::get('countOrdenesAbiertas')}}</a></li>
                                 <li class="nav-item"><a href="{{ url('/MostrarOrdenesFinalizadas') }}" class="nav-link">Ver Ordenes Finalizadas: {{Session::get('countOrdenesFinalizadas')}}</a></li>
-                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes Realizadas: {{Session::get('countSolicitudesMiasDirector')}}</a></li>
+                                <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador') }}" class="nav-link">Mis Solicitudes Realizadas</a></li>
                             </ul>
                         </li>
                         

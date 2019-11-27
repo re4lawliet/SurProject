@@ -24,11 +24,13 @@
                     <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>ID Orden</th>
-                            <th>Titulo</th>
-                            <th>Nombre Partida</th>
-                            <th>Proyecto</th>
+                            <th>Fecha de Creacion</th>
+                            <th>No. Orden</th>
+                            <th>No. Parida</th>
+                            <th>Partida</th>
+                            <th>Titulo de Solicitud</th>
                             <th>Proveedor</th>
+                            <th>Proyecto</th>
                             <th>Total Orden</th>
                             <th>Pagado</th>
                             <th>Hacer Abono</th>
@@ -37,11 +39,13 @@
                         <tbody>
                         @foreach ($ordenes as $orden)
                             <tr>
+                                <td class="table-text">{{ $orden->fecha_creacion }}</td>
                                 <td class="table-text">{{ $orden->no_orden }}</td>
+                                <td class="table-text">{{ $orden->idpar }}</td>
+                                <td class="table-text">{{ $orden->nombrepar }}</td>
                                 <td class="table-text">{{ $orden->titulo_solicitud }}</td>
-                                <td class="table-text">{{ $orden->partida }}</td>
-                                <td class="table-text">{{ $orden->nombre_proyecto }}</td>
                                 <td class="table-text">{{ $orden->nombre_empresa }}</td>
+                                <td class="table-text">{{ $orden->nombre_proyecto }}</td>
                                 @if($orden->divisa=='USD')
                                     <td class="table-text">$ {{ $orden->total }}</td>
                                     <td class="table-text">$ {{ $orden->pagado }}</td>

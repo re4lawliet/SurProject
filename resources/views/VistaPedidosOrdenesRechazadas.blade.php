@@ -33,28 +33,29 @@
                     <table id="tabla_ordenes" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>No. Orden</th>
                             <th>Fecha de Creacion</th>
-                            <th>Fecha de Rechazo</th>
-                            
-                            <th>Titulo Solicitud</th>
+                            <th>No. Orden</th>
+                            <th>No. Parida</th>
+                            <th>Partida</th>
+                            <th>Titulo de Solicitud</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
                             <th>Comentario</th>
-                            <th>Ver Solicitud</th>
+                            <th>Ver Orden</th>
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
                         @foreach ($querySolicitudes as $solicitud)
                             <tr>
-                                <td class="table-text"><div>{{ $solicitud->no_orden }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->fecha_creacion }}</div></td>
-                                <td class="table-text"><div>{{ $solicitud->fecha_contador }}</div></td>
-                                
+                                <td class="table-text"><div>{{ $solicitud->no_orden }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->idpar }}</div></td>
+                                <td class="table-text"><div>{{ $solicitud->nombrepar }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->titulo_solicitud }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre_empresa }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->nombre_proyecto }}</div></td>
                                 <td class="table-text"><div>{{ $solicitud->comentario_conta }}</div></td>
+                                
                                 <!-- Boton VER -->
                                 <td>
                                     <button type="submit" class="btn btn-primary" onclick="location.href='/SolicitudRechazada/{{$solicitud->id}}'">

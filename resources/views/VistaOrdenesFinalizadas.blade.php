@@ -29,7 +29,7 @@
                     <table id="tabla_pedidos" class="table table-striped task-table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <th>Fecha de Creacion por Compras</th>
+                            <th>Fecha de Creacion</th>
                             <th>No. Orden</th>
                             <th>No. Parida</th>
                             <th>Partida</th>

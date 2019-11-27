@@ -455,6 +455,7 @@ Route::get('/users/{id}', 'HomeController@mostrarUsersEditar');
 
 
 
+
 //-----------------------------------IR A INGRESO DE FACTURAS
 Route::get('/ingresoFacturaOrdenes', 'ControladorVistaPedidos@ingresoFacturaOrdenes');
 Route::get('/ingresoFactura/{ido}', 'ControladorVistaPedidos@ingresoFactura');

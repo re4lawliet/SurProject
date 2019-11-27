@@ -593,11 +593,12 @@ class ControladorVistaPedidos extends Controller{
                                 ->count();
             Session::put('countOrdenesRechazadas',$solicitudes2);
 
-            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador, ord.no_orden
+            $solicitudes = DB::select(DB::raw("SELECT DISTINCT ord.id, ord.fecha_creacion, s.titulo_solicitud, pro.nombre_empresa, p.nombre_proyecto, ord.id_solicitud, ord.id_proveedor,ord.id_proyecto, ord.comentario_conta, ord.fecha_contador, ord.no_orden, pa.id as idpar, pa.nombre as nombrepar
                                                 FROM solicitudes AS s, proyectos AS p, partidas AS pa, orden AS ord, empresas AS pro 
                                                 WHERE ord.id_solicitud = s.id 
                                                 AND ord.id_proveedor = pro.id 
                                                 AND ord.id_proyecto = p.id 
+                                                AND s.id_partida = pa.id
                                                 AND ord.respuesta_conta = '3';
                                                 "));                             
         
@@ -651,13 +652,13 @@ class ControladorVistaPedidos extends Controller{
             
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             $iduser = Auth::user()->id;
-            $ordenes = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto
-                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+            $ordenes = DB::select("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, o.no_orden, pa.id as idpar, pa.nombre as nombrepar
+                        FROM orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up, partidas as pa
                         WHERE respuesta_conta = '0'
 
                         AND up.id_usuario = $iduser
                         AND p.id = up.id_proyecto
-
+                        AND s.id_partida = pa.id
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
                         AND p.id = o.id_proyecto;"); 
@@ -891,7 +892,7 @@ class ControladorVistaPedidos extends Controller{
             //Session::put('countOrdenesAbiertas',$orden_abierta); 
 
 
-            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta, o.no_orden
+            $ordenesA = DB::select(DB::raw("SELECT o.id as id_orden, s.titulo_solicitud, pa.nombre as partida, pr.nombre_proyecto, e.nombre_empresa, o.total, o.pagado, e.divisa, o.respuesta_conta, o.no_orden, o.fecha_creacion, pa.id as idpar, pa.nombre as nombrepar
                                             FROM orden as o, solicitudes as s, partidas as pa, proyectos as pr, empresas as e 
                                             WHERE o.abierta = '1'
                                             AND o.total!=o.pagado
@@ -1101,14 +1102,15 @@ class ControladorVistaPedidos extends Controller{
 
             //RESTRINGIR TAMBIEN LAS SOLICITUDES POR SU PROYECTO
             $iduser = Auth::user()->id;
-            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono
-                        FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up
+            $ordenes = DB::select(DB::raw("SELECT o.id, o.fecha_creacion, o.fecha_contador, s.titulo_solicitud, e.nombre_empresa, p.nombre_proyecto, oa.fecha, oa.haber, oa.id_orden, oa.abono, pa.id as idpar, pa.nombre as nombrepar, o.no_orden
+                        FROM orden_abierta as oa, orden as o, solicitudes as s, empresas as e, proyectos as p, usuario_proyecto as up, partidas as pa
+
                         WHERE oa.respuesta_conta = '0'
                         AND oa.abono != '1'
 
                         AND up.id_usuario = $iduser
                         AND p.id = up.id_proyecto
-
+                        AND s.id_partida = pa.id
                         AND o.id = oa.id_orden
                         AND s.id = o.id_solicitud
                         AND e.id = o.id_proveedor
