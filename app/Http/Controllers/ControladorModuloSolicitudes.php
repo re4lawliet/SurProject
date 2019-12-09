@@ -592,7 +592,7 @@ class ControladorModuloSolicitudes extends Controller
 
         if($sol->abierta=='1'){
             $numeroAbonos=(int)$sol->abono;
-            for($i =0; $i<$numeroAbonos;$i++){
+            for($i =0; $i<=$numeroAbonos;$i++){
                 $insertarOrden2 = DB::delete("DELETE FROM orden_abierta WHERE id_orden=$idOrden AND abono=$i;");
             }
         }

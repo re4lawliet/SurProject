@@ -26,6 +26,7 @@
                             <th>Fecha de Creacion</th>
                             <th>No. Orden</th>
                             <th>No. Parida</th>
+                            <th>Partida</th>
                             <th>Titulo de Solicitud</th>
                             <th>Proveedor</th>
                             <th>Proyecto</th>
