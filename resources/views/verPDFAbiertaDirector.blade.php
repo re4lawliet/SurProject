@@ -21,9 +21,18 @@
 
         <div class="form-group">
             <a href="#">
-                <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="location.href='/enviar_correoA'">APROBADO Y ENVIADO</button> 
+                <button name="btn_Orden" id="btn_Orden"  type="submit" class="btn btn-success" onclick="validacion()">APROBADO Y ENVIADO</button> 
             </a>
         </div>
 
     </center>
 @endsection
+
+<script>
+        function validacion(){
+            var btnEnv=document.getElementById("btn_Orden");
+            btnEnv.disabled=true;
+            location.href='/enviar_correoA';
+        }
+    
+    </script>
