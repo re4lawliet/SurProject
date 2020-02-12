@@ -45,7 +45,7 @@
                                                     <td style='text-align:center' class="table-text">{{ $part->titulo_solicitud }}</td>
                                                     <td style='text-align:center' class="table-text">Q {{ $part->total }}</td>
                                                     <td style='text-align:center' class="table-text">Q {{ $part->pagado }}</td>
-                                                    <td style='text-align:center' class="table-text">{{ $part->pendiente }}</td>
+                                                    <td style='text-align:center' class="table-text">Q {{ $part->pendiente }}</td>
 
                                                 </tr>
                                             @endforeach
