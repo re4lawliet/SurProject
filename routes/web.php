@@ -403,11 +403,12 @@ Route::get('/verOrdenAbiertaDirector/{idOrden}/{abono}','ControladorVistaPedidos
 Route::put('/RechazarOrdenDirector/{id}', 'ControladorVistaPedidos@rechazarOrdenDirector');
 
 
-
+//------------------PRESUPUESTO
 Route::get('/crearPresupuesto/{idProyecto}','ControladorPresupuesto@mostrarPresupuesto');
 Route::post('/Presupuesto','ControladorPresupuesto@guardarPresupuesto');
 Route::get('/vistaPresupuesto/{idProyecto}','ControladorPresupuesto@consultaPresupuesto');
 Route::get('/desglose/{idProyecto}/{idPartida}','ControladorPresupuesto@desglose');
+Route::get('/PrespuestoCompleto/{idProyecto}','ControladorPresupuesto@PresupuestoCompleto');
 
 
 

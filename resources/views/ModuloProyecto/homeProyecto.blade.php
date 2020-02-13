@@ -64,34 +64,42 @@
                     <button type="submit" class="btn btn-primary" onclick="location.href='crearPresupuesto/{{ Session::get('proyectoG') }}'">
                         <i class="fa fa-btn fa-pencil"></i>Presupuesto          
                     </button>
+                    
+                    <button type="submit" class="btn btn-warning" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
+                    </button>
                 @endif
 
                 @if(Auth::user()->rol == 'compras')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+                    
                     <button type="submit" class="btn btn-primary" onclick="location.href='crearPresupuesto/{{ Session::get('proyectoG') }}'">
                         <i class="fa fa-btn fa-pencil"></i>Presupuesto          
                     </button>
 
-                    <!--button type="submit" class="btn btn-secondary" onclick="location.href=''">
-                        <i class="fa fa-btn fa-pencil"></i>Orden de Compra
-                    </button-->
-                    
-                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
-                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    <button type="submit" class="btn btn-warning" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
                     </button>
+                    
+                    
                 @endif
 
                 @if(Auth::user()->rol == 'admin')
-                    <button type="submit" class="btn btn-primary" onclick="location.href=''">
-                        <i class="fa fa-btn fa-pencil"></i>Presupuesto          
-                    </button>
-
-                    <!--button type="submit" class="btn btn-secondary" onclick="location.href=''">
-                        <i class="fa fa-btn fa-pencil"></i>Orden de Compra
-                    </button-->
-                    
                     <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
                         <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
                     </button>
+                    
+                    <button type="submit" class="btn btn-primary" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Presupuesto          
+                    </button>
+
+                    <button type="submit" class="btn btn-warning" onclick="">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
+                    </button>
+                    
+                    
                 @endif
 
                 

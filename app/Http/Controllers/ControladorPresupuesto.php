@@ -150,26 +150,62 @@ class ControladorPresupuesto extends Controller
     public function desglose($idProyecto,$idPartida){
 
         try{
-        $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
-                                            FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
-                                            WHERE p.id = $idProyecto
-                                            AND o.id_proyecto = $idProyecto
-                                            AND o.enviado = '1'
-                                            AND o.respuesta_conta = '2'
-                                            AND s.id = o.id_solicitud
-                                            AND pa.id = s.id_partida
-                                            AND pa.id = $idPartida
-                                            AND e.id = o.id_proveedor;"));
+            $compras = DB::select(DB::raw("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
+                                                FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                                WHERE p.id = $idProyecto
+                                                AND o.id_proyecto = $idProyecto
+                                                AND o.enviado = '1'
+                                                AND o.respuesta_conta = '2'
+                                                AND s.id = o.id_solicitud
+                                                AND pa.id = s.id_partida
+                                                AND pa.id = $idPartida
+                                                AND e.id = o.id_proveedor;"));
 
-        $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
-                                        FROM proyectos
-                                        WHERE id = $idProyecto ;"));
+            $proyecto = DB::select(DB::raw("SELECT id, nombre_proyecto
+                                            FROM proyectos
+                                            WHERE id = $idProyecto ;"));
 
 
-        return view('tablaDesglose')->with('compras', $compras)
-                                            ->with('proyecto',$proyecto);
+            return view('tablaDesglose')->with('compras', $compras)
+                                                ->with('proyecto',$proyecto);
         }catch (Exception $e) { 
             Session::flash('catch_error','Desglose De Presupuesto');
+            return view('ErrorCatch');  
+        }
+    }
+
+    public function PresupuestoCompleto($idProyecto){
+        try {
+            //Informacion basica del Proyecto
+            $proyecto = DB::select("SELECT id, nombre_proyecto
+                                        FROM proyectos
+                                        WHERE id = $idProyecto ;");
+
+            //Todas las partidas
+            $partidas =  DB::select("SELECT id as id_partida, nombre 
+                                    FROM partidas; ");
+
+            //Todas las compras del proyecto
+            //$compras = DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
+            $compras = DB::select("SELECT o.fecha_creacion, o.no_orden, e.nombre_empresa, s.titulo_solicitud, (o.total * o.tasa_cambio) as total, (o.pagado * o.tasa_cambio) as pagado, ((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio)) as saldo, p.id as id_proyecto, pa.id as id_partida
+                                    FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                    WHERE p.id = $idProyecto
+                                    AND o.id_proyecto = $idProyecto
+                                    AND o.enviado = '1'
+                                    AND o.respuesta_conta = '2'
+                                    AND s.id = o.id_solicitud
+                                    AND pa.id = s.id_partida
+                                    AND e.id = o.id_proveedor
+                                    order by id_partida;");
+
+            return view('presupuestoCompleto')->with('proyectos',$proyecto)
+                                                ->with('compras', $compras)
+                                                ->with('partidas',$partidas);
+
+            
+
+        } catch (Exception $e) {
+            Session::flash('catch_error','Presupuesto Completo '+$e->msgfmt_get_error_message);
             return view('ErrorCatch');  
         }
     }
