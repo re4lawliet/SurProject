@@ -23,7 +23,7 @@
         <!-- Tabla  -->
         <div class="col-md-12">
             <!-- si el resultado de la consulta es mayor a 0-->
-            @if (count($partidas) > 0)
+            @if (count($matriz) > 0)
             <center>
                 
                 </center>
@@ -31,7 +31,6 @@
                     <table id="tabla_de_detalle" name='tabla_de_detalle' class="table">
                         <!-- Encabezado de Tabla -->
                         <thead>
-                            <!--th style='text-align:center  display:none;' width="30%">Nombre Partida</th-->
                             <th style='text-align:center'>Partida</td>
                             <th style='text-align:center'>Nombre Partida</th>
                             <th style='text-align:center'>Fecha</td>
@@ -44,36 +43,19 @@
                         </thead>
                         <!-- Cuerpo de Tabla -->
                         <tbody>
-                            @for ($i = 0; $i < count($partidas); $i++):
+                            @foreach ($matriz as $row)
                                 <tr>
-                                    <td style='text-align:center;font-weight:bold;'>{{ $partidas[$i]->id_partida }}</td>
-                                    <td style='text-align:center;font-weight:bold;'>{{ $partidas[$i]->nombre }}</td>
-                                    <td> a </td>
-                                    <td> b </td>
-                                    <td> c </td>
-                                    <td> d </td>
-                                    <td> e </td>
-                                    <td> f </td>
-                                    <td> g </td>
+                                    <td style='text-align:center;font-weight:bold;'>{{ $row[0] }}</td>
+                                    <td style='text-align:center;font-weight:bold;'>{{ $row[1] }}</td>
+                                    <td> {{ $row[2] }} </td>
+                                    <td> {{ $row[3] }} </td>
+                                    <td> {{ $row[4] }} </td>
+                                    <td> {{ $row[5] }} </td>
+                                    <td> {{ $row[6] }} </td>
+                                    <td> {{ $row[7] }} </td>
+                                    <td> {{ $row[8] }} </td>
                                 </tr>
-
-                                @for ($j = 0; $j < count($compras); $j++)
-                                    @if($compras[$j]->id_partida == $partidas[$i]->id_partida)
-                                    -
-                                    <tr>
-                                        <td style='text-align:center'> a </td>
-                                        <td style='text-align:center'> b </td>
-                                        <td style='text-align:center'>{{ $compras[$j]->fecha_creacion }}</td>
-                                        <td style='text-align:center'>{{ $compras[$j]->no_orden }}</td>
-                                        <td style='text-align:center'>{{ $compras[$j]->nombre_empresa }}</td>
-                                        <td style='text-align:center'>{{ $compras[$j]->titulo_solicitud }}</td>
-                                        <td style='text-align:center'>Q {{ $compras[$j]->total }}</td>
-                                        <td style='text-align:center'>Q {{ $compras[$j]->pagado }}</td>
-                                        <td style='text-align:center'>Q {{ $compras[$j]->saldo }}</td>
-                                    </tr>
-                                    @endif
-                                @endfor
-                            @endfor
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -81,14 +63,10 @@
         </div>
 
 
-
-
-            
         <br>
 
-        
-        
     </center>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -135,6 +113,7 @@
                 "language": idioma_espanol,
                 "paging": false,
                 "info": false,
+                "ordering": false,
                 dom: 'Bfrtip',
                 buttons: [
                     'excelHtml5',
@@ -149,7 +128,8 @@
         $('[data-toggle="tooltip"]').tooltip();   
         });
     </script>
-
+    
     
 @endsection
+
 

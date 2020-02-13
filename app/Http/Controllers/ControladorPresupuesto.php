@@ -198,9 +198,28 @@ class ControladorPresupuesto extends Controller
                                     AND e.id = o.id_proveedor
                                     order by id_partida;");
 
+            $array = array();
+
+            foreach($partidas as $partida){
+
+                $fila = array($partida->id_partida, $partida->nombre, "","","","","","","");
+                array_push($array, $fila);
+
+                foreach($compras as $compra){
+                    
+                    if($compra->id_partida === $partida->id_partida){
+                        $fila2 = array("", "", $compra->fecha_creacion,$compra->no_orden,$compra->nombre_empresa,$compra->titulo_solicitud,$compra->total,$compra->pagado,$compra->saldo);
+                        array_push($array,$fila2);
+                    }
+
+                }
+
+            }
+
             return view('presupuestoCompleto')->with('proyectos',$proyecto)
                                                 ->with('compras', $compras)
-                                                ->with('partidas',$partidas);
+                                                ->with('partidas',$partidas)
+                                                ->with('matriz', $array);
 
             
 
