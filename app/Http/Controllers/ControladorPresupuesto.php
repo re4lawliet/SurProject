@@ -9,6 +9,7 @@ use SUR\presupuesto;
 use Illuminate\Support\Facades\Session;
 Use Exception;
 
+
 class ControladorPresupuesto extends Controller
 {
     public function mostrarPresupuesto($idProyecto){
@@ -176,6 +177,7 @@ class ControladorPresupuesto extends Controller
 
     public function PresupuestoCompleto($idProyecto){
         try {
+            Session::put('id_proyecto_completo',$idProyecto);
             //Informacion basica del Proyecto
             $proyecto = DB::select("SELECT id, nombre_proyecto
                                         FROM proyectos
@@ -229,5 +231,65 @@ class ControladorPresupuesto extends Controller
         }
     }
 
+    public function PresupuestoCompleto2($fi, $ff){
+        try {
+            $idProyecto=Session::get('id_proyecto_completo');
+
+            $replaced1 = str_replace('-', '/', $fi);
+            $replaced2 = str_replace('-', '/', $ff);
+
+            //Informacion basica del Proyecto
+            $proyecto = DB::select("SELECT id, nombre_proyecto
+                                        FROM proyectos
+                                        WHERE id = $idProyecto ;");
+
+            //Todas las partidas
+            $partidas =  DB::select("SELECT id as id_partida, nombre 
+                                    FROM partidas; ");
+
+            //Todas las compras del proyecto
+            //$compras = DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
+            $compras = DB::select("SELECT o.fecha_creacion, o.no_orden, e.nombre_empresa, s.titulo_solicitud, (o.total * o.tasa_cambio) as total, (o.pagado * o.tasa_cambio) as pagado, ((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio)) as saldo, p.id as id_proyecto, pa.id as id_partida
+                                    FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                    WHERE p.id = $idProyecto
+                                    AND o.id_proyecto = $idProyecto
+                                    AND o.enviado = '1'
+                                    AND o.respuesta_conta = '2'
+                                    AND s.id = o.id_solicitud
+                                    AND pa.id = s.id_partida
+                                    AND e.id = o.id_proveedor
+                                    AND o.fecha_creacion BETWEEN '$replaced2' AND '$replaced1'
+                                    order by id_partida;");
+
+            $array = array();
+
+            foreach($partidas as $partida){
+
+                $fila = array($partida->id_partida, $partida->nombre, "","","","","","","");
+                array_push($array, $fila);
+
+                foreach($compras as $compra){
+                    
+                    if($compra->id_partida === $partida->id_partida){
+                        $fila2 = array("", "", $compra->fecha_creacion,$compra->no_orden,$compra->nombre_empresa,$compra->titulo_solicitud,$compra->total,$compra->pagado,$compra->saldo);
+                        array_push($array,$fila2);
+                    }
+
+                }
+
+            }
+
+            return view('presupuestoCompleto2')->with('proyectos',$proyecto)
+                                                ->with('compras', $compras)
+                                                ->with('partidas',$partidas)
+                                                ->with('matriz', $array);
+
+            
+
+        } catch (Exception $e) {
+            Session::flash('catch_error','Presupuesto Completo '+$e->msgfmt_get_error_message);
+            return view('ErrorCatch');  
+        }
+    }
 }
 

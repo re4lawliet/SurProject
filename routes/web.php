@@ -409,6 +409,7 @@ Route::post('/Presupuesto','ControladorPresupuesto@guardarPresupuesto');
 Route::get('/vistaPresupuesto/{idProyecto}','ControladorPresupuesto@consultaPresupuesto');
 Route::get('/desglose/{idProyecto}/{idPartida}','ControladorPresupuesto@desglose');
 Route::get('/PrespuestoCompleto/{idProyecto}','ControladorPresupuesto@PresupuestoCompleto');
+Route::get('/PrespuestoCompleto2/{fi}/{ff}','ControladorPresupuesto@PresupuestoCompleto2');
 
 
 
