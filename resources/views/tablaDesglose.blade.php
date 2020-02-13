@@ -27,17 +27,25 @@
                                     <table id="myTable" class="table table-striped task-table">
                                         <!-- Encabezado de Tabla -->
                                         <thead>
+                                            <th style='text-align:center' width="30%">Fecha</th>
+                                            <th style='text-align:center' width="30%">No. Orden</th>
                                             <th style='text-align:center' width="30%">Nombre Proveedor</th>
                                             <th style='text-align:center' width="18%">Titulo de Solicitud</th>
-                                            <th style='text-align:center' width="18%">Total</th>
+                                            <th style='text-align:center' width="30%">Saldo Total</th>
+                                            <th style='text-align:center' width="18%">Saldo Pagado</th>
+                                            <th style='text-align:center' width="30%">Saldo Pendiente</th>
                                         </thead>
                                         <!-- Cuerpo de Tabla -->
                                         <tbody>
                                             @foreach ($compras as $part)
                                                 <tr>
+                                                    <td style='text-align:center' class="table-text">{{ $part->fecha_creacion }}</td>
+                                                    <td style='text-align:center' class="table-text">{{ $part->no_orden }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $part->nombre_empresa }}</td>
                                                     <td style='text-align:center' class="table-text">{{ $part->titulo_solicitud }}</td>
-                                                    <td style='text-align:center' class="table-text" >Q {{ $part->total }}</td>
+                                                    <td style='text-align:center' class="table-text">Q {{ $part->total }}</td>
+                                                    <td style='text-align:center' class="table-text">Q {{ $part->pagado }}</td>
+                                                    <td style='text-align:center' class="table-text">Q {{ $part->pendiente }}</td>
 
                                                 </tr>
                                             @endforeach
