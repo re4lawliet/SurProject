@@ -199,6 +199,11 @@ class ControladorPresupuesto extends Controller
                                     AND pa.id = s.id_partida
                                     AND e.id = o.id_proveedor
                                     order by id_partida;");
+            
+            $sumas = DB::select(DB::raw("SELECT SUM(p.presupuesto) as Sp, SUM(p.orden_sumada) as So, SUM(p.saldo) as Ss
+                                        FROM presupuesto as p, partidas as pa
+                                        WHERE p.id_proyecto = $idProyecto
+                                        AND p.id_partida = pa.id;"));
 
             $array = array();
 
@@ -221,7 +226,8 @@ class ControladorPresupuesto extends Controller
             return view('presupuestoCompleto')->with('proyectos',$proyecto)
                                                 ->with('compras', $compras)
                                                 ->with('partidas',$partidas)
-                                                ->with('matriz', $array);
+                                                ->with('matriz', $array)
+                                                ->with('sumas', $sumas);
 
             
 
@@ -261,6 +267,11 @@ class ControladorPresupuesto extends Controller
                                     AND DATE_FORMAT(o.fecha_creacion, '%d/%m/%y') BETWEEN DATE_FORMAT('$replaced1', '%d/%m/%y') AND DATE_FORMAT('$replaced2', '%d/%m/%y')
                                     order by id_partida;");
 
+            $sumas = DB::select(DB::raw("SELECT SUM(p.presupuesto) as Sp, SUM(p.orden_sumada) as So, SUM(p.saldo) as Ss
+            FROM presupuesto as p, partidas as pa
+            WHERE p.id_proyecto = $idProyecto
+            AND p.id_partida = pa.id;"));
+
             $array = array();
 
             foreach($partidas as $partida){
@@ -282,7 +293,9 @@ class ControladorPresupuesto extends Controller
             return view('presupuestoCompleto2')->with('proyectos',$proyecto)
                                                 ->with('compras', $compras)
                                                 ->with('partidas',$partidas)
-                                                ->with('matriz', $array);
+                                                ->with('matriz', $array)
+                                                ->with('sumas', $sumas);
+
 
             
 

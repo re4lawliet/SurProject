@@ -209,6 +209,21 @@
                                     <td> {{ $row[8] }} </td>
                                 </tr>
                             @endforeach
+
+                            @foreach ($sumas as $row2)
+                                <tr>
+                                    <td style='text-align:center;font-weight:bold;'></td>
+                                    <td style='text-align:center;font-weight:bold;'>TOTALES</td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> {{ $row2->Sp }} </td>
+                                    <td> {{ $row2->So }} </td>
+                                    <td> {{ $row2->Ss }} </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
