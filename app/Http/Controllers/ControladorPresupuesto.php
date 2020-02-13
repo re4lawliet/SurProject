@@ -258,7 +258,7 @@ class ControladorPresupuesto extends Controller
                                     AND s.id = o.id_solicitud
                                     AND pa.id = s.id_partida
                                     AND e.id = o.id_proveedor
-                                    AND o.fecha_creacion BETWEEN '$replaced2' AND '$replaced1'
+                                    AND DATE_FORMAT(o.fecha_creacion, '%d/%m/%y') BETWEEN DATE_FORMAT('$replaced1', '%d/%m/%y') AND DATE_FORMAT('$replaced2', '%d/%m/%y')
                                     order by id_partida;");
 
             $array = array();
