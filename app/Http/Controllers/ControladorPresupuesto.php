@@ -200,10 +200,16 @@ class ControladorPresupuesto extends Controller
                                     AND e.id = o.id_proveedor
                                     order by id_partida;");
             
-            $sumas = DB::select(DB::raw("SELECT SUM(p.presupuesto) as Sp, SUM(p.orden_sumada) as So, SUM(p.saldo) as Ss
-                                        FROM presupuesto as p, partidas as pa
-                                        WHERE p.id_proyecto = $idProyecto
-                                        AND p.id_partida = pa.id;"));
+            $sumas = DB::select(DB::raw("SELECT ROUND(SUM((o.total * o.tasa_cambio)),2) as Sp, ROUND(SUM((o.pagado * o.tasa_cambio)),2) as So, ROUND(SUM(((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio))),2) as Ss
+            FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+            WHERE p.id = $idProyecto
+            AND o.id_proyecto = $idProyecto
+            AND o.enviado = '1'
+            AND o.respuesta_conta = '2'
+            AND s.id = o.id_solicitud
+            AND pa.id = s.id_partida
+            AND e.id = o.id_proveedor
+            order by id_partida;"));
 
             $array = array();
 
@@ -255,7 +261,7 @@ class ControladorPresupuesto extends Controller
 
             //Todas las compras del proyecto
             //$compras = DB::select("SELECT p.id as id_proyecto, p.nombre_proyecto, pa.id as id_partida, pa.nombre as nombre_partida, (o.total * o.tasa_cambio) as total, e.nombre_empresa, s.titulo_solicitud
-            $compras = DB::select("SELECT o.fecha_creacion, o.no_orden, e.nombre_empresa, s.titulo_solicitud, (o.total * o.tasa_cambio) as total, (o.pagado * o.tasa_cambio) as pagado, ((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio)) as saldo, p.id as id_proyecto, pa.id as id_partida
+            $compras = DB::select("SELECT o.fecha_creacion, o.no_orden, e.nombre_empresa, s.titulo_solicitud, ROUND((o.total * o.tasa_cambio),2) as total, ROUND((o.pagado * o.tasa_cambio),2) as pagado, ROUND(((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio)),2) as saldo, p.id as id_proyecto, pa.id as id_partida
                                     FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
                                     WHERE p.id = $idProyecto
                                     AND o.id_proyecto = $idProyecto
@@ -267,10 +273,17 @@ class ControladorPresupuesto extends Controller
                                     AND DATE_FORMAT(o.fecha_creacion, '%d/%m/%y') BETWEEN DATE_FORMAT('$replaced1', '%d/%m/%y') AND DATE_FORMAT('$replaced2', '%d/%m/%y')
                                     order by id_partida;");
 
-            $sumas = DB::select(DB::raw("SELECT SUM(p.presupuesto) as Sp, SUM(p.orden_sumada) as So, SUM(p.saldo) as Ss
-            FROM presupuesto as p, partidas as pa
-            WHERE p.id_proyecto = $idProyecto
-            AND p.id_partida = pa.id;"));
+            $sumas = DB::select(DB::raw("SELECT ROUND(SUM((o.total * o.tasa_cambio)),2) as Sp, ROUND(SUM((o.pagado * o.tasa_cambio)),2) as So, ROUND(SUM(((o.total * o.tasa_cambio) - (o.pagado * o.tasa_cambio))),2) as Ss
+            FROM proyectos as p, partidas as pa, solicitudes as s, empresas as e, orden as o
+                                    WHERE p.id = $idProyecto
+                                    AND o.id_proyecto = $idProyecto
+                                    AND o.enviado = '1'
+                                    AND o.respuesta_conta = '2'
+                                    AND s.id = o.id_solicitud
+                                    AND pa.id = s.id_partida
+                                    AND e.id = o.id_proveedor
+                                    AND DATE_FORMAT(o.fecha_creacion, '%d/%m/%y') BETWEEN DATE_FORMAT('$replaced1', '%d/%m/%y') AND DATE_FORMAT('$replaced2', '%d/%m/%y')
+                                    order by id_partida;"));
 
             $array = array();
 
