@@ -284,8 +284,12 @@
                 "ordering": false,
                 dom: 'Bfrtip',
                 buttons: [
-                    'excelHtml5',
-                    'pdfHtml5'
+                    'excelHtml5', 
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    }
                 ]
             });
         } );
