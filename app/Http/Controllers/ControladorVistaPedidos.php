@@ -993,11 +993,7 @@ class ControladorVistaPedidos extends Controller{
         $val_correos = $request->correos;
         $val_tasa = $request->txt_tasa;
         date_default_timezone_set('America/Guatemala');
-        $fecha = date('d/m/y');
-
-        
-        
-        
+        $fecha = date('d/m/y');  
         
 
         $orden = orden::findOrFail($val_id_orden);
@@ -1058,6 +1054,7 @@ class ControladorVistaPedidos extends Controller{
         $orden->pagado = $pagado;
         $orden->abono = $abonito;
         $orden->respuesta_conta = '-1';
+        $orden->pdf = $path;
         $orden->save();
 
         //DEBO BLOQUEAR BOTON DE HACER ABONOS
