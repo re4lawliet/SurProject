@@ -1067,9 +1067,9 @@ class ControladorVistaPedidos extends Controller{
         $salida = '1';
         return view('guardarPDF')->with('path',$path)
                                     ->with('salida',$salida);
-         }catch (Exception $e) { 
+         }catch (Exception $ex) { 
              Session::flash('catch_error','Hacer Abono');
-             return view('ErrorCatch');  
+             return view('ErrorCatch')view('ErrorCatch')->with('exception',$ex->getMessage());  
          }
 
     }
