@@ -31,7 +31,19 @@
                     <br><br><br> 
 
 <div class="container">
-    <h4><center><B><font color="red">Existio un Error en la Operacion Realizada Intente Realizarla De nuevo </font></center></h4>
+    <h4>
+        <center>
+            <B>
+                <font color="red">Existio un Error en la Operacion Realizada Intente Realizarla De nuevo </font>
+            </B>
+        </center>
+    </h4>
+    <br>
+    <center>
+        <p>
+            Mensaje del sistema: {{$exception}}
+        </p>
+    </center>
     <br>
     <center>
     <button type="submit" class="btn btn-success" onclick="location.href='/homes'">

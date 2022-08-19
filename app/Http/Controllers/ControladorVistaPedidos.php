@@ -1189,9 +1189,9 @@ class ControladorVistaPedidos extends Controller{
         return view('verPDFAbiertaDirector')->with('orden',$ordenA);
 
 
-        }catch (Exception $e) { 
+        }catch (Exception $ex) { 
             Session::flash('catch_error','Mostrar PDF Director');
-            return view('ErrorCatch');  
+            return view('ErrorCatch')->with('exception',$ex->getMessage());  
         }
     }
 
