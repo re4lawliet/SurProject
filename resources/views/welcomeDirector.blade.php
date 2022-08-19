@@ -69,7 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/homeDirector') }}">Menu Dse Director</a>
+                        <a href="{{ url('/homeDirector') }}">Menu De Director</a>
                     @else
                         <a href="{{ route('login') }}">Iniciar Sesion</a>
                         <a href="{{ route('register') }}">Registro</a>

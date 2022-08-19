@@ -64,6 +64,10 @@ class Kernel extends HttpKernel
         'manager' => \SUR\Http\Middleware\Manager::class,
         'colaborador' => \SUR\Http\Middleware\Colaborador::class,
         'director' => \SUR\Http\Middleware\Director::class,
+        'compras' => \SUR\Http\Middleware\Compras::class,
+        'proyecto' => \SUR\Http\Middleware\Proyectos::class,
+        'contabilidad' => \SUR\Http\Middleware\Contabilidad::class,
+        'recepcion' => \SUR\Http\Middleware\recepcion::class,
 
     ];
 }

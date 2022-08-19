@@ -24,8 +24,8 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/surlogo.png">
-                    <img src="images/logologo.png">
+                    <img src="\images\surlogo.png">
+                    <img src="\images\logologo.png">
                     
                     <!--<img src="{{Session::get('proyectoGlogo_proyecto', 'Seleccione Proyecto')}}">-->
                 </a>
@@ -49,7 +49,7 @@
                         </li>
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="/" class="nav-link">SALIR DE PROYECTO</a></li>
+                            <li class="nav-item"><a href="{{ url('/homes') }}" class="nav-link">SALIR DE PROYECTO</a></li>
                         </ul>
                         
                     </ul>
@@ -82,6 +82,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="users/{{ Auth::user()->id }}" class="nav-link">Mi Usuario</a>
                                 </div>
                             </li>
                         @endguest

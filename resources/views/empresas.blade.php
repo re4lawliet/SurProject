@@ -1,5 +1,9 @@
-@extends('layouts.app')
-
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
+    )
 
 @section('content')
 
@@ -35,6 +39,16 @@
                 <label for="nombre_empresa" class="control-label">Nombre de la Empresa</label>
                 <input type="text" name="nombre_empresa" class="form-control">
             </div>  
+
+            <div class="form-group row">
+                <label for="Partida" class="col-md-4 col-form-label text-md-right">{{ __('Divisa') }}</label>
+                    <div class="col-md-6">
+                        <select name="divisa_empresa" id="divisa_empresa"  class="form-control" >
+                            <option value="GTQ" >Quetzales GTQ</option>
+                            <option value="USD" >Dolares USD</option>
+                        </select>
+                    </div>
+            </div>
 
             <div class="form-group">
                 <label for="nit_empresa" class="control-label">NIT de la Empresa</label>
@@ -86,22 +100,14 @@
                 <input type="text" name="nombre_banco" class="form-control">
             </div>
 
-            <div class="form-group row">
-                <label for="forma_pago" class="col-md-4 col-form-label text-md-right">{{ __('Forma de Pago') }}</label>
+            <div class="form-group">
+                <label for="no_cuenta" class="control-label">No. Cuenta</label>
+                <input type="text" name="no_cuenta" class="form-control">
+            </div>
 
-                <div class="col-md-6">
-                    <select id="forma_pago" type="text" class="form-control{{ $errors->has('forma_pago') ? ' is-invalid' : '' }}" name="forma_pago" >
-                        <option value="cheque" >Cheque</option>
-                        <option value="deposito" >Deposito</option>
-                        <option value="transferencia" >Transferencia</option>
-                        <option value="otra" >Otra</option>
-                    </select>
-                    @if ($errors->has('forma_pago'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('forma_pago') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            <div class="form-group">
+                <label for="tipo_cuenta" class="control-label">Tipo de Cuenta</label>
+                <input type="text" name="tipo_cuenta" class="form-control">
             </div>
 
             <div class="form-group">
@@ -164,7 +170,8 @@
                             <th>Nombre Encargado</th>
                             <th>Puesto Encargado</th>
                             <th>Nombre Banco</th>
-                            <th>Forma Pago</th>
+                            <th>No. Cuenta</th>
+                            <th>Tipo de Cuetna</th>
                             <th>Modificar</th>
                             <th>Borrar</th>
                             <th>&nbsp;</th>
@@ -183,9 +190,8 @@
                                     <td class="table-text"><div>{{ $emps->nombre_encargado }}</div></td>
                                     <td class="table-text"><div>{{ $emps->puesto_encargado }}</div></td>
                                     <td class="table-text"><div>{{ $emps->nombre_banco }}</div></td>
-                                    <td class="table-text"><div>{{ $emps->forma_pago }}</div></td>
-                                    
-
+                                    <td class="table-text"><div>{{ $emps->no_cuenta }}</div></td>
+                                    <td class="table-text"><div>{{ $emps->tipo_cuenta }}</div></td>
                                     <!-- Task Delete Button -->
                                     <td>
                                         <button type="submit" class="btn btn-success" onclick="location.href='empresas/{{ $emps->id }}'">

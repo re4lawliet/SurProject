@@ -45,10 +45,10 @@
 
                             <div class="col-md-6">
                                 <select id="rol" type="text" class="form-control{{ $errors->has('rol') ? ' is-invalid' : '' }}" name="rol" >
-                                    <option value="manager" >Manager</option>
+
                                     <option value="colaborador" >Colaborador</option>
-                                    <option value="director" >Director</option>
-                                    <option value="admin" >Admin</option>
+
+
                                 </select>
                                 @if ($errors->has('rol'))
                                     <span class="invalid-feedback" role="alert">

@@ -1,12 +1,19 @@
-@extends('layouts.appProyecto')
+@extends(
+    Auth::user()->rol == 'colaborador' ? 'layouts.appColaborador' :
+        ( Auth::user()->rol == 'manager' ? 'layouts.appManager' : 
+            (Auth::user()->rol == 'director' ? 'layouts.appDirector' : 
+                (Auth::user()->rol == 'compras' ? 'layouts.appCompras' : 'layouts.appAdmin')))
+    )
+
 
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}}</div>
+                <div class="card-header">{{Session::get('proyectoGnombre', 'Seleccione Proyecto')}} {{ Auth::user()->rol }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -37,24 +44,73 @@
                 </div>
 
                 <br>
-                <button type="submit" class="btn btn-primary" onclick="location.href=''">
-                    <i class="fa fa-btn fa-pencil"></i>Presupuesto          
-                </button>
+                @if(Auth::user()->rol == 'colaborador')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+                @endif
 
-                <button type="submit" class="btn btn-secondary" onclick="location.href=''">
-                    <i class="fa fa-btn fa-pencil"></i>Orden de Compra
-                </button>
+                @if(Auth::user()->rol == 'manager')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+                @endif
+
+                @if(Auth::user()->rol == 'director')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" onclick="location.href='crearPresupuesto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Presupuesto          
+                    </button>
+                    
+                    <button type="submit" class="btn btn-warning" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
+                    </button>
+                @endif
+
+                @if(Auth::user()->rol == 'compras')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+                    
+                    <button type="submit" class="btn btn-primary" onclick="location.href='crearPresupuesto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Presupuesto          
+                    </button>
+
+                    <button type="submit" class="btn btn-warning" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
+                    </button>
+                    
+                    
+                @endif
+
+                @if(Auth::user()->rol == 'admin')
+                    <button type="submit" class="btn btn-success" onclick="location.href='limpiar_temporal'">
+                        <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
+                    </button>
+                    
+                    <button type="submit" class="btn btn-primary" onclick="location.href='PrespuestoCompleto/{{ Session::get('proyectoG') }}'">
+                        <i class="fa fa-btn fa-pencil"></i>Presupuesto          
+                    </button>
+
+                    <button type="submit" class="btn btn-warning" onclick="">
+                        <i class="fa fa-btn fa-pencil"></i>Reporte Presupuesto Completo         
+                    </button>
+                    
+                    
+                @endif
+
                 
-                <button type="submit" class="btn btn-success" onclick="location.href=''">
-                    <i class="fa fa-btn fa-pencil"></i>Solicitud de Materiales
-                </button>
 
             </div>
         </div>
 
+        
 
 
-        Mi Proyecto: {{Session::get('proyectoG', 'Seleccione Proyecto')}}
+        
 
                 </div>
             </div>

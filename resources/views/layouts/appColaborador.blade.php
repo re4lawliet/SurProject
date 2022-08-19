@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <!-- Metas Antiguos -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Menu de Colaborador SUR</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <!-- Metas Desconocido -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- TITULO EDITABLE -->
+    <!--title>@yield('title')</title-->
+    <title>Colaborador SUR</title>
+    <!-- Bootstrap -->
+    <!-- Scripts Antiguos -->
+    <!--script src="{{ asset('js/app.js') }}" defer></script (ESTE ESCRIPT ES VIEJO PERO CAGA LAS TABLAS)-->
+    <script src="{{ asset('js/tags.js') }}" defer></script>
+    <!-- Script Desconocido -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Script Desconocido pero sirven para el DropDown -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/css/tags.css">
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -35,9 +43,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceColaborador #1</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">EnlaceColaborador #2</a></li>
+                        <li class="nav-item"><a href="{{ url('/MostrarSolicitudesColaborador2') }}" class="nav-link">Mis Solicitudes: {{Session::get('countSolicitudesColaborador2')}}</a></li>
+                            <li class="nav-item"><a href="{{ url('/homeColaborador') }}" class="nav-link">Home Colaborador</a></li>
                         </ul>
+                        <!--
                         <li class="dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">
                                 MenúColaborador #2 <b class="caret"></b>
@@ -50,6 +59,7 @@
                                 <li><a href="#" class="nav-link">Acción #4</a></li>
                             </ul>
                         </li>
+                        -->
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -80,6 +90,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="users/{{ Auth::user()->id }}" class="nav-link">Mi Usuario</a>
                                 </div>
                             </li>
                         @endguest

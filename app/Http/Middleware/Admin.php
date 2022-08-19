@@ -24,14 +24,11 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if($this->auth->user()->rol == 'admin'){
-            return $next($request);
-        }elseif ($this->auth->user()->rol == 'colaborador'){
-            return $next($request);
-        }else{
+        if($this->auth->user()->rol != 'admin'){
             Session::flash('message-error','Sin Privilegios');
             return redirect()->to('/');
         }
+        return $next($request);
         
     }
 }
